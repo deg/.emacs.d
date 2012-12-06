@@ -80,6 +80,20 @@
 (global-set-key [f9] 'undo-tree-undo)
 (global-set-key [f10] 'undo-tree-redo)
 
+;; Show column pos, along with row (try this and decide if nice)
+(setq column-number-mode t)
+
+;; Remove screen clutter
+(setq inhibit-startup-screen t)
+(setq initial-scratch-message nil)
+(menu-bar-mode -1)
+(add-hook 'window-setup-hook (lambda () (tool-bar-mode -1)))
+(defun x11-maximize-frame ()
+  "Maximize the current frame (to full screen)"
+  (interactive)
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
+(x11-maximize-frame)
 
 
 ;;; Version control
@@ -119,7 +133,6 @@
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
-
 
 
 ;;; TODO
