@@ -19,12 +19,12 @@
 
 ;;; Code:
 
-(deftheme tsdh-light
+(deftheme deg-tsdh-light
   "Minor tweaks to the Emacs white-background defaults.
 Used and created by Tassilo Horn.")
 
 (custom-theme-set-faces
- 'tsdh-light
+ 'deg-tsdh-light
  '(default ((t (:background "white" :foreground "black"))))
  '(diff-added ((t (:inherit diff-changed :background "light green"))))
  '(diff-changed ((t (:background "light steel blue"))))
@@ -55,12 +55,12 @@ Used and created by Tassilo Horn.")
  '(outline-7 ((t (:inherit font-lock-builtin-face :weight bold))))
  '(outline-8 ((t (:inherit font-lock-string-face :weight bold))))
  '(rcirc-my-nick ((t (:foreground "LightSkyBlue" :weight bold))))
- '(region ((t (:background "lightgoldenrod1"))))
+ '(region ((t (:foreground "black" :background "lightgoldenrod1"))))
  '(show-paren-match ((t (:background "LightCyan2"))))
  '(show-paren-mismatch ((t (:background "deep pink"))))
  '(window-number-face ((t (:foreground "red" :weight bold)))))
 
-(provide-theme 'tsdh-light)
+(provide-theme 'deg-tsdh-light)
 
 
 ;; Local Variables:
