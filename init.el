@@ -55,6 +55,10 @@
 
 ;; Reasonable scrolling behavior
 (setq scroll-preserve-screen-position t)
+(global-set-key (kbd "M-<up>") 'scroll-down)
+(global-set-key (kbd "M-<down>") 'scroll-up)
+(global-set-key (kbd "M-z") 'scroll-down-line)
+(global-set-key (kbd "C-z") 'scroll-up-line)
 
 ;; Use cursor to show overwrite vs insert mode, etc.
 (defun set-cursor-by-mode ()
@@ -64,15 +68,21 @@
 (add-hook 'post-command-hook 'set-cursor-by-mode)
 
 ;; Maybe more reasonable buffer behavior
-;(add-to-list 'same-window-buffer-names "*Apropos*")
-;(add-to-list 'same-window-buffer-names "*Help*")
-;(add-to-list 'same-window-buffer-names "*Buffer List*")
-;(add-to-list 'same-window-buffer-names "*nrepl*")
+(add-to-list 'same-window-buffer-names "*Apropos*")
+(add-to-list 'same-window-buffer-names "*Buffer List*")
 (add-to-list 'same-window-buffer-names "*Deletions*")
+(add-to-list 'same-window-buffer-names "*Help*")
+(add-to-list 'same-window-buffer-names "*magit-edit-log*")
+(add-to-list 'same-window-buffer-names "*nrepl*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
 ;; Familiar bindings
 (global-set-key (kbd "M-=") 'compare-windows)
+(global-set-key (kbd "C-h a") 'apropos)
+(global-set-key (kbd "C-h C-a") 'apropos-command)
+
+;; Familiar behaviors
+(show-paren-mode 1)
 
 ;; Clever undo
 (undo-tree-mode)
@@ -95,6 +105,10 @@
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
 (x11-maximize-frame)
 
+;; Remove cognitive clutter
+(setq visible-bell t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 
 ;;; Version control
 ;;; See Magit documentation at http://magit.github.com/magit/magit.html
@@ -109,6 +123,11 @@
 ;; CamelCase support for Java names
 (add-hook 'nrepl-mode-hook 'subword-mode) 
 (add-hook 'clojure-mode-hook 'subword-mode)
+
+;; Useful bindings
+(global-set-key (kbd "C-c i") 'indent-region)
+(global-set-key (kbd "C-c ;") 'comment-region)
+
 
 ;; paredit
 ;(add-hook 'clojure-mode-hook 'paredit-mode)
@@ -142,7 +161,7 @@
 ;; For Windows use, look at:
 ;; - http://marmalade-repo.org/packages/w32-browser
 ;; - http://www.emacswiki.org/cgi-bin/wiki/w32-browser.el (linked from above)
-
+;; c-X D should not prompt, unless given arg
 
 ;; Old crap
 
