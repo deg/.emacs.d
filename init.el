@@ -32,7 +32,7 @@
 		      paredit
 		      ))
 (dolist (p my-packages)
-  (when (not (package-installed-p p))
+  (when (not (package-instaglled-p p))
     (package-install p)))
 
 
@@ -69,10 +69,14 @@
 
 ;; Maybe more reasonable buffer behavior
 (add-to-list 'same-window-buffer-names "*Apropos*")
+(add-to-list 'same-window-buffer-names "*Backtrace*")
 (add-to-list 'same-window-buffer-names "*Buffer List*")
 (add-to-list 'same-window-buffer-names "*Deletions*")
 (add-to-list 'same-window-buffer-names "*Help*")
+(add-to-list 'same-window-buffer-names "*grep*")
 (add-to-list 'same-window-buffer-names "*magit-edit-log*")
+(add-to-list 'same-window-buffer-names "*nREPL Macroexpansion*")
+(add-to-list 'same-window-buffer-names "*nREPL error*")
 (add-to-list 'same-window-buffer-names "*nrepl*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
@@ -80,9 +84,14 @@
 (global-set-key (kbd "M-=") 'compare-windows)
 (global-set-key (kbd "C-h a") 'apropos)
 (global-set-key (kbd "C-h C-a") 'apropos-command)
+(global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; Familiar behaviors
 (show-paren-mode 1)
+
+;; New bindings
+(global-set-key (kbd "C-c TAB") 'browse-url)
+(global-set-key (kbd "C-x !") 'shell)
 
 ;; Clever undo
 (undo-tree-mode)
@@ -127,16 +136,18 @@
 ;; Useful bindings
 (global-set-key (kbd "C-c i") 'indent-region)
 (global-set-key (kbd "C-c ;") 'comment-region)
-
+(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
+;; Move nrepl binding to global context
+(global-set-key (kbd "C-c C-z") 'nrepl-switch-to-repl-buffer)
 
 ;; paredit
 ;(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'nrepl-mode-hook 'paredit-mode)
+;(add-hook 'nrepl-mode-hook 'paredit-mode)
 (global-set-key [f7] 'paredit-mode)
 
 ;; nrepl
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-;; MAYBE ;(setq nrepl-popup-stacktraces nil)
+(setq nrepl-popup-stacktraces nil)
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
 (global-set-key [f8] 'nrepl-jack-in)
 ;; SLIME looks nice.
@@ -162,6 +173,9 @@
 ;; - http://marmalade-repo.org/packages/w32-browser
 ;; - http://www.emacswiki.org/cgi-bin/wiki/w32-browser.el (linked from above)
 ;; c-X D should not prompt, unless given arg
+;; See http://www.gnu.org/software/emacs/manual/html_mono/rcirc.html for doing rcirc right
+;; Look at everything in https://github.com/bbatsov/prelude
+
 
 ;; Old crap
 
