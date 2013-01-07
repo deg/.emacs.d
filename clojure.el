@@ -1,0 +1,39 @@
+;;; Clojure and friends
+
+;; rainbow delimiters
+(global-rainbow-delimiters-mode)
+
+;; CamelCase support for Java names
+(add-hook 'nrepl-mode-hook 'subword-mode)
+(add-hook 'clojure-mode-hook 'subword-mode)
+
+;; Useful bindings
+(global-set-key (kbd "C-c i") 'indent-region)
+(global-set-key (kbd "C-c ;") 'comment-region)
+(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
+;; Move nrepl binding to global context
+(global-set-key (kbd "C-c C-z") 'nrepl-switch-to-repl-buffer)
+
+;; paredit
+;(add-hook 'clojure-mode-hook 'paredit-mode)
+;(add-hook 'nrepl-mode-hook 'paredit-mode)
+(global-set-key [f7] 'paredit-mode)
+
+;; nrepl
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(setq nrepl-popup-stacktraces nil)
+;(add-hook 'nrepl-mode-hook 'paredit-mode)
+(global-set-key [f8] 'nrepl-jack-in)
+;; SLIME looks nice.
+;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
+;;  Also, look at clojure-test-mode, which has a slime dependency now
+
+;; Auto complete
+(require 'auto-complete-config)
+(ac-config-default)
+(define-key ac-completing-map "\M-/" 'ac-stop) ; use M-/ to stop completion
+;; ac-nrepl
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
