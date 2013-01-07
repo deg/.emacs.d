@@ -32,7 +32,7 @@
 		      paredit
 		      ))
 (dolist (p my-packages)
-  (when (not (package-instaglled-p p))
+  (when (not (package-installed-p p))
     (package-install p)))
 
 
