@@ -14,6 +14,7 @@
 ;; New bindings
 (global-set-key (kbd "C-c TAB") 'browse-url)
 (global-set-key (kbd "C-x !") 'shell)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Clever undo
 (undo-tree-mode)
