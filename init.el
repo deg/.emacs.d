@@ -2,6 +2,8 @@
 (load "~/.emacs.d/bindings")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/clojure")
+(load "~/.emacs.d/windows")
+(load "~/.emacs.d/linux")
 
 ;;; Look at
 ;;; -  https://github.com/technomancy/clojure-mode/blob/master/README.md
