@@ -93,4 +93,3 @@ Warning: tested on Windows Vista only."
     (setq-default line-spacing nil)   ; no extra heigh between lines
     )
   (redraw-display))
-
