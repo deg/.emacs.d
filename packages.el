@@ -1,3 +1,6 @@
+(when (< emacs-major-version 24)
+  (warn "DEG emacs environment requires Emacs 24 or later, not %s." emacs-version))
+
 ;;; Load packages
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
