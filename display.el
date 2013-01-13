@@ -8,6 +8,31 @@
 ;;    put "Emacs.font: Consolas-11" into ~/.Xdefaults
 ;;    $ xrdb -merge ~/.Xdefaults
 
+;; See also http://ergoemacs.org/emacs/emacs_list_and_set_font.html
+
+;; From http://ergoemacs.org/emacs/emacs_switching_fonts.html
+(defun cycle-font (num)
+  "Change font in current frame.
+Each time this is called, font cycles thru a predefined set of fonts.
+If NUM is 1, cycle forward.
+If NUM is -1, cycle backward.
+Warning: tested on Windows Vista only."
+  (interactive "p")
+  ;; this function sets a property “state”. It is a integer. Possible values are any index to the fontList.
+  (let (fontList fontToUse currentState nextState)
+    (setq fontList (list "Courier New-10" "DejaVu Sans Mono-9" "DejaVu Sans-10" "Consolas-11" "Consolas-10" "Consolas-9"))
+    ;; fixed-width "Courier New" "Unifont"  "FixedsysTTF" "Miriam Fixed" "Lucida Console" "Lucida Sans Typewriter"
+    ;; variable-width "Code2000"
+    (setq currentState (if (get 'cycle-font 'state) (get 'cycle-font 'state) 0))
+    (setq nextState (% (+ currentState (length fontList) num) (length fontList)))
+
+    (setq fontToUse (nth nextState fontList))
+    (set-frame-parameter nil 'font fontToUse)
+    (redraw-frame (selected-frame))
+    (message "Current font is: %s" fontToUse )
+
+    (put 'cycle-font 'state nextState)))
+
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
 ;(load-file "deg-tsdh-light-theme.el")
@@ -54,3 +79,18 @@
 (add-to-list 'same-window-buffer-names "*nREPL error*")
 (add-to-list 'same-window-buffer-names "*nrepl*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
+
+;; Improved completion/matching for buffers and files
+(ido-mode 1)
+
+
+;;; [TODO] Play with this someday
+(defun toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height."
+  (interactive)
+  (if (eq line-spacing nil)
+      (setq-default line-spacing 0.2) ; add 0.2 height between lines
+    (setq-default line-spacing nil)   ; no extra heigh between lines
+    )
+  (redraw-display))
+
