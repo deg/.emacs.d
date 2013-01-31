@@ -1,9 +1,11 @@
 (load "~/.emacs.d/packages")
+
 (load "~/.emacs.d/bindings")
-(load "~/.emacs.d/display")
 (load "~/.emacs.d/clojure")
-(load "~/.emacs.d/windows")
+(load "~/.emacs.d/display")
+(load "~/.emacs.d/irc")
 (load "~/.emacs.d/linux")
+(load "~/.emacs.d/windows")
 
 ;;; Look at
 ;;; -  https://github.com/technomancy/clojure-mode/blob/master/README.md
@@ -43,21 +45,3 @@
 ;; Look at everything in https://github.com/bbatsov/prelude
 
 
-;; Old crap
-
-
-
-
-(require 'rcirc)
- 
- 
-(setq rcirc-default-nick "deg")
-(setq rcirc-default-full-name "David Goldfarb")
-(setq rcirc-authinfo
-      '(("freenode" nickserv freenode-nickserv-nick freenode-nickserv-password)
-        ("freenode" chanserv "deg" "#hiddenchan" "eagle749")))
- 
-(setq rcirc-server-alist
-      '(("irc.freenode.net"
-         :port 7000
-         :channels ("#emacs" "#lisp" "#clojure #emacs"))))
