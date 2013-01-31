@@ -10,6 +10,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(;; Good
+		      magit              ;; Nice interface to Git
 		      clojure-mode       ;; Clojure editing
 		      nrepl              ;; New interface to leiningen
 		      undo-tree	         ;; Tree-based undo
@@ -25,4 +26,3 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-
