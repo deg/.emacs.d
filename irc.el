@@ -7,9 +7,8 @@
 ;; /dim annoying
 ;; /bright neat-dude
 ;;
-;; Silence status messages
+;; Silence status messages. (Do M-X Rcirc-Omit-Mode or (c-C c-O)
 ;; (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
-(setq rcirc-omit-responses '("JOIN"  "QUIT"))
 
 (require 'rcirc)
 
@@ -23,9 +22,10 @@
 
 (setq rcirc-server-alist
       '(("irc.freenode.net"
-	 :channels (;; "#lisp"
-		    "#clojure"
+	 :channels ("#clojure"
 		    ;;"#emacs"
+		    ;; "#git"
+		    ;; "#lisp"
 		    ))))
 
 ;;(setq rcirc-time-format "%Y-%m-%d %H:%M:%S ")
@@ -72,4 +72,16 @@
 		      rcirc-default-user-name
 		      rcirc-default-full-name
 		      channels))))
- 
+
+;; ;; HT to http://www.emacswiki.org/emacs/ErcFilling
+;; Not directly relevant, but hints on how to do dynamice column width
+;; (make-variable-buffer-local 'erc-fill-column)
+;; (add-hook 'window-configuration-change-hook
+;; 	  '(lambda ()
+;; 	     (save-excursion
+;; 	       (walk-windows
+;; 		(lambda (w)
+;; 		  (let ((buffer (window-buffer w)))
+;; 		    (set-buffer buffer)
+;; 		    (when (eq major-mode 'erc-mode)
+;; 		      (setq erc-fill-column (- (window-width w) 2)))))))))
