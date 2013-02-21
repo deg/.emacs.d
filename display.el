@@ -33,10 +33,12 @@ Warning: tested on Windows Vista only."
 
     (put 'cycle-font 'state nextState)))
 
+
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
 ;(load-file "deg-tsdh-light-theme.el")
 (load-theme 'deg-tsdh-light t)
+
 
 ;; Use cursor to show overwrite vs insert mode, etc.
 (defun set-cursor-by-mode ()
@@ -45,11 +47,14 @@ Warning: tested on Windows Vista only."
 		      (if overwrite-mode 'box 'bar))))
 (add-hook 'post-command-hook 'set-cursor-by-mode)
 
+
 ;; Familiar behaviors
 (show-paren-mode 1)
 
+
 ;; Show column pos, along with row (try this and decide if nice)
 (setq column-number-mode t)
+
 
 ;; Remove screen clutter
 (setq inhibit-startup-screen t)
@@ -63,9 +68,11 @@ Warning: tested on Windows Vista only."
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
 (x11-maximize-frame)
 
+
 ;; Remove cognitive clutter
 (setq visible-bell t)
 (defalias 'yes-or-no-p 'y-or-n-p)
+
 
 ;; Maybe more reasonable buffer behavior
 (add-to-list 'same-window-buffer-names "*Apropos*")
@@ -80,8 +87,23 @@ Warning: tested on Windows Vista only."
 (add-to-list 'same-window-buffer-names "*nrepl*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
+
 ;; Improved completion/matching for buffers and files
 (ido-mode 1)
+
+
+;; Remember recent files
+;; See http://www.masteringemacs.org/articles/2011/01/27/find-files-faster-recent-files-package/
+(recentf-mode 1)
+(setq recentf-max-menu-items 20)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; Use this instead (bound in bindings.el)
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
 
 
 ;;; [TODO] Play with this someday
@@ -93,3 +115,18 @@ Warning: tested on Windows Vista only."
     (setq-default line-spacing nil)   ; no extra heigh between lines
     )
   (redraw-display))
+
+
+;;; Remove whitespace. Binding in bindings.el
+;;; From http://www.emacswiki.org/emacs/DeletingWhitespace
+(defun kill-whitespace ()
+  "Kill the whitespace between two non-whitespace characters"
+  (interactive "*")
+  (save-excursion
+    (save-restriction
+      (save-match-data
+	(progn
+	  (re-search-backward "[^ \t\r\n]" nil t)
+	  (re-search-forward "[ \t\r\n]+" nil t)
+	  (replace-match "" nil nil))))))
+

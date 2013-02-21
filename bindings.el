@@ -16,6 +16,10 @@
 (global-set-key (kbd "C-x !") 'shell)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;; My functions
+(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+(global-set-key (kbd "S-SPC") 'kill-whitespace)
+
 ;; Clever undo
 (undo-tree-mode)
 (global-set-key (kbd "C-x u") 'undo-tree-visualize)
