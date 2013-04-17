@@ -37,3 +37,9 @@
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
+
+
+;; Clojure mode in ClojureLisp buffers.
+;; But, also see here for much more useful stuff later:
+;; https://github.com/brentonashworth/one/wiki/Emacs
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
