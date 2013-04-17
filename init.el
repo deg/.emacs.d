@@ -43,5 +43,6 @@
 ;; c-X D should not prompt, unless given arg
 ;; See http://www.gnu.org/software/emacs/manual/html_mono/rcirc.html for doing rcirc right
 ;; Look at everything in https://github.com/bbatsov/prelude
-
+;; Set fill column to 80, or maybe 90.
+;; Auto enable auto-fill in .txt and .md files
 
