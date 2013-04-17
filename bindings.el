@@ -18,7 +18,7 @@
 
 ;; My functions
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-(global-set-key (kbd "S-SPC") 'kill-whitespace)
+(global-set-key (kbd "s-SPC") 'kill-whitespace)
 
 ;; Clever undo
 (undo-tree-mode)
