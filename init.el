@@ -33,6 +33,11 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 
 
+;; Dired
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
+
+
 ;;; TODO
 ;; Disable c-Z behavior
 ;; Stop crazy window switching, or get used to Q command
