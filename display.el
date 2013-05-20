@@ -130,3 +130,8 @@ Warning: tested on Windows Vista only."
 	  (re-search-forward "[ \t\r\n]+" nil t)
 	  (replace-match "" nil nil))))))
 
+;;; Display directory as part of buffer name, when multiple files have the same name.
+;;; (Way better than hoary old <2>)!
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets) ; Or 'forward, 'reverse, 'post-forward
+
