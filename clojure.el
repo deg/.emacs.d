@@ -23,7 +23,12 @@
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 (setq nrepl-popup-stacktraces nil)
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
-(global-set-key [f8] 'nrepl-jack-in)
+
+;(global-set-key [f8] 'nrepl-jack-in)
+; (Try -restart instead of -jack-in so we can use the same keystroke to restart after
+; changes to project.clj)
+(global-set-key [f8] 'nrepl-restart)
+
 ;; SLIME looks nice.
 ;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
 ;;  Also, look at clojure-test-mode, which has a slime dependency now
