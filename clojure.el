@@ -43,3 +43,22 @@
 ;; But, also see here for much more useful stuff later:
 ;; https://github.com/brentonashworth/one/wiki/Emacs
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+
+
+;; Indentation
+(define-clojure-indent
+  (ANY 2)
+  (DELETE 2)
+  (GET 2)
+  (HEAD 2)
+  (POST 2)
+  (PUT 2)
+  (append! 1)
+  (button-group 2)
+  (context 2)
+  (defroutes 'defun)
+  (fill-select-options 1)
+  (listen! 2)
+  (remote-callback 2)
+  (set-html! 1)
+  (set-inner-html! 1))
