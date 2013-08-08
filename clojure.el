@@ -13,6 +13,7 @@
 (global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
 ;; Move nrepl binding to global context
 (global-set-key (kbd "C-c C-z") 'nrepl-switch-to-repl-buffer)
+(global-set-key (kbd "C-c M-z") 'nrepl-make-repl-connection-default)
 
 ;; paredit
 ;(add-hook 'clojure-mode-hook 'paredit-mode)
@@ -24,10 +25,8 @@
 (setq nrepl-popup-stacktraces nil)
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
 
-;(global-set-key [f8] 'nrepl-jack-in)
-; (Try -restart instead of -jack-in so we can use the same keystroke to restart after
-; changes to project.clj)
-(global-set-key [f8] 'nrepl-restart)
+(global-set-key [f8] 'nrepl-jack-in)
+(global-set-key [C-f8] 'nrepl-restart)
 
 ;; SLIME looks nice.
 ;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
