@@ -47,6 +47,7 @@
 ;; But, also see here for much more useful stuff later:
 ;; https://github.com/brentonashworth/one/wiki/Emacs
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\.cljx$" . clojure-mode))
 
 
 ;; Indentation
