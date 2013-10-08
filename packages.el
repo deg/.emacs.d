@@ -21,7 +21,8 @@
 		      ac-nrepl           ;; Auto completion for nrepl
 
 		      ;; Maybe drop
-		      paredit
+		      ;;paredit
+		      smartparens
 		      ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
