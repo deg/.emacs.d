@@ -73,4 +73,5 @@
   (listen! 2)
   (remote-callback 2)
   (set-html! 1)
-  (set-inner-html! 1))
+  (set-inner-html! 1)
+  (template 2))
