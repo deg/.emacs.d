@@ -82,9 +82,6 @@ Warning: tested on Windows Vista only."
 (add-to-list 'same-window-buffer-names "*Help*")
 (add-to-list 'same-window-buffer-names "*grep*")
 (add-to-list 'same-window-buffer-names "*magit-edit-log*")
-(add-to-list 'same-window-buffer-names "*nREPL Macroexpansion*")
-(add-to-list 'same-window-buffer-names "*nREPL error*")
-(add-to-list 'same-window-buffer-names "*nrepl*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
 
