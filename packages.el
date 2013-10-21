@@ -19,10 +19,10 @@
 		      auto-complete      ;; Auto completion
 		      popup              ;; Popups for auto-complete (I think)
 		      ac-nrepl           ;; Auto completion for nrepl
+		      smartparens        ;; Auto parens typing
 
 		      ;; Maybe drop
 		      ;;paredit
-		      smartparens
 		      ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))

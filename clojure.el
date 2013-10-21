@@ -18,7 +18,7 @@
 ;; paredit
 ;(add-hook 'clojure-mode-hook 'paredit-mode)
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
-(global-set-key [f7] 'paredit-mode)
+;(global-set-key [f7] 'paredit-mode)
 
 ;; nrepl (see https://github.com/clojure-emacs/nrepl.el)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
@@ -30,7 +30,10 @@
 (setq nrepl-buffer-name-show-port t)
 (add-to-list 'same-window-buffer-names "*nrepl*")
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
-(add-hook 'nrepl-repl-mode-hook 'smartparens-strict-mode)
+;-- (add-hook 'nrepl-repl-mode-hook 'smartparens-strict-mode)
+;-- (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
+(add-hook 'nrepl-repl-mode-hook 'smartparens-mode)
+(add-hook 'clojure-mode-hook 'smartparens-mode)
 
 (global-set-key [f8] 'nrepl-jack-in)
 (global-set-key [C-f8] 'nrepl-restart)
