@@ -35,7 +35,15 @@
 (add-hook 'nrepl-repl-mode-hook 'smartparens-mode)
 (add-hook 'clojure-mode-hook 'smartparens-mode)
 
+;; nrepl-ritz debugger
+;+ (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
+;+ (defun my-nrepl-mode-setup ()
+;+   (require 'nrepl-ritz))
 (global-set-key [f8] 'nrepl-jack-in)
+;+ ;; Turn on when problem with Austin is fixed (see
+   ;; https://degel.fogbugz.com/default.asp?160 and
+   ;; https://github.com/cemerick/austin/issues/11)
+;+ (global-set-key [f8] 'nrepl-ritz-jack-in)
 (global-set-key [C-f8] 'nrepl-restart)
 
 ;; SLIME looks nice.
