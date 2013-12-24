@@ -21,11 +21,11 @@
 ;(global-set-key [f7] 'paredit-mode)
 
 ;; nrepl (see https://github.com/clojure-emacs/nrepl.el)
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 ;- (setq nrepl-hide-special-buffers t)
 ;- (setq nrepl-popup-stacktraces nil)
 ;- (setq nrepl-popup-stacktraces-in-repl t)
-(setq nrepl-auto-select-error-buffer t)
+(setq CIDER-auto-select-error-buffer t)
 (setq nrepl-buffer-name-separator "-")
 (setq nrepl-buffer-name-show-port t)
 (add-to-list 'same-window-buffer-names "*nrepl*")
@@ -39,7 +39,7 @@
 ;+ (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
 ;+ (defun my-nrepl-mode-setup ()
 ;+   (require 'nrepl-ritz))
-(global-set-key [f8] 'nrepl-jack-in)
+(global-set-key [f8] 'cider-jack-in)
 ;+ ;; Turn on when problem with Austin is fixed (see
    ;; https://degel.fogbugz.com/default.asp?160 and
    ;; https://github.com/cemerick/austin/issues/11)
@@ -56,10 +56,13 @@
 (define-key ac-completing-map "\M-/" 'ac-stop) ; use M-/ to stop completion
 ;; ac-nrepl
 (require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'cider-repl-mode))
 
+(eval-after-load "cider"
+  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 ;; Clojure mode in ClojureLisp buffers.
 ;; But, also see here for much more useful stuff later:
