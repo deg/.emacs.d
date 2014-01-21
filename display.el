@@ -61,12 +61,17 @@ Warning: tested on Windows Vista only."
 (setq initial-scratch-message nil)
 (menu-bar-mode -1)
 (add-hook 'window-setup-hook (lambda () (tool-bar-mode -1)))
-(unless (string-equal system-type "windows-nt")
+(when (string-equal system-type "gnu/linux")
   (defun x11-maximize-frame ()
     "Maximize the current frame (to full screen)"
     (interactive)
     (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
-    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))  (x11-maximize-frame))
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
+  (x11-maximize-frame))
+(when (string-equal system-type 'darwin)
+  (add-hook 'window-setup-hook
+	    (lambda ()
+	      (set-frame-parameter nil 'fullscreen 'fullboth))))
 
 
 ;; Remove cognitive clutter
