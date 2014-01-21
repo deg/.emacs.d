@@ -27,3 +27,9 @@
 (global-set-key (kbd "C-x u") 'undo-tree-visualize)
 (global-set-key [f9] 'undo-tree-undo)
 (global-set-key [f10] 'undo-tree-redo)
+
+
+;; Deal with MacBook keyboard
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta
+	mac-option-modifier 'super))
