@@ -38,6 +38,14 @@
 (setq global-auto-revert-non-file-buffers t)
 
 
+;; Random utilities
+
+(defun insert-date-string ()
+  "Insert the current date"
+  (interactive)
+  (insert (format-time-string "%a %b %d %H:%M:%S %Y")))
+
+
 ;;; TODO
 ;; Disable c-Z behavior
 ;; Stop crazy window switching, or get used to Q command
