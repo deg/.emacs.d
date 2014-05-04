@@ -44,7 +44,7 @@
    ;; https://degel.fogbugz.com/default.asp?160 and
    ;; https://github.com/cemerick/austin/issues/11)
 ;+ (global-set-key [f8] 'nrepl-ritz-jack-in)
-(global-set-key [C-f8] 'cider-restart)
+(global-set-key [M-f8] 'cider-restart)
 
 ;; SLIME looks nice.
 ;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
