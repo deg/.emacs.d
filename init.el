@@ -1,7 +1,7 @@
 (load "~/.emacs.d/packages")
 
 (load "~/.emacs.d/bindings")
-(load "~/.emacs.d/clojure")
+;;(load "~/.emacs.d/clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
 (load "~/.emacs.d/linux")
