@@ -28,6 +28,11 @@
 (setq CIDER-auto-select-error-buffer t)
 (setq nrepl-buffer-name-separator "-")
 (setq nrepl-buffer-name-show-port t)
+(setq cider-repl-display-in-current-window t)
+(setq cider-repl-print-length 100) ; the default is nil, no limit
+;(set cider-repl-result-prefix ";; => ")
+;(set cider-interactive-eval-result-prefix ";; ==> ")
+(setq cider-repl-history-file "~/repl-history.clj-repl")
 (add-to-list 'same-window-buffer-names "*nrepl*")
 ;(add-hook 'nrepl-mode-hook 'paredit-mode)
 ;-- (add-hook 'nrepl-repl-mode-hook 'smartparens-strict-mode)
@@ -58,9 +63,8 @@
 (require 'ac-nrepl)
 (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
 (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-;; [TODO] Put back once this stops crashing randomly when moving cursor in clojure buffer
-;(eval-after-load "auto-complete"
-;  '(add-to-list 'ac-modes 'cider-repl-mode))
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (eval-after-load "cider"
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
