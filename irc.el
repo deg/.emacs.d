@@ -23,6 +23,7 @@
 (setq rcirc-server-alist
       '(("irc.freenode.net"
 	 :channels ("#clojure"
+		    "#clojure-emacs"
 		    "#clojurescript"
 		    "#leiningen"
 		    ;; "#emacs"
