@@ -27,6 +27,7 @@
 		      ;; New. Evaluating
 		      cider
 		      clojure-cheatsheet
+		      exec-path-from-shell ;; See https://github.com/purcell/exec-path-from-shell.  Used to get path right, e.g. for lein, on mac.
 		      
 		      ))
 (dolist (p my-packages)
