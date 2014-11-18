@@ -52,7 +52,7 @@ Warning: tested on Windows Vista only."
 (show-paren-mode 1)
 
 
-;; Show column pos, along with row (try this and decide if nice)
+;; Show column pos, along with row
 (setq column-number-mode t)
 
 
