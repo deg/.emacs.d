@@ -1,11 +1,16 @@
+;; To load on Mac with debugging of this init:
+;; $ open -a /Applications/Emacs.app --args --debug-init
+
 (load "~/.emacs.d/packages")
 
-(load "~/.emacs.d/bindings")
-;;(load "~/.emacs.d/clojure")
+(load "~/.emacs.d/clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
 (load "~/.emacs.d/linux")
 (load "~/.emacs.d/windows")
+
+(load "~/.emacs.d/bindings")
+(load "~/.emacs.d/bindings-smartparens")
 
 ;;; Look at
 ;;; -  https://github.com/technomancy/clojure-mode/blob/master/README.md
@@ -13,6 +18,7 @@
 ;;; -  http://blog.worldcognition.com/2012/07/setting-up-emacs-for-clojure-programming.html
 ;;; -  http://www.mail-archive.com/clojure@googlegroups.com/msg36929.html
 ;;; -  https://github.com/kingtim/nrepl.el (and obvious extensions)
+;;; -  https://github.com/mordocai/.emacs.d
 ;;;...
 
 

@@ -9,25 +9,26 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(;; Good
-		      magit              ;; Nice interface to Git
-;;		      clojure-mode       ;; Clojure editing
+                      magit                ;; Nice interface to Git
+                      exec-path-from-shell ;; https://github.com/purcell/exec-path-from-shell.  Fix path right for lein on mac.
+                      undo-tree            ;; Tree-based undo
+
+                      auto-complete        ;; Auto completion
+                      popup                ;; Popups for auto-complete (I think)
+
+                      cider                ;; Clojure interface
+                      clojure-mode         ;; Clojure editing
+                      smartparens          ;; Auto parens typing
+		      clojure-cheatsheet   ;; Documentation
+		      rainbow-delimiters   ;; Subtle parens colorization
+
+
 		      ;;nrepl              ;; New interface to leiningen
 		      ;;nrepl-ritz         ;; Debugger interface
-		      undo-tree	         ;; Tree-based undo
-;;		      elein              ;; Interface to leiningen commands
-;;		      rainbow-delimiters ;; Subtle parens colorization
-;;		      auto-complete      ;; Auto completion
-		      popup              ;; Popups for auto-complete (I think)
-;;		      smartparens        ;; Auto parens typing
+;;		      elein                ;; Interface to leiningen commands
 
-		      ;; Maybe drop
-		      ;;paredit
 
-		      ;; New. Evaluating
-		      cider
-;;		      clojure-cheatsheet
 ;;		      ac-nrepl           ;; Auto completion for nrepl
-		      exec-path-from-shell ;; See https://github.com/purcell/exec-path-from-shell.  Used to get path right, e.g. for lein, on mac.
 		      
 		      ))
 (dolist (p my-packages)

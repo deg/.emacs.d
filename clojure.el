@@ -1,40 +1,35 @@
 ;;; Clojure and friends
 
 ;; rainbow delimiters
-(global-rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; CamelCase support for Java names
-(add-hook 'nrepl-mode-hook 'subword-mode)
 (add-hook 'clojure-mode-hook 'subword-mode)
 
 ;; Useful bindings
 (global-set-key (kbd "C-c i") 'indent-region)
 (global-set-key (kbd "C-c ;") 'comment-region)
-(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
-;; Move nrepl binding to global context
-(global-set-key (kbd "C-c C-z") 'nrepl-switch-to-repl-buffer)
-(global-set-key (kbd "C-c M-z") 'nrepl-make-repl-connection-default)
+;;(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
 
-;; paredit
-;(add-hook 'clojure-mode-hook 'paredit-mode)
-;(add-hook 'nrepl-mode-hook 'paredit-mode)
-;(global-set-key [f7] 'paredit-mode)
+;; Move nrepl binding to global context
+(global-set-key (kbd "C-c C-z") 'cider-switch-to-repl-buffer)
+(global-set-key (kbd "C-c M-z") 'nrepl-make-connection-default)
+
+;; **** [TODO] Checked up to here
 
 ;; nrepl (see https://github.com/clojure-emacs/nrepl.el)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 ;- (setq nrepl-hide-special-buffers t)
 ;- (setq nrepl-popup-stacktraces nil)
 ;- (setq nrepl-popup-stacktraces-in-repl t)
-(setq CIDER-auto-select-error-buffer t)
+(setq cider-auto-select-error-buffer t)
 (setq nrepl-buffer-name-separator "-")
 (setq nrepl-buffer-name-show-port t)
 (setq cider-repl-display-in-current-window t)
-(setq cider-repl-print-length 100) ; the default is nil, no limit
 ;(set cider-repl-result-prefix ";; => ")
 ;(set cider-interactive-eval-result-prefix ";; ==> ")
 (setq cider-repl-history-file "~/repl-history.clj-repl")
 (add-to-list 'same-window-buffer-names "*nrepl*")
-;(add-hook 'nrepl-mode-hook 'paredit-mode)
 ;-- (add-hook 'nrepl-repl-mode-hook 'smartparens-strict-mode)
 ;-- (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
 (add-hook 'nrepl-repl-mode-hook 'smartparens-mode)
@@ -55,19 +50,21 @@
 ;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
 ;;  Also, look at clojure-test-mode, which has a slime dependency now
 
-;; Auto complete
-(require 'auto-complete-config)
-(ac-config-default)
-(define-key ac-completing-map "\M-/" 'ac-stop) ; use M-/ to stop completion
-;; ac-nrepl
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
+;;; [TODO] IS ANY OF THIS STILL NEEDED, OR DOES CIDER COMPANY MODE REPLACE IT
+;; ;; Auto complete
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (define-key ac-completing-map "\M-/" 'ac-stop) ; use M-/ to stop completion
+;; ;; ac-nrepl
+;; (require 'ac-nrepl)
+;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'cider-repl-mode))
 
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+;; (eval-after-load "cider"
+;;   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+
 
 ;; Clojure mode in ClojureLisp buffers.
 ;; But, also see here for much more useful stuff later:
@@ -77,6 +74,7 @@
 
 
 ;; Indentation
+(require 'clojure-mode)
 (define-clojure-indent
   (ANY 2)
   (DELETE 2)
