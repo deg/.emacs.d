@@ -18,6 +18,9 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x !") 'ansi-term)
 
+;;; Version control; see Magit documentation at http://magit.github.com/magit/magit.html
+(global-set-key (kbd "C-c g") 'magit-status)
+
 ;; My functions
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 (global-set-key (kbd "s-SPC") 'kill-whitespace)

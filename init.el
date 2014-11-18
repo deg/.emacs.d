@@ -33,11 +33,6 @@
 
 ;;; Emacs behavior - I suppose my basic goal is to look like Epsilon and my memories of ZMacs.
 
-;;; Version control
-;;; See Magit documentation at http://magit.github.com/magit/magit.html
-(global-set-key (kbd "C-c g") 'magit-status)
-
-
 ;; Dired
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
