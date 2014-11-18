@@ -32,7 +32,13 @@
 (global-set-key [f10] 'undo-tree-redo)
 
 
+;;; [TODO] If can't find keyboard automatically, make these toggle on a command (M-S-#?)
 ;; Deal with MacBook keyboard
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'meta
 	mac-option-modifier 'super))
+;; Deal with regular keyboard attached to MacBook
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'super
+	mac-option-modifier 'meta))
+
