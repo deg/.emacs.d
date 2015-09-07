@@ -19,19 +19,16 @@
                       cider                ;; Clojure interface
                       clojure-mode         ;; Clojure editing
                       smartparens          ;; Auto parens typing
-		      clojure-cheatsheet   ;; Documentation
-		      rainbow-delimiters   ;; Subtle parens colorization
-		      company		   ;; Completion mode
+                      clojure-cheatsheet   ;; Documentation
+                      rainbow-delimiters   ;; Subtle parens colorization
+                      company              ;; Completion mode
 
+                      ;;nrepl              ;; New interface to leiningen
+                      ;;nrepl-ritz         ;; Debugger interface
+;;                    elein                ;; Interface to leiningen commands
 
-		      ;;nrepl              ;; New interface to leiningen
-		      ;;nrepl-ritz         ;; Debugger interface
-;;		      elein                ;; Interface to leiningen commands
-
-
-;;		      ac-nrepl           ;; Auto completion for nrepl
-		      
-		      ))
+;;                    ac-nrepl           ;; Auto completion for nrepl
+                      ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
