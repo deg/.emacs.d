@@ -21,6 +21,7 @@
                       smartparens          ;; Auto parens typing
 		      clojure-cheatsheet   ;; Documentation
 		      rainbow-delimiters   ;; Subtle parens colorization
+		      company		   ;; Completion mode
 
 
 		      ;;nrepl              ;; New interface to leiningen
@@ -34,3 +35,7 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+
+;; Don't warn about magit-auto-revert-mode
+(setq magit-last-seen-setup-instructions "1.4.0")
