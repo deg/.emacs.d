@@ -9,6 +9,11 @@
 ;;
 ;; Silence status messages. (Do M-X Rcirc-Omit-Mode or (c-C c-O)
 ;; (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
+;;
+;;
+;; Recover username when someone has grabbed it
+;; /msg nickserv ghost deg <pwd>
+;; /nick deg
 
 (require 'rcirc)
 
@@ -26,6 +31,7 @@
 		    "#clojure-emacs"
 		    "#clojurescript"
 		    "#leiningen"
+		    "#cider"
 		    ;; "#emacs"
 		    ;; "#git"
 		    ;; "#lisp"
