@@ -90,6 +90,10 @@ Warning: tested on Windows Vista only."
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
 
+;; Use c-c right and c-c left to go back to remembered window configs
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
+
 ;; Improved completion/matching for buffers and files
 (ido-mode 1)
 
