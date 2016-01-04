@@ -75,7 +75,8 @@ Warning: tested on Windows Vista only."
 
 
 ;; Remove cognitive clutter
-(setq visible-bell t)
+;; LATER: turn off visible bell.  Leaves turd in center of window on Mac.
+;; (setq visible-bell t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 
