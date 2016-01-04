@@ -76,3 +76,40 @@
   (insert (format-time-string "%a %b %d %H:%M:%S %Y")))
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(comint-completion-addsuffix t)
+ '(comint-completion-autolist t)
+ '(comint-input-ignoredups t)
+ '(comint-move-point-for-output t)
+ '(comint-prompt-read-only nil)
+ '(comint-scroll-show-maximum-output t)
+ '(comint-scroll-to-bottom-on-input t)
+ '(comint-scroll-to-bottom-on-output t)
+ '(fill-column 88)
+ '(git-commit-summary-max-length 72)
+ '(grep-find-ignored-directories
+   (quote
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "out")))
+ '(indent-tabs-mode nil)
+ '(js-indent-level 2)
+ '(magit-diff-paint-whitespace t)
+ '(magit-diff-toggle-refine-hunk t)
+ '(magit-log-arguments (quote ("--graph" "--color" "--decorate")))
+ '(magit-tag-arguments (quote ("--annotate")))
+ '(quote
+   (safe-local-variable-values
+    (quote
+     ((css-indent-offset . 2)))))
+ '(sp-successive-kill-preserve-whitespace 0))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "dark magenta" :slant italic))))
+ '(font-lock-function-name-face ((t (:distant-foreground "black" :foreground "Blue1" :weight semi-bold))))
+ '(font-lock-string-face ((t (:foreground "dark slate gray" :weight normal)))))
