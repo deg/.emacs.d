@@ -1,5 +1,7 @@
 ;;; Clojure and friends
 
+;;; [TODO] Re-examine bindings. (Last half-did so 26Nov14)
+
 ;; rainbow delimiters
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
@@ -12,8 +14,8 @@
 ;;(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
 
 ;; Move nrepl binding to global context
-(global-set-key (kbd "C-c C-z") 'cider-switch-to-repl-buffer)
-(global-set-key (kbd "C-c M-z") 'nrepl-make-connection-default)
+;;26Nov14;; (global-set-key (kbd "C-c C-z") 'cider-switch-to-repl-buffer)
+;;26Nov14;; (global-set-key (kbd "C-c M-z") 'nrepl-make-connection-default)
 
 ;; **** [TODO] Checked up to here
 
@@ -39,12 +41,12 @@
 ;+ (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
 ;+ (defun my-nrepl-mode-setup ()
 ;+   (require 'nrepl-ritz))
-(global-set-key [f8] 'cider-jack-in)
+;;26Nov14;; (global-set-key [f8] 'cider-jack-in)
 ;+ ;; Turn on when problem with Austin is fixed (see
    ;; https://degel.fogbugz.com/default.asp?160 and
    ;; https://github.com/cemerick/austin/issues/11)
 ;+ (global-set-key [f8] 'nrepl-ritz-jack-in)
-(global-set-key [M-f8] 'cider-restart)
+;;26Nov14;; (global-set-key [M-f8] 'cider-restart)
 
 ;; SLIME looks nice.
 ;;  Look at http://common-lisp.net/project/slime/doc/slime.pdf to see what was lost by nrepl.
