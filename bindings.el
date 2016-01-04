@@ -55,6 +55,18 @@
 (shell "*javascript-shell*")
 
 
+;; Magit options
+(custom-set-variables
+ '(magit-diff-toggle-refine-hunk t)
+ '(magit-diff-paint-whitespace t)
+ '(git-commit-summary-max-length 72)
+ )
+
+;; General options
+(custom-set-variables
+ '(fill-column 88))
+
+
 
 ;;; [TODO] If can't find keyboard automatically, make these toggle on a command (M-S-#?)
 ;; Deal with MacBook keyboard
