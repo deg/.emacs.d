@@ -1,3 +1,23 @@
+;; [TODO]
+;; - Disable c-Z behavior
+;; - Stop crazy window switching, or get used to Q command
+;; - Switch buffer as suffix to c-X 2 and c-X 3
+;; - For Windows use, look at:
+;;   - http://marmalade-repo.org/packages/w32-browser
+;;   - http://www.emacswiki.org/cgi-bin/wiki/w32-browser.el (linked from above)
+;; - c-X D should not prompt, unless given arg
+;; - See http://www.gnu.org/software/emacs/manual/html_mono/rcirc.html for doing rcirc right
+;; - Look at everything in https://github.com/bbatsov/prelude
+;; - Auto enable auto-fill in .txt and .md files
+;; - Get mode where word commands respect camel-case
+;; - Figure out why completion presents all-lowercase misspelling of names
+;; - Play with smarter grep tools.  See:
+;;   - https://www.reddit.com/r/emacs/comments/1aaguk/configuring_rgrep_to_ignore_special_folders_like/
+;;   - http://stackoverflow.com/questions/2148575/default-string-for-grep-find-in-emacs
+;;   - https://mindlev.wordpress.com/2009/09/26/excluding-directories-from-rgrep-in-emacs/
+
+
+
 ;; To load on Mac with debugging of this init:
 ;; $ open -a /Applications/Emacs.app --args --debug-init
 
@@ -55,17 +75,4 @@
   (interactive)
   (insert (format-time-string "%a %b %d %H:%M:%S %Y")))
 
-
-;;; TODO
-;; Disable c-Z behavior
-;; Stop crazy window switching, or get used to Q command
-;; Switch buffer as suffix to c-X 2 and c-X 3
-;; For Windows use, look at:
-;; - http://marmalade-repo.org/packages/w32-browser
-;; - http://www.emacswiki.org/cgi-bin/wiki/w32-browser.el (linked from above)
-;; c-X D should not prompt, unless given arg
-;; See http://www.gnu.org/software/emacs/manual/html_mono/rcirc.html for doing rcirc right
-;; Look at everything in https://github.com/bbatsov/prelude
-;; Set fill column to 80, or maybe 90.
-;; Auto enable auto-fill in .txt and .md files
 
