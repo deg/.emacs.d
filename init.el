@@ -88,7 +88,9 @@
  '(comint-prompt-read-only nil)
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
- '(comint-scroll-to-bottom-on-output t)
+ '(exec-path
+   (quote
+    ("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin")))
  '(fill-column 88)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
