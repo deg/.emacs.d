@@ -95,7 +95,7 @@
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
    (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "out")))
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target")))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(magit-diff-paint-whitespace t)
