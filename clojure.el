@@ -1,20 +1,23 @@
+;;; Clojure and friends
+
 (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
+(require 'clojure-mode)
+(define-clojure-indent (trace-forms 'defun))
 
-;;;;;--old 01Aug16 old--;;;;   ;;; Clojure and friends
-;;;;;--old 01Aug16 old--;;;;   
-;;;;;--old 01Aug16 old--;;;;   ;;; [TODO] Re-examine bindings. (Last half-did so 26Nov14)
-;;;;;--old 01Aug16 old--;;;;   
-;;;;;--old 01Aug16 old--;;;;   ;; rainbow delimiters
-;;;;;--old 01Aug16 old--;;;;   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;;;;;--old 01Aug16 old--;;;;   
-;;;;;--old 01Aug16 old--;;;;   ;; CamelCase support for Java names
-;;;;;--old 01Aug16 old--;;;;   (add-hook 'clojure-mode-hook 'subword-mode)
+;; rainbow delimiters (See color settings in init.el)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+;; CamelCase support for Java names
+(add-hook 'prog-mode-hook 'subword-mode)
+
+
+(global-set-key (kbd "<s-backspace>") 'kill-backward-up-list)
+(global-set-key (kbd "C-c ;") 'comment-region)
+
 ;;;;;--old 01Aug16 old--;;;;   
 ;;;;;--old 01Aug16 old--;;;;   ;; Useful bindings
 ;;;;;--old 01Aug16 old--;;;;   (global-set-key (kbd "C-c i") 'indent-region)
-;;;;;--old 01Aug16 old--;;;;   (global-set-key (kbd "C-c ;") 'comment-region)
-;;;;;--old 01Aug16 old--;;;;   ;;(global-set-key (kbd "C-M-S-U") 'kill-backward-up-list)
 ;;;;;--old 01Aug16 old--;;;;   
 ;;;;;--old 01Aug16 old--;;;;   ;; Move nrepl binding to global context
 ;;;;;--old 01Aug16 old--;;;;   ;;26Nov14;; (global-set-key (kbd "C-c C-z") 'cider-switch-to-repl-buffer)

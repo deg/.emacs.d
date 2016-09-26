@@ -88,6 +88,7 @@
  '(comint-prompt-read-only nil)
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
+ '(comint-scroll-to-bottom-on-output t)
  '(exec-path
    (quote
     ("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin")))
@@ -106,6 +107,7 @@
    (safe-local-variable-values
     (quote
      ((css-indent-offset . 2)))))
+ '(rainbow-delimiters-max-face-count 4)
  '(sp-successive-kill-preserve-whitespace 0))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -114,4 +116,7 @@
  ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((t (:foreground "dark magenta" :slant italic))))
  '(font-lock-function-name-face ((t (:distant-foreground "black" :foreground "Blue1" :weight semi-bold))))
- '(font-lock-string-face ((t (:foreground "dark slate gray" :weight normal)))))
+ '(font-lock-string-face ((t (:foreground "dark slate gray" :weight normal))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "dark green"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "dark red"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "medium blue")))))
