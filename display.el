@@ -144,3 +144,4 @@ Warning: tested on Windows Vista only."
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ; Or 'forward, 'reverse, 'post-forward
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")

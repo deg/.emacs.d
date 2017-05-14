@@ -89,6 +89,9 @@
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
  '(comint-scroll-to-bottom-on-output t)
+ '(custom-safe-themes
+   (quote
+    ("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default)))
  '(exec-path
    (quote
     ("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin")))
