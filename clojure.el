@@ -3,7 +3,9 @@
 (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
 (require 'clojure-mode)
-(define-clojure-indent (trace-forms 'defun))
+(define-clojure-indent
+  (trace-forms 'defun)
+  (assoc-if 'defun))
 
 ;; rainbow delimiters (See color settings in init.el)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
