@@ -26,7 +26,7 @@
 (global-set-key (kbd "s-SPC") 'kill-whitespace)
 
 ;; Clever undo
-(undo-tree-mode)
+(global-undo-tree-mode)
 (global-set-key (kbd "C-x u") 'undo-tree-visualize)
 (global-set-key [f9] 'undo-tree-undo)
 (global-set-key [f10] 'undo-tree-redo)
