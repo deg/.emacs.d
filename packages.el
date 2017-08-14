@@ -13,6 +13,8 @@
                       exec-path-from-shell ;; https://github.com/purcell/exec-path-from-shell.  Fix path right for lein on mac.
                       undo-tree            ;; Tree-based undo
 
+                      which-key            ;; Show commmand options
+
                       auto-complete        ;; Auto completion
                       popup                ;; Popups for auto-complete (I think)
 
@@ -36,3 +38,7 @@
 
 ;; Don't warn about magit-auto-revert-mode
 (setq magit-last-seen-setup-instructions "1.4.0")
+
+;; Enable which-key mode (see https://github.com/justbur/emacs-which-key)
+(which-key-mode)
+
