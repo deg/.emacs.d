@@ -12,3 +12,18 @@
 
 ;;; Also see http://stevelosh.com/blog/2012/10/a-modern-space-cadet/ for some
 ;;; serious keyboard tweaking.
+
+
+
+;; From https://superuser.com/questions/173851/linux-remap-ctrl-key
+;; Prevent c-[ c-[ c-[ from closing all windows when my finger misses c-p
+(define-key key-translation-map [?\C-\[] [(control left_bracket)])
+(define-key key-translation-map [escape] [?\e])
+(define-key function-key-map [escape] nil)
+(define-key function-key-map [?\e] nil)
+(when (boundp 'local-function-key-map)
+  ;;(define-key local-function-key-map [escape] nil)
+  (defun remove-escape-from-local-function-key-map ()
+    (define-key local-function-key-map [?\e] nil)
+    (define-key local-function-key-map [escape] nil))
+  (add-hook 'term-setup-hook 'remove-escape-from-local-function-key-map))
