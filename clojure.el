@@ -5,7 +5,8 @@
 (require 'clojure-mode)
 (define-clojure-indent
   (trace-forms 'defun)
-  (assoc-if 'defun))
+  (assoc-if 'defun)
+  (firebase/watching 'defun))
 
 ;; rainbow delimiters (See color settings in init.el)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
