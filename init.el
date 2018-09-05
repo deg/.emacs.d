@@ -22,7 +22,6 @@
 ;; $ open -a /Applications/Emacs.app --args --debug-init
 
 (load "~/.emacs.d/packages")
-
 (load "~/.emacs.d/clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
@@ -31,6 +30,7 @@
 
 (load "~/.emacs.d/bindings")
 (load "~/.emacs.d/bindings-smartparens")
+
 
 ;;; Look at
 ;;; -  https://github.com/technomancy/clojure-mode/blob/master/README.md
@@ -44,7 +44,8 @@
 
 ;; So lein, etc., find the right path.
 ;; See https://github.com/purcell/exec-path-from-shell
-(when (memq window-system '(mac ns))
+(exec-path-from-shell-copy-env "_JAVA_OPTIONS")
+(when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
 ;; (3Nov16 - byte-compile-dest-file seems to be undefined suddenly.  So, instead of this
@@ -60,6 +61,8 @@
 
 ;;; Enable completion globally
 (add-hook 'after-init-hook 'global-company-mode)
+
+
 
 ;;; Emacs behavior - I suppose my basic goal is to look like Epsilon and my memories of ZMacs.
 
@@ -124,6 +127,7 @@
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dark green"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "dark red"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "medium blue")))))
+
 
 
 ;;; 14May16 - I don't remember why this next stuff is here, nor if I ever want to use it.
