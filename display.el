@@ -33,8 +33,10 @@ Warning: tested on Windows Vista only."
 
     (put 'cycle-font 'state nextState)))
 
-(set-default-font "Consolas-10")
+(set-frame-font "Consolas-10")
 
+;;; Interesting other font, but no italic
+;;; (set-frame-font "Inconsolata-11")
 
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
