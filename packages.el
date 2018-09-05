@@ -3,8 +3,10 @@
 
 ;;; Load packages
 (require 'package)
-(add-to-list 'package-archives ' ("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;; 25Jul18 - Moved to using just stable archive, after Cider broke on me once too often.
+;; (add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa"        . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
