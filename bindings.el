@@ -50,9 +50,6 @@
 (add-hook 'completion-setup-hook
   (lambda () (run-at-time 3 nil
     (lambda () (delete-windows-on "*Completions*")))))
-;; run a few shells.
-(shell "*clojure-shell*")
-(shell "*javascript-shell*")
 
 
 ;; Magit options
@@ -66,6 +63,10 @@
 (custom-set-variables
  '(fill-column 88))
 
+
+;; run a few shells.
+;; (shell "*clojure-shell*")
+;;(shell "*javascript-shell*")
 
 
 ;;; [TODO] If can't find keyboard automatically, make these toggle on a command (M-S-#?)
