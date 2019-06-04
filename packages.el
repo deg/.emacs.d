@@ -23,7 +23,7 @@
                       cider                ;; Clojure interface
                       clojure-mode         ;; Clojure editing
                       smartparens          ;; Auto parens typing
-                      clojure-cheatsheet   ;; Documentation
+                      ;; clojure-cheatsheet   ;; Documentation
                       rainbow-delimiters   ;; Subtle parens colorization
                       company              ;; Completion mode
 
@@ -42,5 +42,6 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; Enable which-key mode (see https://github.com/justbur/emacs-which-key)
-(which-key-mode)
+;; (broken on Ubuntu 19.04 28May19?)
+;; (which-key-mode)
 
