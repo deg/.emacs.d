@@ -110,7 +110,7 @@
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
    (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings")))
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks")))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(magit-diff-paint-whitespace t)
@@ -120,7 +120,7 @@
  '(magit-tag-arguments (quote ("--annotate")))
  '(package-selected-packages
    (quote
-    (which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete)))
+    (web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete)))
  '(quote
    (safe-local-variable-values
     (quote
