@@ -127,6 +127,7 @@
  '(magit-diff-toggle-refine-hunk t)
  '(magit-log-arguments '("--graph" "--color" "--decorate"))
  '(magit-tag-arguments '("--annotate"))
+ '(ns-command-modifier 'meta)
  '(package-selected-packages
    '(web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
