@@ -106,11 +106,9 @@
  '(comint-scroll-to-bottom-on-input t)
  '(comint-scroll-to-bottom-on-output t)
  '(custom-safe-themes
-   (quote
-    ("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default)))
+   '("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default))
  '(exec-path
-   (quote
-    ("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin")))
+   '("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin"))
  '(fill-column 88)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
@@ -120,17 +118,13 @@
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(magit-diff-paint-whitespace t)
- '(magit-diff-refine-hunk (quote all))
+ '(magit-diff-refine-hunk 'all)
  '(magit-diff-toggle-refine-hunk t)
- '(magit-log-arguments (quote ("--graph" "--color" "--decorate")))
- '(magit-tag-arguments (quote ("--annotate")))
+ '(magit-log-arguments '("--graph" "--color" "--decorate"))
+ '(magit-tag-arguments '("--annotate"))
  '(package-selected-packages
-   (quote
-    (web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete)))
- '(quote
-   (safe-local-variable-values
-    (quote
-     ((css-indent-offset . 2)))))
+   '(web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
+ '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(sp-successive-kill-preserve-whitespace 0))
 (custom-set-faces
