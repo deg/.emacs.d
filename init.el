@@ -85,6 +85,11 @@
   (interactive)
   (insert (format-time-string "%a %b %d %H:%M:%S %Y")))
 
+;; See https://github.com/facebook/create-react-app/issues/9056
+;; Until this is fixed:
+(setq create-lockfiles nil)
+
+
 ;; Emacs got very noisy, seemingly after Mac OS upgrade, Dec20.  Silenced, per
 ;; https://emacsredux.com/blog/2016/02/14/disable-annoying-audio-notifications/
 (setq visible-bell t)
