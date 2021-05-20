@@ -72,9 +72,16 @@ Warning: tested on Windows Vista only."
     (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
   (x11-maximize-frame))
 (when (string-equal system-type 'darwin)
-  (add-hook 'window-setup-hook
-	    (lambda ()
-	      (set-frame-parameter nil 'fullscreen 'fullboth))))
+  (cond ((> (x-display-pixel-width) 2500)
+         ;; Fill most of middle screen (assuming Mac is on right, per my home setup)
+         (setq default-frame-alist
+               '((top + -750) (left + -2500)  (width . 340) (height . 220))))
+        (t
+         (toggle-frame-maximized)))
+  ;; (add-hook 'window-setup-hook
+  ;;        (lambda ()
+  ;;	      (set-frame-parameter nil 'fullscreen 'fullboth)))
+  )
 
 
 ;; Remove cognitive clutter
@@ -82,14 +89,13 @@ Warning: tested on Windows Vista only."
 ;; (setq visible-bell t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-
 ;; Maybe more reasonable buffer behavior
 (add-to-list 'same-window-buffer-names "*Apropos*")
 (add-to-list 'same-window-buffer-names "*Backtrace*")
 (add-to-list 'same-window-buffer-names "*Buffer List*")
 (add-to-list 'same-window-buffer-names "*Deletions*")
 (add-to-list 'same-window-buffer-names "*Help*")
-(add-to-list 'same-window-buffer-names "*grep*")
+; (add-to-list 'same-window-buffer-names "*grep*")
 (add-to-list 'same-window-buffer-names "*magit-edit-log*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
