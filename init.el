@@ -131,6 +131,9 @@
    '(web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
+ '(safe-local-variable-values
+   '((cider-shadow-cljs-default-options . "app")
+     (cider-default-cljs-repl . shadow)))
  '(sp-successive-kill-preserve-whitespace 0))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
