@@ -129,7 +129,7 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
+   '(prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values
@@ -149,6 +149,7 @@
  '(rainbow-delimiters-depth-3-face ((t (:foreground "medium blue")))))
 
 
+(add-hook 'after-init-hook #'global-prettier-mode)
 
 ;;; 14May16 - I don't remember why this next stuff is here, nor if I ever want to use it.
 ;;; For now: comment out, but retain for a while.
