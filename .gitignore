@@ -1,6 +1,10 @@
+*#
 *.elc
 *~
 /elpa
 ido.last
+network-security.data
 recentf
 tramp
+transient
+
