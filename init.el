@@ -85,6 +85,11 @@
   (interactive)
   (insert (format-time-string "%a %b %d %H:%M:%S %Y")))
 
+;; Emacs got very noisy, seemingly after Mac OS upgrade, Dec20.  Silenced, per
+;; https://emacsredux.com/blog/2016/02/14/disable-annoying-audio-notifications/
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
