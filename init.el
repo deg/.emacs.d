@@ -109,7 +109,6 @@
  '(comint-prompt-read-only nil)
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
- '(comint-scroll-to-bottom-on-output t)
  '(custom-safe-themes
    '("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default))
  '(exec-path
@@ -117,9 +116,9 @@
  '(fill-column 88)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF" ".yalc" "releases" "dist"))
  '(grep-find-ignored-files
-   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo"))
+   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.map"))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(magit-diff-paint-whitespace t)
@@ -149,7 +148,7 @@
  '(rainbow-delimiters-depth-3-face ((t (:foreground "medium blue")))))
 
 
-(add-hook 'after-init-hook #'global-prettier-mode)
+;; (add-hook 'after-init-hook #'global-prettier-mode)
 
 ;;; 14May16 - I don't remember why this next stuff is here, nor if I ever want to use it.
 ;;; For now: comment out, but retain for a while.
