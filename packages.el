@@ -3,11 +3,12 @@
 
 ;;; Load packages
 (require 'package)
-;; 25Jul18 - Moved to using just stable archive, after Cider broke on me once too often.
-(add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/") t)
+;; 25Jun21 - Marmalade is dead and duplicat?? Remove here, and let's see
+;; (add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/") t)
+;; 25Jul18 - Moved to using just stable archive, after Cider broke on me once too often.
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+;;25Oct21;; (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(;; Good
