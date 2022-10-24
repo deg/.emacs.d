@@ -33,6 +33,14 @@
 ;;                    elein                ;; Interface to leiningen commands
 
 ;;                    ac-nrepl           ;; Auto completion for nrepl
+
+
+                      ;; Libs for Python (etc.) from https://realpython.com/emacs-the-best-python-editor/
+                       better-defaults
+                       elpy
+                       flycheck
+                       blacken
+                       material-theme 
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))

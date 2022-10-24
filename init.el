@@ -29,6 +29,7 @@
 (package-initialize)
 
 (load "~/.emacs.d/packages")
+(load "~/.emacs.d/python")
 (load "~/.emacs.d/clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
@@ -128,7 +129,7 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
+   '(blacken flycheck prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values
