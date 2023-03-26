@@ -97,6 +97,15 @@
 (setq ring-bell-function 'ignore)
 
 
+;; Backup outside of work directories (for cleanliness and to avoid Python Flask restarts on each key typed!)
+;; See https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files
+(setq backup-directory-alist `(("." . "~/.emacs-saves")))
+(setq delete-old-versions t
+  kept-new-versions 10
+  kept-old-versions 2
+  version-control t)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -112,6 +121,8 @@
  '(comint-scroll-to-bottom-on-input t)
  '(custom-safe-themes
    '("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default))
+ '(elpy-project-ignored-directories
+   '(".tox" "build" "dist" ".cask" ".ipynb_checkpoints" "venv"))
  '(exec-path
    '("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin"))
  '(fill-column 88)
@@ -150,6 +161,11 @@
  '(rainbow-delimiters-depth-2-face ((t (:foreground "dark red"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "medium blue")))))
 
+;; Avoid spewing tmp files everywhere whenever I touch a file
+;; See https://www.reddit.com/r/emacs/comments/tejte0/undotree_bug_undotree_files_scattering_everywhere/
+(setq undo-tree-auto-save-history nil)
+;; untested altermative to save centrally:
+;;- (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 
 ;; (add-hook 'after-init-hook #'global-prettier-mode)
 
