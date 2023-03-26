@@ -40,7 +40,7 @@
                        elpy
                        flycheck
                        blacken
-                       material-theme 
+                       ;;material-theme
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))

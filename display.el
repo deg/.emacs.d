@@ -41,6 +41,7 @@ Warning: tested on Windows Vista only."
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
 ;(load-file "deg-tsdh-light-theme.el")
 (load-theme 'deg-tsdh-light t)
+;;(load-theme 'material-light t)
 
 
 ;; Use cursor to show overwrite vs insert mode, etc.
