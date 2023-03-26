@@ -115,9 +115,10 @@
  '(exec-path
    '("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin"))
  '(fill-column 88)
+ '(flycheck-flake8-maximum-line-length 90)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF" ".yalc" "releases" "dist"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF" ".yalc" "releases" "dist" "venv"))
  '(grep-find-ignored-files
    '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.map"))
  '(indent-tabs-mode nil)
@@ -135,6 +136,7 @@
  '(safe-local-variable-values
    '((cider-shadow-cljs-default-options . "app")
      (cider-default-cljs-repl . shadow)))
+ '(sort-fold-case t)
  '(sp-successive-kill-preserve-whitespace 0))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
