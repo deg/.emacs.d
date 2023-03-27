@@ -172,7 +172,7 @@
 ;;; 14May16 - I don't remember why this next stuff is here, nor if I ever want to use it.
 ;;; For now: comment out, but retain for a while.
 
-;;;- ;;; TEMP
+;;;- ;;; TEMP from way back
 ;;;- 
 ;;;- (unless (package-installed-p 'use-package)
 ;;;-   (package-refresh-contents)
