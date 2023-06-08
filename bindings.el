@@ -23,7 +23,7 @@
 
 ;; My functions
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-(global-set-key (kbd "s-SPC") 'kill-whitespace)
+(global-set-key (kbd "M-SPC") 'kill-whitespace)
 
 ;; Clever undo
 (global-undo-tree-mode)
