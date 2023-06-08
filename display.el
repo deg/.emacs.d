@@ -147,6 +147,15 @@ Warning: tested on Windows Vista only."
 	  (re-search-forward "[ \t\r\n]+" nil t)
 	  (replace-match "" nil nil))))))
 
+
+;;; Show comments in a lighter color (in all langauges)
+(dolist (face '(font-lock-doc-face font-lock-comment-face font-lock-comment-delimiter-face))
+  (set-face-attribute face nil :slant 'italic)
+  (set-face-attribute face nil :foreground "gray30")
+  (set-face-attribute face nil :background "ivory")
+  )
+
+
 ;;; Display directory as part of buffer name, when multiple files have the same name.
 ;;; (Way better than hoary old <2>)!
 (require 'uniquify)
