@@ -22,3 +22,12 @@
     (comint-clear-buffer)))
 ;;; [TODO] Really should only byind in Python buffers, but I don't have the patience to check how right now
 (global-set-key (kbd "C-c #") 'elpy-shell-clear-shell)
+
+
+;; Fix problem with Elpy not finding local imports.
+(defun my-set-pythonpath ()
+  (let ((project-root (locate-dominating-file default-directory ".projectile")))
+    (when project-root
+      (setenv "PYTHONPATH" (expand-file-name project-root)))))
+(add-hook 'pyvenv-post-activate-hooks 'my-set-pythonpath)
+(add-hook 'pyvenv-post-deactivate-hooks 'my-set-pythonpath)
