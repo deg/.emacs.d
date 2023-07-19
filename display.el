@@ -151,8 +151,8 @@ Warning: tested on Windows Vista only."
 ;;; Show comments in a lighter color (in all langauges)
 (dolist (face '(font-lock-doc-face font-lock-comment-face font-lock-comment-delimiter-face))
   (set-face-attribute face nil :slant 'italic)
-  (set-face-attribute face nil :foreground "gray30")
-  (set-face-attribute face nil :background "ivory")
+  (set-face-attribute face nil :foreground "#804000")
+  (set-face-attribute face nil :background "#FEEFE8")
   )
 
 
