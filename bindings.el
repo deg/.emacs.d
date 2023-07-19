@@ -58,6 +58,9 @@
  '(magit-diff-paint-whitespace t)
  '(git-commit-summary-max-length 72)
  )
+(with-eval-after-load 'magit
+  (define-key magit-mode-map (kbd "M-.") 'magit-diff-visit-file-other-window))
+
 
 ;; General options
 (custom-set-variables
