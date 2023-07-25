@@ -30,6 +30,7 @@
 
 (load "~/.emacs.d/packages")
 (load "~/.emacs.d/python")
+(load "~/.emacs.d/javascript")
 (load "~/.emacs.d/clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
