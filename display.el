@@ -148,13 +148,6 @@ Warning: tested on Windows Vista only."
 	  (replace-match "" nil nil))))))
 
 
-;;; Show comments in a lighter color (in all langauges)
-(dolist (face '(font-lock-doc-face font-lock-comment-face font-lock-comment-delimiter-face))
-  (set-face-attribute face nil :slant 'italic)
-  (set-face-attribute face nil :foreground "#804000")
-  (set-face-attribute face nil :background "#FEEFE8")
-  )
-
 
 ;;; Display directory as part of buffer name, when multiple files have the same name.
 ;;; (Way better than hoary old <2>)!
