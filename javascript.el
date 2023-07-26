@@ -20,16 +20,13 @@
 ;; Enable rjsx-mode for .js and .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
 
-;; Enable company mode globally
+;; Enable company mode globally. [TODO] Maybe disable soon
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; Enable prettier mode globally.  (see https://github.com/jscheid/prettier.el)
-(add-hook 'after-init-hook #'global-prettier-mode)
 
-;; Enable Company for autocompletion
-(add-hook 'rjsx-mode-hook (lambda ()
-                            (company-mode)
-                            (exec-path-from-shell-initialize)))
+(add-hook 'rjsx-mode-hook #'company-mode)
+(add-hook 'rjsx-mode-hook #'prettier-mode)
+(add-hook 'rjsx-mode-hook #'exec-path-from-shell-initialize)
 
 ;; Enable Flycheck globally
 (add-hook 'after-init-hook #'global-flycheck-mode)

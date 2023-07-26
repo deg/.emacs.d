@@ -1,6 +1,18 @@
+;;; python.el --- Part of my emacs init
+
+;;; Commentary:
+
+;; Support for editing Python files
+
+;;; Code:
+
 ;;; Python and friends
 ;;; See https://realpython.com/emacs-the-best-python-editor/
 
+(declare-function elpy-shell-get-or-create-process "ext:elpy")
+(declare-function comint-clear-buffer "ext:comint")
+(defvar elpy-modules)
+(defvar python-shell-completion-native-disabled-interpreters)
 
 (elpy-enable)
 
@@ -36,18 +48,32 @@
 
 ;; Fix problem with Elpy not finding local imports.
 (defun my-bounded-locate-dominating-file (dir bound file-name)
-  "Find file-name in dir or its parent directories, but do not go above bound."
+  "Search upwards from DIR for FILE-NAME until reaching BOUND.
+Return the directory containing FILE-NAME or BOUND if not found."
   (let* ((expanded-dir (expand-file-name dir))
          (expanded-bound (expand-file-name bound))
          (file-path (expand-file-name file-name expanded-dir)))
     (cond ((equal expanded-dir expanded-bound) expanded-bound)
           ((file-exists-p file-path) expanded-dir)
-          (t (my-bounded-locate-dominating-file (file-name-directory (directory-file-name expanded-dir)) expanded-bound file-name)))))
+          (t (my-bounded-locate-dominating-file
+              (file-name-directory
+               (directory-file-name expanded-dir))
+              expanded-bound file-name)))))
 
 (defun my-set-pythonpath ()
-  (let ((project-root (my-bounded-locate-dominating-file default-directory (locate-dominating-file default-directory ".git") ".projectile")))
+  "Setup python path when venv activated."
+  (let ((project-root (my-bounded-locate-dominating-file
+                       default-directory
+                       (locate-dominating-file default-directory ".git") ".projectile")))
     (when project-root
       (setenv "PYTHONPATH" (expand-file-name project-root)))))
 
 (add-hook 'pyvenv-post-activate-hooks 'my-set-pythonpath)
 (add-hook 'pyvenv-post-deactivate-hooks 'my-set-pythonpath)
+
+;; Enable Black formatter.
+(add-hook 'python-mode-hook 'blacken-mode)
+
+(provide 'deg-init-python)
+;;; python.el ends here
+
