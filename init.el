@@ -155,9 +155,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-delimiter-face ((t (:foreground "#804000" :background "#FEEFE8" :slant italic))))
- '(font-lock-comment-face ((t (:foreground "#804000" :background "#FEEFE8" :slant italic))))
- '(font-lock-doc-face ((t (:foreground "#804000" :background "#FEEFE8" :slant italic))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "#505050" :background "#F8F8FF" :slant italic))))
+ '(font-lock-comment-face ((t (:foreground "#505050" :background "#F8F8FF" :slant italic))))
+ '(font-lock-doc-face ((t (:foreground "#505050" :background "#F8F8FF" :slant italic))))
  '(font-lock-function-name-face ((t (:distant-foreground "black" :foreground "Blue1" :weight semi-bold))))
  '(font-lock-string-face ((t (:foreground "dark slate gray" :weight normal))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dark green"))))
