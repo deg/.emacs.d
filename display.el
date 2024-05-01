@@ -35,7 +35,9 @@ Warning: tested on Windows Vista only."
 
 ;(set-frame-font "Consolas-13")
 ;(set-frame-font "Menlo-12")
-(set-frame-font "Inconsolata-14")
+;(set-frame-font "Inconsolata-14")
+;; Install from https://commitmono.com/  (https://github.com/eigilnikolajsen/commit-mono)
+(set-frame-font "CommitMono-13")
 
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
