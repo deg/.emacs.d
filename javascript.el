@@ -31,6 +31,39 @@
 ;; Enable Flycheck globally
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;;; Set current directory for all tools to find configs, etc.
+; [LATER] This does not seem to be needed. Save just in case.
+; (defun my/set-js-default-directory ()
+;   "Set the default directory to the one containing package.json."
+;   (let ((package-root (locate-dominating-file buffer-file-name "package.json")))
+;     (when package-root
+;       (setq default-directory package-root))))
+; (add-hook 'rjsx-mode-hook 'my/set-js-default-directory)
+; (add-hook 'js-mode-hook 'my/set-js-default-directory)
+
+
+;;; ;; Use project's ESLint configuration
+;;; [LATER] This does not seem to be needed. Save just in case.
+; (defun my/use-local-eslint ()
+;   "Configure Flycheck to use local ESLint."
+;   (let* ((root (locate-dominating-file
+;                 (or (buffer-file-name) default-directory)
+;                 "package.json"))
+;          (eslint (and root
+;                       (expand-file-name "node_modules/.bin/eslint"
+;                                         root))))
+;     (when (and eslint (file-executable-p eslint))
+;       (setq-local flycheck-javascript-eslint-executable eslint)
+;       (setq-local flycheck-eslintrc (expand-file-name ".eslintrc" root)))))
+; (add-hook 'flycheck-mode-hook #'my/use-local-eslint)
+
+
+;;; Suppress js2 warning about browser-specific names
+;;; [TODO] Should only be enabled in browser projects
+(with-eval-after-load 'js2-mode
+  (setq js2-global-externs '("FileReader" "window" "document")))
+
+
 ;; Use ESLint with Flycheck
 (declare-function flycheck-add-mode "ext:flycheck" (checker mode))
 (defvar flycheck-disabled-checkers)
