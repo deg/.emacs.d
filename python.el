@@ -64,7 +64,7 @@ Return the directory containing FILE-NAME or BOUND if not found."
   "Setup python path when venv activated."
   (let ((project-root (my-bounded-locate-dominating-file
                        default-directory
-                       (locate-dominating-file default-directory ".git") ".projectile")))
+                       (locate-dominating-file default-directory ".git") ".venv")))
     (when project-root
       (setenv "PYTHONPATH" (expand-file-name project-root)))))
 
