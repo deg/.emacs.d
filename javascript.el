@@ -61,7 +61,7 @@
 ;;; Suppress js2 warning about browser-specific names
 ;;; [TODO] Should only be enabled in browser projects
 (with-eval-after-load 'js2-mode
-  (setq js2-global-externs '("FileReader" "window" "document")))
+  (setq js2-global-externs '("chrome" "document" "FileReader" "localStorage" "URL" "window")))q
 
 
 ;; Use ESLint with Flycheck
