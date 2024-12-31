@@ -59,11 +59,19 @@
 
 
 ;;; Suppress js2 warning about browser-specific names
-;;; [TODO] Should only be enabled in browser projects
+;;; [TODO] Should only be enabled in browser projects, etc.
 (with-eval-after-load 'js2-mode
-  (setq js2-global-externs '("Blob" "chrome" "document" "FileReader"
-                             "localStorage" "Storage" "MutationObserver" "URL"
-                             "URLSearchParams" "window")))
+  (setq js2-global-externs '(;; Browser
+                             "AbortController" "Blob" "chrome" "document" "FileReader"
+                             "FormData" "localStorage" "Storage" "MutationObserver"
+                             "URL" "URLSearchParams" "window"
+                             ;; Google Sheets Apps Script
+                             "GmailApp" "Logger" "MailApp" "PropertiesService"
+                             "ScriptApp" "Session" "SpreadsheetApp" "UrlFetchApp"
+                             "Utilities"
+                             ;; My magic
+                             "__APP_VERSION__"
+                             )))
 
 
 ;; Use ESLint with Flycheck
