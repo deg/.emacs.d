@@ -18,6 +18,13 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x !") 'ansi-term)
 
+;; Improve grep navigation
+(global-set-key (kbd "M-n") 'next-error)
+(global-set-key (kbd "M-p") 'previous-error)
+(define-key compilation-mode-map (kbd "M-n") 'next-error)
+(define-key compilation-mode-map (kbd "M-p") 'previous-error)
+
+
 ;;; Version control; see Magit documentation at http://magit.github.com/magit/magit.html
 (global-set-key (kbd "C-c g") 'magit-status)
 
