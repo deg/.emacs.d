@@ -114,7 +114,7 @@ Warning: tested on Windows Vista only."
 ;; Remember recent files
 ;; See http://www.masteringemacs.org/articles/2011/01/27/find-files-faster-recent-files-package/
 (recentf-mode 1)
-(setq recentf-max-menu-items 20)
+(setq recentf-max-menu-items 25)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 ;; Use this instead (bound in bindings.el)
 (defun ido-recentf-open ()
