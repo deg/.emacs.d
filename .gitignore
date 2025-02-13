@@ -1,10 +1,12 @@
 *#
 *.elc
+*.eld
 *~
+.lsp-session-v1
 /elpa
+/elpy
 ido.last
 network-security.data
 recentf
 tramp
 transient
-
