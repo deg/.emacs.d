@@ -30,17 +30,17 @@
 
                       ;;nrepl              ;; New interface to leiningen
                       ;;nrepl-ritz         ;; Debugger interface
-;;                    elein                ;; Interface to leiningen commands
+                      ;; elein             ;; Interface to leiningen commands
+                      ;; ac-nrepl          ;; Auto completion for nrepl
 
-;;                    ac-nrepl           ;; Auto completion for nrepl
 
-
-                      ;; Libs for Python (etc.) from https://realpython.com/emacs-the-best-python-editor/
-                       better-defaults
-                       elpy
-                       flycheck
-                       blacken
-                       ;;material-theme
+                      ;; Libs for Python from https://realpython.com/emacs-the-best-python-editor/
+                      ;; Later [Feb2025] replaced by my latest version of python.el
+                      ;; better-defaults
+                      ;; elpy
+                      ;; flycheck
+                      ;; blacken
+                      ;; ;;material-theme
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
