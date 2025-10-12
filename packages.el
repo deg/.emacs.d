@@ -36,10 +36,12 @@
 
                       ;; Libs for Python from https://realpython.com/emacs-the-best-python-editor/
                       ;; Later [Feb2025] replaced by my latest version of python.el
+                      ;; [Oct2025] switched from blacken+py-isort to ruff-format for consistency
                       ;; better-defaults
                       ;; elpy
                       ;; flycheck
-                      ;; blacken
+                      ;; blacken      ; replaced by ruff-format-buffer
+                      ;; py-isort     ; replaced by ruff-format-buffer (handles imports too)
                       ;; ;;material-theme
                       ))
 (dolist (p my-packages)

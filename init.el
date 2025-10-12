@@ -126,8 +126,8 @@
    '(".tox" "build" "dist" ".cask" ".ipynb_checkpoints" "venv"))
  '(exec-path
    '("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin"))
- '(fill-column 88)
- '(flycheck-flake8-maximum-line-length 90)
+ '(fill-column 100)
+ '(flycheck-python-ruff-maximum-line-length 100)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}" "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository" "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF" ".yalc" "releases" "dist" "venv"))
@@ -143,7 +143,7 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(vterm blacken flycheck prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
+   '(vterm flycheck prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values

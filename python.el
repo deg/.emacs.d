@@ -81,14 +81,27 @@
   :config
   (setq-default flycheck-temp-prefix "/Users/deg/.emacs-flycheck-deg/"))
 
-(use-package blacken
-  :ensure t
-  :hook (python-mode . blacken-mode)
-  :custom
-  (blacken-line-length 100))
+;; Ruff formatter - replaces Black + isort with a single, faster tool
+(defun ruff-format-buffer ()
+  "Format the current Python buffer with ruff."
+  (interactive)
+  (when (eq major-mode 'python-mode)
+    (let* ((temp-file (make-temp-file "ruff-format" nil ".py"))
+           (coding-system-for-read 'utf-8)
+           (coding-system-for-write 'utf-8))
+      (write-region (point-min) (point-max) temp-file nil 'silent)
+      (if (zerop (call-process "ruff" nil nil nil "format" temp-file))
+          (progn
+            (erase-buffer)
+            (insert-file-contents temp-file)
+            (delete-file temp-file))
+        (message "Ruff format failed")
+        (delete-file temp-file)))))
 
-(use-package py-isort
-  :hook (before-save . py-isort-before-save))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
+
 
 ;; Testing Integration
 (use-package pytest
