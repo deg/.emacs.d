@@ -40,24 +40,23 @@
   (interactive)
   (run-python (python-shell-calculate-command) t t))
 
-(add-hook 'python-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-z") 'my-python-repl)))
-
 (use-package poetry
   :hook (python-mode . poetry-tracking-mode))
 
-;; LSP for Python
+;; LSP for Python (Enabled only for regular development, not in REPL mode)
 (use-package lsp-mode
-  :hook (python-mode . lsp)
+  :hook ((python-mode . (lambda ()
+                          (unless (eq major-mode 'inferior-python-mode)
+                            (lsp)))))
   :commands lsp)
 
 (use-package lsp-pyright
   :after lsp-mode
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (setq lsp-pyright-python-executable-cmd "poetry run python")
-                         (lsp))))
+  :hook ((python-mode . (lambda ()
+                          (unless (eq major-mode 'inferior-python-mode)
+                            (require 'lsp-pyright)
+                            (setq lsp-pyright-python-executable-cmd "poetry run python")
+                            (lsp))))))
 
 ;; Tree-sitter for Syntax Highlighting
 (use-package tree-sitter
@@ -83,7 +82,10 @@
   (setq-default flycheck-temp-prefix "/Users/deg/.emacs-flycheck-deg/"))
 
 (use-package blacken
-  :hook (python-mode . blacken-mode))
+  :ensure t
+  :hook (python-mode . blacken-mode)
+  :custom
+  (blacken-line-length 100))
 
 (use-package py-isort
   :hook (before-save . py-isort-before-save))
@@ -108,7 +110,26 @@
       (with-current-buffer (process-buffer process)
         (comint-clear-buffer)))))
 
+
+;;; Bindings
+
 (global-set-key (kbd "C-c #") 'clear-python-shell)
+
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-z") 'my-python-repl)
+            (local-set-key (kbd "C-c r") 'consult-ripgrep)
+            ;; Fixups to smashed path
+            (add-to-list 'exec-path "/opt/homebrew/bin")))
+
+;;- (defun my-pyvenv-fix-path ()
+;;-   "Ensure Homebrew stays in exec-path after virtualenv activation."
+;;-   (add-to-list 'exec-path "/opt/homebrew/bin"))
+;;- 
+;;- (add-hook 'pyvenv-post-activate-hooks 'my-pyvenv-fix-path)
+
+
 
 ;;; The next few functions are from my old Python tooling. I don't know if they are
 ;;; still needed.
@@ -120,7 +141,10 @@
     (when venv-dir
       (pyvenv-activate (concat venv-dir ".venv")))))
 
-(add-hook 'python-mode-hook 'my-pyvenv-activate-dir)
+;;; Commented out, 10Mar25.  ChatGPT
+;;; (https://chatgpt.com/g/g-p-67bf5bc6c9c0819194ca6a3b49f71267-blogscraper/c/67cea266-9890-8009-a1e3-78f5a5a6862d)
+;;; claims that it is not needed and interferes with poetry-tracking-mode
+;;;- (add-hook 'python-mode-hook 'my-pyvenv-activate-dir)
 
 ;; Fix PYTHONPATH for Local Imports
 (defun my-bounded-locate-dominating-file (dir bound file-name)

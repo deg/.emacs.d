@@ -53,9 +53,9 @@
 
 ;; So lein, etc., find the right path.
 ;; See https://github.com/purcell/exec-path-from-shell
-(exec-path-from-shell-copy-env "_JAVA_OPTIONS")
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+;;(exec-path-from-shell-copy-env "_JAVA_OPTIONS")
+;;(when (memq window-system '(mac ns x))
+;;  (exec-path-from-shell-initialize))
 
 ;; (3Nov16 - byte-compile-dest-file seems to be undefined suddenly.  So, instead of this
 ;; code, for now, do a manual M-x byte-recompile-directory after editing)
@@ -143,7 +143,7 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(blacken flycheck prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
+   '(vterm blacken flycheck prettier json-mode web-mode which-key undo-tree smartparens rjsx-mode rainbow-delimiters markdown-mode magit exec-path-from-shell company clojure-cheatsheet auto-complete))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values
