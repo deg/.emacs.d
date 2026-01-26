@@ -2,6 +2,8 @@
 *.elc
 *.eld
 *~
+.cache
+.DS_Store
 .lsp-session-v1
 /elpa
 /elpy
