@@ -82,26 +82,43 @@
   (setq-default flycheck-temp-prefix "/Users/deg/.emacs-flycheck-deg/"))
 
 ;; Ruff formatter - replaces Black + isort with a single, faster tool
+;; Ruff format is Black-compatible and handles import sorting too
 (defun ruff-format-buffer ()
-  "Format the current Python buffer with ruff."
+  "Format the current Python buffer with ruff, preserving cursor position intelligently."
   (interactive)
   (when (eq major-mode 'python-mode)
     (let* ((temp-file (make-temp-file "ruff-format" nil ".py"))
+           (temp-buffer (generate-new-buffer " *ruff-format*"))
            (coding-system-for-read 'utf-8)
            (coding-system-for-write 'utf-8))
       (write-region (point-min) (point-max) temp-file nil 'silent)
       (if (zerop (call-process "ruff" nil nil nil "format" temp-file))
           (progn
-            (erase-buffer)
-            (insert-file-contents temp-file)
+            ;; Read formatted content into temp buffer
+            (with-current-buffer temp-buffer
+              (insert-file-contents temp-file))
+            ;; Use replace-buffer-contents for intelligent cursor preservation
+            ;; This uses a diff algorithm to keep point at the semantically same location
+            (replace-buffer-contents temp-buffer)
+            (kill-buffer temp-buffer)
             (delete-file temp-file))
         (message "Ruff format failed")
+        (kill-buffer temp-buffer)
         (delete-file temp-file)))))
 
 (add-hook 'python-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
 
+;; OLD CONFIGURATION (replaced by Ruff):
+;; (use-package blacken
+;;   :ensure t
+;;   :hook (python-mode . blacken-mode)
+;;   :custom
+;;   (blacken-line-length 100))
+;;
+;; (use-package py-isort
+;;   :hook (before-save . py-isort-before-save))
 
 ;; Testing Integration
 (use-package pytest
@@ -139,7 +156,7 @@
 ;;- (defun my-pyvenv-fix-path ()
 ;;-   "Ensure Homebrew stays in exec-path after virtualenv activation."
 ;;-   (add-to-list 'exec-path "/opt/homebrew/bin"))
-;;- 
+;;-
 ;;- (add-hook 'pyvenv-post-activate-hooks 'my-pyvenv-fix-path)
 
 
