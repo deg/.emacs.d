@@ -43,10 +43,20 @@
                       ;; blacken      ; replaced by ruff-format-buffer
                       ;; py-isort     ; replaced by ruff-format-buffer (handles imports too)
                       ;; ;;material-theme
+
+                      better-defaults ;; https://git.sr.ht/~technomancy/better-defaults
+                      ;; beads           ;; https://codeberg.org/ctietze/beads.el - not yet on Melpa
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+
+;; [TODO] Move into main list above when it works
+(use-package beads
+  :vc (:url "https://codeberg.org/ctietze/beads.el"
+       :lisp-dir "lisp"
+       :rev :newest))
 
 
 ;; Don't warn about magit-auto-revert-mode
