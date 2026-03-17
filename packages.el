@@ -78,6 +78,24 @@
   ;; Keep a generous scrollback — the default (1000) is easy to exhaust.
   (setq vterm-max-scrollback 10000))
 
+(defun my/claude-vterm ()
+  "Open or switch to a dedicated vterm buffer running Claude for the current project.
+The buffer is named *Claude: <project-name>* and starts in the project root.
+If the buffer already exists, just switch to it."
+  (interactive)
+  (let* ((project-root (or (and (fboundp 'projectile-project-root)
+                                (ignore-errors (projectile-project-root)))
+                           default-directory))
+         (project-name (file-name-nondirectory (directory-file-name project-root)))
+         (buffer-name (format "*Claude: %s*" project-name)))
+    (if (get-buffer buffer-name)
+        (switch-to-buffer buffer-name)
+      (let ((default-directory project-root))
+        (vterm buffer-name)
+        (vterm-send-string "claude\n")))))
+
+(global-set-key (kbd "C-c c") 'my/claude-vterm)
+
 ;; Don't warn about magit-auto-revert-mode
 (setq magit-last-seen-setup-instructions "1.4.0")
 
