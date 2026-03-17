@@ -14,9 +14,13 @@
 
 ;; New bindings
 (global-set-key (kbd "C-c TAB") 'browse-url)
-(global-set-key (kbd "C-x !") 'shell)
+;; C-x ! used to be bound first to 'shell, then immediately rebound to 'ansi-term
+;; (the second line silently won).  Now bound to vterm, which is a proper terminal
+;; emulator — unlike ansi-term/shell, it handles ncurses apps and color prompts correctly.
+;;- (global-set-key (kbd "C-x !") 'shell)
+;;- (global-set-key (kbd "C-x !") 'ansi-term)
+(global-set-key (kbd "C-x !") 'vterm)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-x !") 'ansi-term)
 
 ;; Improve grep navigation
 (global-set-key (kbd "M-n") 'next-error)

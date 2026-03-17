@@ -59,6 +59,25 @@
        :rev :newest))
 
 
+;; vterm — a proper terminal emulator inside Emacs, based on libvterm.
+;; Unlike ansi-term/shell/eshell, vterm runs a real terminal (not a comint buffer),
+;; so ncurses apps (htop, vim, etc.) and shell prompts with color/cursor magic work.
+;;
+;; System requirements (both must be installed before Emacs compiles the module):
+;;   cmake  — brew install cmake   (used to build the native module)
+;;   libtool — brew install libtool (already installed)
+;;
+;; On first use, Emacs will compile a small C module (vterm-module.so).
+;; If it fails, run: M-x vterm-module-compile
+(use-package vterm
+  :ensure t
+  :config
+  ;; Use the login shell so .zshrc / .bash_profile are sourced, giving the same
+  ;; environment (PATH, aliases, etc.) you'd get in a normal terminal window.
+  (setq vterm-shell (concat "/bin/zsh --login"))
+  ;; Keep a generous scrollback — the default (1000) is easy to exhaust.
+  (setq vterm-max-scrollback 10000))
+
 ;; Don't warn about magit-auto-revert-mode
 (setq magit-last-seen-setup-instructions "1.4.0")
 
