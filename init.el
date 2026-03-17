@@ -125,23 +125,24 @@
  '(elpy-project-ignored-directories
    '(".tox" "build" "dist" ".cask" ".ipynb_checkpoints" "venv"))
  '(exec-path
-   '("/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games"
-     "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin"))
+   '("/Users/deg/Documents/marketbuzzr/nutshell-mvp/backend/.venv/bin" "/opt/homebrew/bin"
+     "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games"
+     "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin" "~/.local/bin/"))
  '(fill-column 100)
  '(flycheck-python-ruff-maximum-line-length 100)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" ".venv" "_MTN" "_darcs" "{arch}"
-     "node_modules" "out" "compiled" "target" "build" "embeddings" ".mypy_cache" "model_repository"
-     "production_model_repository" "mongo_data_db" "tests_tasks" "META-INF" ".yalc" "releases"
-     "dist" "venv" ".specstory"))
+   '(".bzr" ".git" ".hg" ".mypy_cache" ".ruff_cache" ".specstory" ".svn" ".venv" ".yalc" "_darcs"
+     "_MTN" "build" "compiled" "CVS" "dist" "embeddings" "htmlcov" "MCVS" "META-INF"
+     "model_repository" "mongo_data_db" "node_modules" "out" "production_model_repository" "RCS"
+     "releases" "SCCS" "target" "tests_tasks" "venv" "{arch}"))
  '(grep-find-ignored-files
-   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo"
-     "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl"
-     "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl"
-     "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl"
-     "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps"
-     "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.map"))
+   '("*.a" "*.aux" "*.bbl" "*.bin" "*.blg" "*.class" "*.cp" "*.cps" "*.d64fsl" "*.dfsl" "*.dx32fsl"
+     "*.dx64fsl" "*.dxl" "*.elc" "*.fas" "*.fasl" "*.fmt" "*.fn" "*.fns" "*.fsl" "*.fx32fsl"
+     "*.fx64fsl" "*.glo" "*.gmo" "*.idx" "*.ky" "*.kys" "*.la" "*.lbin" "*.lib" "*.ln" "*.lo" "*.lock"
+     "*.lof" "*.lot" "*.lx32fsl" "*.lx64fsl" "*.map" "*.mem" "*.mo" "*.o" "*.p64fsl" "*.pfsl" "*.pg"
+     "*.pgs" "*.pyc" "*.pyo" "*.so" "*.sparcf" "*.sx32fsl" "*.sx64fsl" "*.tfm" "*.toc" "*.tp"
+     "*.tps" "*.ufsl" "*.vr" "*.vrs" "*.wx32fsl" "*.wx64fsl" "*.x86f" "*~" ".#*"))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(line-move-visual nil)
@@ -151,10 +152,9 @@
  '(magit-log-arguments '("--graph" "--color" "--decorate"))
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
- '(package-selected-packages
-   '(auto-complete better-defaults cider company consult exec-path-from-shell flycheck lsp-pyright
-                   magit poetry prettier projectile pytest rainbow-delimiters rjsx-mode smartparens
-                   tree-sitter-langs undo-tree))
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp")))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values
