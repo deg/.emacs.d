@@ -13,49 +13,115 @@
   (package-install 'use-package))
 
 (require 'use-package)
+
+;; NOTE: use-package-always-ensure t means every use-package block will
+;; automatically download and install the package if missing.  This is
+;; convenient, but the setting is global — it affects every use-package call
+;; in any file loaded after this one, not just the Python ones below.
+;; If that ever causes a surprise (e.g. an unexpected package gets auto-installed
+;; from another config file), the fix is to remove this line and add :ensure t
+;; individually to each use-package block that needs it.
 (setq use-package-always-ensure t)
 
-(use-package python
-  :hook (python-mode . lsp))
+;; Previously this block also hooked LSP startup onto python-mode:
+;;
+;;   (use-package python :hook (python-mode . lsp))
+;;
+;; That caused LSP to start *twice* on every Python file, because lsp-pyright
+;; (further below) also starts LSP via its own hook.  Removed the hook here.
+;; LSP startup is now handled entirely by the lsp-pyright block.
+(use-package python)
+
 
 ;;; Python REPL Setup
+
 (defun my-detect-python-repl ()
-  "Detect the best available Python REPL (IPython preferred)."
+  "Detect the best available Python REPL (IPython preferred).
+This function is called at REPL-launch time (inside my-python-repl),
+not at load time.  That means: if you install IPython after starting
+Emacs, it will be found the next time you launch the REPL without
+needing to restart Emacs."
   (if (executable-find "ipython")
       '("ipython" "-i --simple-prompt")
     '("python" "")))
 
-;; Apply REPL settings globally
-(let* ((repl-settings (my-detect-python-repl))
-       (repl-interpreter (car repl-settings))
-       (repl-args (cadr repl-settings)))
-  (setq python-shell-interpreter repl-interpreter
-        python-shell-interpreter-args repl-args
-        python-shell-completion-native-enable t
-        python-shell-completion-native-disabled-interpreters '("python" "ipython")))
+;; Previously, REPL detection ran at load time (i.e. when Emacs started)
+;; via a let* block that looked like this:
+;;
+;;   (let* ((repl-settings (my-detect-python-repl))
+;;          (repl-interpreter (car repl-settings))
+;;          (repl-args (cadr repl-settings)))
+;;     (setq python-shell-interpreter repl-interpreter
+;;           python-shell-interpreter-args repl-args
+;;           python-shell-completion-native-enable t
+;;           python-shell-completion-native-disabled-interpreters '("python" "ipython")))
+;;
+;; Two problems were fixed by removing that block:
+;;
+;; 1. Detection ran only once at startup, so installing IPython after Emacs
+;;    started had no effect until you restarted Emacs.  Detection now happens
+;;    inside my-python-repl each time you launch the REPL.
+;;
+;; 2. python-shell-completion-native-enable was set to t (on), but
+;;    python-shell-completion-native-disabled-interpreters immediately disabled
+;;    it for both "python" and "ipython" — the only two interpreters we use.
+;;    So the enable line had zero net effect.  It has been removed.
+;;    The disabled-interpreters list is kept below, at its default (off) state.
+(setq python-shell-completion-native-disabled-interpreters '("python" "ipython"))
 
-;; REPL Launcher
+;; REPL Launcher.  Detection now happens here, at launch time, so changes to
+;; the environment are always picked up.
 (defun my-python-repl ()
-  "Start the preferred Python REPL (IPython if available)."
+  "Start the preferred Python REPL (IPython if available).
+Re-detects the right interpreter every time it is called, so installing
+IPython after Emacs starts is picked up without restarting Emacs."
   (interactive)
+  ;; Set interpreter variables immediately before launching, so
+  ;; python-shell-calculate-command (called below) sees the right values.
+  (let* ((repl-settings (my-detect-python-repl))
+         (repl-interpreter (car repl-settings))
+         (repl-args (cadr repl-settings)))
+    (setq python-shell-interpreter repl-interpreter
+          python-shell-interpreter-args repl-args))
   (run-python (python-shell-calculate-command) t t))
+
 
 (use-package poetry
   :hook (python-mode . poetry-tracking-mode))
 
-;; LSP for Python (Enabled only for regular development, not in REPL mode)
+;; LSP (Language Server Protocol) provides IDE features: go-to-definition,
+;; find-references, inline type errors, completions, etc.
+;;
+;; Previously lsp-mode had its own python-mode hook calling (lsp):
+;;
+;;   (use-package lsp-mode
+;;     :hook ((python-mode . (lambda ()
+;;                             (unless (eq major-mode 'inferior-python-mode)
+;;                               (lsp)))))
+;;     :commands lsp)
+;;
+;; But lsp-pyright's hook (below) already calls (lsp), making this a second
+;; LSP startup per file.  Keeping lsp-mode configured as a library (so its
+;; commands and variables are available) but without the redundant python hook.
 (use-package lsp-mode
-  :hook ((python-mode . (lambda ()
-                          (unless (eq major-mode 'inferior-python-mode)
-                            (lsp)))))
   :commands lsp)
 
+;; lsp-pyright connects lsp-mode to Microsoft's Pyright type checker / language
+;; server.  This is the single place that starts LSP for Python files.
 (use-package lsp-pyright
   :after lsp-mode
+  ;; :custom runs once at package-setup time — the correct place for settings
+  ;; that apply globally rather than per-buffer.
+  ;; Previously, lsp-pyright-python-executable-cmd was set *inside* the hook
+  ;; body (the lambda below), which meant it was reset on every file open.
+  ;; Moving it here has the same effect but is cleaner.
+  :custom
+  (lsp-pyright-python-executable-cmd "poetry run python")
   :hook ((python-mode . (lambda ()
+                          ;; Don't start LSP in the *Python* REPL buffer itself
+                          ;; (inferior-python-mode), only in source file buffers.
                           (unless (eq major-mode 'inferior-python-mode)
                             (require 'lsp-pyright)
-                            (setq lsp-pyright-python-executable-cmd "poetry run python")
                             (lsp))))))
 
 ;; Tree-sitter for Syntax Highlighting
@@ -79,14 +145,27 @@
 (use-package flycheck
   :init (global-flycheck-mode)
   :config
-  (setq-default flycheck-temp-prefix "/Users/deg/.emacs-flycheck-deg/"))
+  ;; Previously hardcoded as "/Users/deg/.emacs-flycheck-deg/", which breaks on
+  ;; any machine where the home directory isn't /Users/deg (other Macs, Linux, etc.).
+  ;; temporary-file-directory is set by Emacs to the OS temp dir automatically:
+  ;; /tmp on Mac/Linux, %TEMP% on Windows.
+  (setq-default flycheck-temp-prefix (concat temporary-file-directory "flycheck-deg")))
 
-;; Ruff formatter - replaces Black + isort with a single, faster tool
-;; Ruff format is Black-compatible and handles import sorting too
+;; Ruff formatter — replaces Black + isort with a single, faster tool.
+;; Ruff format is Black-compatible and handles import sorting too.
 (defun ruff-format-buffer ()
-  "Format the current Python buffer with ruff, preserving cursor position intelligently."
+  "Format the current Python buffer with ruff, preserving cursor position intelligently.
+Works in both python-mode and python-ts-mode.
+
+Background: Emacs 29 introduced python-ts-mode, a separate major mode that uses
+the tree-sitter parser for better syntax highlighting.  python-mode and python-ts-mode
+are entirely distinct modes with separate hook lists, so a check for just python-mode
+would silently skip formatting if you were using python-ts-mode."
   (interactive)
-  (when (eq major-mode 'python-mode)
+  ;; Previously only checked (eq major-mode 'python-mode), so format-on-save
+  ;; did nothing if you happened to be in python-ts-mode.  Now checks both.
+  (when (or (eq major-mode 'python-mode)
+            (eq major-mode 'python-ts-mode))
     (let* ((temp-file (make-temp-file "ruff-format" nil ".py"))
            (temp-buffer (generate-new-buffer " *ruff-format*"))
            (coding-system-for-read 'utf-8)
@@ -97,8 +176,9 @@
             ;; Read formatted content into temp buffer
             (with-current-buffer temp-buffer
               (insert-file-contents temp-file))
-            ;; Use replace-buffer-contents for intelligent cursor preservation
+            ;; Use replace-buffer-contents for intelligent cursor preservation.
             ;; This uses a diff algorithm to keep point at the semantically same location
+            ;; rather than jumping to the top of the file.
             (replace-buffer-contents temp-buffer)
             (kill-buffer temp-buffer)
             (delete-file temp-file))
@@ -106,7 +186,14 @@
         (kill-buffer temp-buffer)
         (delete-file temp-file)))))
 
+;; Register format-on-save for python-mode ...
 (add-hook 'python-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
+;; ... and also for python-ts-mode (the Emacs 29+ tree-sitter variant).
+;; The nil t arguments mean: don't prepend (append instead), and make this
+;; hook buffer-local so it only fires in Python buffers.
+(add-hook 'python-ts-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
 
@@ -126,8 +213,12 @@
               ("C-c t" . pytest-one)
               ("C-c T" . pytest-all)))
 
-;; Optional Enhancements
-(use-package eldoc)
+;; eldoc shows function signatures and documentation in the minibuffer as you type.
+;; It is built into Emacs and enabled by default — the use-package call below does
+;; nothing useful.  Commented out, but left here as a reminder: if you ever need to
+;; configure eldoc (e.g. set eldoc-echo-area-use-multiline-p), do it here.
+;;- (use-package eldoc)
+
 (use-package which-key
   :init (which-key-mode))
 
@@ -145,12 +236,13 @@
 
 (global-set-key (kbd "C-c #") 'clear-python-shell)
 
-
 (add-hook 'python-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-z") 'my-python-repl)
             (local-set-key (kbd "C-c r") 'consult-ripgrep)
-            ;; Fixups to smashed path
+            ;; Fixups to smashed path: on Mac, activating a virtualenv can strip
+            ;; /opt/homebrew/bin from exec-path, causing tools like ruff and pyright
+            ;; to become unfindable.  Re-add it here as a safety measure.
             (add-to-list 'exec-path "/opt/homebrew/bin")))
 
 ;;- (defun my-pyvenv-fix-path ()
@@ -161,10 +253,16 @@
 
 
 
-;;; The next few functions are from my old Python tooling. I don't know if they are
-;;; still needed.
+;;; The next few functions are from older Python tooling.
+;;; Their interaction with the current Poetry-based setup is uncertain.
 
 ;; Automatically Activate Virtual Environment if .venv Exists
+;;
+;; This function searches upward from the current file for a .venv directory
+;; and activates it.  Its add-hook was commented out on 10Mar25 after it was
+;; found to interfere with poetry-tracking-mode, which handles venv activation
+;; automatically for Poetry projects.  The function is kept here in case it
+;; proves useful for non-Poetry projects in the future.
 (defun my-pyvenv-activate-dir ()
   "Search for .venv directory and activate virtualenv if found."
   (let ((venv-dir (locate-dominating-file default-directory ".venv")))
@@ -177,6 +275,12 @@
 ;;;- (add-hook 'python-mode-hook 'my-pyvenv-activate-dir)
 
 ;; Fix PYTHONPATH for Local Imports
+;;
+;; NOTE: These two hooks fire on pyvenv-post-activate-hooks and
+;; pyvenv-post-deactivate-hooks.  It is unclear whether poetry-tracking-mode
+;; fires those hooks when it activates a Poetry virtualenv.  If it does not,
+;; my-set-pythonpath never runs and has no effect.  Left here pending
+;; verification; if confirmed dead, these can be removed.
 (defun my-bounded-locate-dominating-file (dir bound file-name)
   "Search upwards from DIR for FILE-NAME until reaching BOUND.
 Return the directory containing FILE-NAME or BOUND if not found."
