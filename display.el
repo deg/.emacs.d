@@ -36,8 +36,32 @@ Warning: tested on Windows Vista only."
 ;(set-frame-font "Consolas-13")
 ;(set-frame-font "Menlo-12")
 ;(set-frame-font "Inconsolata-14")
-;; Install from https://commitmono.com/  (https://github.com/eigilnikolajsen/commit-mono)
-(set-frame-font "CommitMono-13")
+;; CommitMono Nerd Font — patched variant with broader Unicode coverage.
+;; Falls back to plain CommitMono if the Nerd Font is unavailable.
+(let ((nerd-font-file "~/Library/Fonts/CommitMonoNerdFontMono-Regular.otf"))
+  (when (and (not (file-exists-p nerd-font-file))
+             (executable-find "brew"))
+    (message "Installing CommitMono Nerd Font...")
+    (call-process "brew" nil nil nil "install" "--cask" "font-commit-mono-nerd-font"))
+  (set-frame-font (if (file-exists-p nerd-font-file)
+                      "CommitMono Nerd Font Mono-13"
+                    "CommitMono-13")))
+
+;; Fix line-height bouncing in vterm: Claude Code's spinners use Unicode symbols
+;; (e.g. ✶ U+2736, ⏺ U+23FA) that CommitMono/Nerd don't cover, so Emacs falls
+;; back to Arial Unicode MS or STIX Two Math, which have taller line metrics.
+;; Map all common symbol blocks to Menlo, which has consistent metrics.
+(dolist (range '((#x2300 . #x23FF)   ; Miscellaneous Technical (⏺ etc.)
+                 (#x25A0 . #x25FF)   ; Geometric Shapes
+                 (#x2600 . #x26FF)   ; Miscellaneous Symbols
+                 (#x2700 . #x27BF)   ; Dingbats (✶ etc.)
+                 (#x2800 . #x28FF))) ; Braille Patterns (used by some spinners)
+  (set-fontset-font "fontset-default" range (font-spec :family "Menlo")))
+
+;; Prevent Emacs from recentering the window when vterm cursor jumps around.
+;; Scoped to vterm buffers only — default scroll behavior is preserved elsewhere.
+(add-hook 'vterm-mode-hook
+          (lambda () (setq-local scroll-conservatively 101)))
 
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default

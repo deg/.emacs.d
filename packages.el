@@ -95,6 +95,16 @@ If the buffer already exists, just switch to it."
         (vterm-send-string "claude\n")))))
 
 (global-set-key (kbd "C-c c") 'my/claude-vterm)
+(declare-function vterm-send-key "vterm")
+(declare-function vterm-send-string "vterm")
+(with-eval-after-load 'vterm
+  (define-key vterm-mode-map (kbd "C-c C-[")
+              (lambda () (interactive)
+                (vterm-send-key "<escape>")))
+  (define-key vterm-mode-map (kbd "S-<return>")
+              (lambda () (interactive)
+                (vterm-send-string "\n"))))
+
 
 ;; Don't warn about magit-auto-revert-mode
 (setq magit-last-seen-setup-instructions "1.4.0")
