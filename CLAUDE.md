@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## About the User
+
+Long-time Emacs user since 1978 (TECO-based EMACS on DEC-20 and ITS). Very comfortable with Emacs as a user but not deeply fluent in Elisp — explain Elisp constructs when suggesting config changes. Don't change global Emacs behaviors casually.
+
 ## What This Is
 
 A personal Emacs configuration (~/.emacs.d) organized as modular `.el` files loaded by `init.el`. There is no build system or test suite — changes take effect when Emacs reloads the config or the affected file is re-evaluated.
