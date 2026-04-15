@@ -1,3 +1,4 @@
+
 ;; Don't need circus-sized font. Reduce to 11pt
 ;  (set-face-attribute 'default nil :height 110)
 ;; Later:  Bring in Windows Consolas font as follows:
@@ -62,6 +63,13 @@ Warning: tested on Windows Vista only."
 ;; Scoped to vterm buffers only — default scroll behavior is preserved elsewhere.
 (add-hook 'vterm-mode-hook
           (lambda () (setq-local scroll-conservatively 101)))
+
+;; Mark vterm windows as "dedicated" so Emacs will never reuse them to display
+;; another buffer (e.g. Magit stealing the Claude vterm window on C-c g).
+;; If you need to manually switch a dedicated window to another buffer, use
+;; C-x b — ido/switch-to-buffer overrides dedication.  (Fixes emacs-qlu.)
+(add-hook 'vterm-mode-hook
+          (lambda () (set-window-dedicated-p (selected-window) t)))
 
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
