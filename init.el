@@ -139,10 +139,10 @@
  '(grep-find-ignored-files
    '("*.a" "*.aux" "*.bbl" "*.bin" "*.blg" "*.class" "*.cp" "*.cps" "*.d64fsl" "*.dfsl" "*.dx32fsl"
      "*.dx64fsl" "*.dxl" "*.elc" "*.fas" "*.fasl" "*.fmt" "*.fn" "*.fns" "*.fsl" "*.fx32fsl"
-     "*.fx64fsl" "*.glo" "*.gmo" "*.idx" "*.ky" "*.kys" "*.la" "*.lbin" "*.lib" "*.ln" "*.lo" "*.lock"
-     "*.lof" "*.lot" "*.lx32fsl" "*.lx64fsl" "*.map" "*.mem" "*.mo" "*.o" "*.p64fsl" "*.pfsl" "*.pg"
-     "*.pgs" "*.pyc" "*.pyo" "*.so" "*.sparcf" "*.sx32fsl" "*.sx64fsl" "*.tfm" "*.toc" "*.tp"
-     "*.tps" "*.ufsl" "*.vr" "*.vrs" "*.wx32fsl" "*.wx64fsl" "*.x86f" "*~" ".#*"))
+     "*.fx64fsl" "*.glo" "*.gmo" "*.idx" "*.ky" "*.kys" "*.la" "*.lbin" "*.lib" "*.ln" "*.lo"
+     "*.lock" "*.lof" "*.lot" "*.lx32fsl" "*.lx64fsl" "*.map" "*.mem" "*.mo" "*.o" "*.p64fsl"
+     "*.pfsl" "*.pg" "*.pgs" "*.pyc" "*.pyo" "*.so" "*.sparcf" "*.sx32fsl" "*.sx64fsl" "*.tfm"
+     "*.toc" "*.tp" "*.tps" "*.ufsl" "*.vr" "*.vrs" "*.wx32fsl" "*.wx64fsl" "*.x86f" "*~" ".#*"))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(line-move-visual nil)
@@ -152,7 +152,10 @@
  '(magit-log-arguments '("--graph" "--color" "--decorate"))
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(auto-complete beads better-defaults cider company consult exec-path-from-shell flycheck
+                   lsp-pyright magit poetry prettier projectile pytest rainbow-delimiters rjsx-mode
+                   smartparens tree-sitter-langs undo-tree vterm))
  '(package-vc-selected-packages
    '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp")))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
