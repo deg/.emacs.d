@@ -12,3 +12,8 @@ network-security.data
 recentf
 tramp
 transient
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
