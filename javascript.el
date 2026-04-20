@@ -20,16 +20,9 @@
 ;; Enable rjsx-mode for .js and .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
 
-;; Enable company mode globally. [TODO] Maybe disable soon
-(add-hook 'after-init-hook 'global-company-mode)
-
-
 (add-hook 'rjsx-mode-hook #'company-mode)
 (add-hook 'rjsx-mode-hook #'prettier-mode)
 (add-hook 'rjsx-mode-hook #'exec-path-from-shell-initialize)
-
-;; Enable Flycheck globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;;; Set current directory for all tools to find configs, etc.
 ; [LATER] This does not seem to be needed. Save just in case.
