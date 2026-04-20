@@ -51,11 +51,12 @@
 ;;;...
 
 
-;; So lein, etc., find the right path.
+;; On macOS, Emacs launched from Finder or the Dock inherits a minimal PATH
+;; from launchd (no Homebrew, no pyenv, no ~/bin).  exec-path-from-shell runs
+;; the login shell once at startup and copies its PATH into exec-path.
 ;; See https://github.com/purcell/exec-path-from-shell
-;;(exec-path-from-shell-copy-env "_JAVA_OPTIONS")
-;;(when (memq window-system '(mac ns x))
-;;  (exec-path-from-shell-initialize))
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;; (3Nov16 - byte-compile-dest-file seems to be undefined suddenly.  So, instead of this
 ;; code, for now, do a manual M-x byte-recompile-directory after editing)
@@ -133,10 +134,6 @@
    '("fe230d2861a13bb969b5cdf45df1396385250cc0b7933b8ab9a2f9339b455f5c" default))
  '(elpy-project-ignored-directories
    '(".tox" "build" "dist" ".cask" ".ipynb_checkpoints" "venv"))
- '(exec-path
-   '("/Users/deg/Documents/marketbuzzr/nutshell-mvp/backend/.venv/bin" "/opt/homebrew/bin"
-     "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games"
-     "/usr/local/games" "/snap/bin" "/usr/lib/emacs/24.5/x86_64-linux-gnu" "~/bin" "~/.local/bin/"))
  '(fill-column 100)
  '(flycheck-python-ruff-maximum-line-length 100)
  '(git-commit-summary-max-length 72)
