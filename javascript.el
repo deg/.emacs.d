@@ -1,4 +1,4 @@
-;;; javascript.el --- Part of my emacs init
+;;; javascript.el --- Part of my emacs init  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -20,6 +20,9 @@
 ;; Enable rjsx-mode for .js and .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
 
+(declare-function company-mode "company")
+(declare-function prettier-mode "prettier")
+(declare-function exec-path-from-shell-initialize "exec-path-from-shell")
 (add-hook 'rjsx-mode-hook #'company-mode)
 (add-hook 'rjsx-mode-hook #'prettier-mode)
 (add-hook 'rjsx-mode-hook #'exec-path-from-shell-initialize)
@@ -53,6 +56,7 @@
 
 ;;; Suppress js2 warning about browser-specific names
 ;;; [TODO] Should only be enabled in browser projects, etc.
+(defvar js2-global-externs)
 (with-eval-after-load 'js2-mode
   (setq js2-global-externs '(;; Browser
                              "AbortController" "Blob" "chrome" "document" "FileReader"
