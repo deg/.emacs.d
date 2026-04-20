@@ -45,6 +45,8 @@
                       ;; ;;material-theme
 
                       better-defaults ;; https://git.sr.ht/~technomancy/better-defaults
+
+                      ace-window   ;; Letter-based window picker (bound to C-x o in display.el)
                       ;; beads           ;; https://codeberg.org/ctietze/beads.el - not yet on Melpa
                       ))
 (dolist (p my-packages)

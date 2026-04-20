@@ -150,6 +150,16 @@ Warning: tested on Windows Vista only."
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
+;; Letter-based window picker.  Overlays a home-row letter on each window;
+;; press the letter to jump there.  2-window layouts are an instant toggle;
+;; 3+ windows show the picker.  Dispatch keys (press after C-x o and before
+;; picking a window) apply an operation instead of selecting — x delete,
+;; m swap, v split-v, b split-h, o maximize, ? full list.
+(use-package ace-window
+  :bind ("C-x o" . ace-window)
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
 ;; Improved completion/matching for buffers and files
 (ido-mode 1)
 

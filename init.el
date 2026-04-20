@@ -159,9 +159,9 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(auto-complete beads better-defaults cider company consult exec-path-from-shell flycheck
-                   lsp-pyright magit poetry prettier projectile pytest rainbow-delimiters rjsx-mode
-                   smartparens tree-sitter-langs undo-tree vterm))
+   '(ace-window auto-complete beads better-defaults cider company consult exec-path-from-shell flycheck
+                lsp-pyright magit poetry prettier projectile pytest rainbow-delimiters rjsx-mode
+                smartparens tree-sitter-langs undo-tree vterm))
  '(package-vc-selected-packages
    '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp")))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
