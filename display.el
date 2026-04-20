@@ -134,6 +134,17 @@ Warning: tested on Windows Vista only."
 (add-to-list 'same-window-buffer-names "*magit-edit-log*")
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
+;; Let help-like buffers split the current frame instead of opening a new
+;; frame, even though pop-up-windows is nil.  Needed because vterm windows
+;; are dedicated (see vterm-mode-hook above); without this override, C-h v
+;; from inside a vterm has nowhere to go and falls back to a new frame.
+;; Full rationale in bead emacs-atz.
+(add-to-list 'display-buffer-alist
+             '("\\*\\(Help\\|Apropos\\|[Ii]nfo\\|Backtrace\\)\\*"
+               (display-buffer-reuse-window
+                display-buffer-pop-up-window
+                display-buffer-use-some-window)))
+
 
 ;; Use c-c right and c-c left to go back to remembered window configs
 (when (fboundp 'winner-mode)
