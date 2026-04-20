@@ -45,16 +45,17 @@
 
 ;; Shell window
 ;; (much from https://snarfed.org/why_i_dont_run_shells_inside_emacs)
-(custom-set-variables
- '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
- '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
- '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
- '(comint-completion-autolist t)        ; show completion list when ambiguous
- '(comint-input-ignoredups t)           ; no duplicates in command history
- '(comint-completion-addsuffix t)       ; insert space/slash after file completion
- '(comint-move-point-for-output 'all)   ; Always scroll to show new output
- '(comint-prompt-read-only)             ; prompts text is read only
- )
+;; Using setq (not custom-set-variables) so these inline comments survive
+;; a future Customize UI save — Customize rewrites its managed block from
+;; scratch and drops all comments in the process.
+(setq comint-scroll-to-bottom-on-input  t     ; always insert at the bottom
+      comint-scroll-to-bottom-on-output t     ; always add output at the bottom
+      comint-scroll-show-maximum-output t     ; scroll to show max possible output
+      comint-completion-autolist        t     ; show completion list when ambiguous
+      comint-input-ignoredups           t     ; no duplicates in command history
+      comint-completion-addsuffix       t     ; insert space/slash after file completion
+      comint-move-point-for-output      'all  ; always scroll to show new output
+      comint-prompt-read-only           t)    ; prompt text is read only
 ; interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)
 ; make completion buffers disappear after 3 seconds.
@@ -63,19 +64,9 @@
     (lambda () (delete-windows-on "*Completions*")))))
 
 
-;; Magit options
-(custom-set-variables
- '(magit-diff-toggle-refine-hunk t)
- '(magit-diff-paint-whitespace t)
- '(git-commit-summary-max-length 72)
- )
+;; Magit
 (with-eval-after-load 'magit
   (define-key magit-mode-map (kbd "M-.") 'magit-diff-visit-file-other-window))
-
-
-;; General options
-(custom-set-variables
- '(fill-column 88))
 
 
 ;; run a few shells.

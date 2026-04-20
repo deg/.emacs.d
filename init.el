@@ -107,6 +107,15 @@
   version-control t)
 
 
+;; Wrap prose at column 88.  Global fill-column is 100 (see custom-set-variables
+;; below); this override applies only to text-derived modes.  markdown-mode,
+;; rst-mode, message-mode, html-mode (via sgml-mode), etc. all derive from
+;; text-mode, so a single text-mode-hook covers them.  setq-local keeps this
+;; buffer-local so code buffers are unaffected.
+(add-hook 'text-mode-hook
+          (lambda () (setq-local fill-column 88)))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
