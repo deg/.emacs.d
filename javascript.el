@@ -82,8 +82,6 @@
               (append flycheck-disabled-checkers
                       '(javascript-jshint)))
 
-(setq-default flycheck-temp-prefix "/Users/deg/.emacs-flycheck-deg/")
-
 
 (provide 'deg-init-javascript)
 ;;; javascript.el ends here
