@@ -116,6 +116,15 @@
 (add-hook 'text-mode-hook
           (lambda () (setq-local fill-column 88)))
 
+;; Markdown: soft-wrap on display and don't auto-insert hard line breaks.
+;; Most downstream Markdown tools render paragraphs fine without mid-paragraph
+;; hard wraps, so we prefer one logical line per paragraph.  fill-column stays
+;; at 88 (inherited from text-mode-hook), so M-q still works on demand.
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (visual-line-mode 1)
+            (auto-fill-mode -1)))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
