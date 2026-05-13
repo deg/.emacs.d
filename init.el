@@ -29,9 +29,9 @@
 (package-initialize)
 
 (load "~/.emacs.d/packages")
-(load "~/.emacs.d/python")
-(load "~/.emacs.d/javascript")
-(load "~/.emacs.d/clojure")
+(load "~/.emacs.d/deg-python")
+(load "~/.emacs.d/deg-javascript")
+(load "~/.emacs.d/deg-clojure")
 (load "~/.emacs.d/display")
 (load "~/.emacs.d/irc")
 (load "~/.emacs.d/linux")

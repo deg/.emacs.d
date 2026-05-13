@@ -1,4 +1,4 @@
-;;; javascript.el --- Part of my emacs init  -*- lexical-binding: t; -*-
+;;; deg-javascript.el --- Part of my emacs init  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -81,4 +81,4 @@
 
 
 (provide 'deg-init-javascript)
-;;; javascript.el ends here
+;;; deg-javascript.el ends here

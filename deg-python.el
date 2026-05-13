@@ -1,4 +1,4 @@
-;;; python.el --- Emacs 29 Configuration for Python + Poetry Development
+;;; deg-python.el --- Emacs 29 Configuration for Python + Poetry Development
 
 ;;; Commentary:
 ;; This file sets up Python development with Poetry, LSP, and related tools.
@@ -306,4 +306,4 @@ Return the directory containing FILE-NAME or BOUND if not found."
 (add-hook 'pyvenv-post-deactivate-hooks 'my-set-pythonpath)
 
 (provide 'deg-init-python)
-;;; python.el ends here
+;;; deg-python.el ends here
