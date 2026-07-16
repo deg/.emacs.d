@@ -80,23 +80,6 @@
   ;; Keep a generous scrollback — the default (1000) is easy to exhaust.
   (setq vterm-max-scrollback 10000))
 
-(defun my/claude-vterm ()
-  "Open or switch to a dedicated vterm buffer running Claude for the current project.
-The buffer is named *Claude: <project-name>* and starts in the project root.
-If the buffer already exists, just switch to it."
-  (interactive)
-  (let* ((project-root (or (and (fboundp 'projectile-project-root)
-                                (ignore-errors (projectile-project-root)))
-                           default-directory))
-         (project-name (file-name-nondirectory (directory-file-name project-root)))
-         (buffer-name (format "*Claude: %s*" project-name)))
-    (if (get-buffer buffer-name)
-        (switch-to-buffer buffer-name)
-      (let ((default-directory project-root))
-        (vterm buffer-name)
-        (vterm-send-string "claude\n")))))
-
-(global-set-key (kbd "C-c c") 'my/claude-vterm)
 (declare-function vterm-send-key "vterm")
 (declare-function vterm-send-string "vterm")
 (with-eval-after-load 'vterm
@@ -106,6 +89,61 @@ If the buffer already exists, just switch to it."
   (define-key vterm-mode-map (kbd "S-<return>")
               (lambda () (interactive)
                 (vterm-send-string "\n"))))
+
+;; claude-code.el — Claude Code integration (https://github.com/stevemolitor/claude-code.el).
+;; C-c c is a prefix:
+;;   C-c c c  start Claude for this project (first one is named "default")
+;;   C-c c i  start another named session (RET at the prompt = auto-numbered)
+;;   C-c c b  switch between this project's sessions (completing-read)
+;;   C-c c B  switch across all projects;  C-c c k kill;  C-c c m full menu
+;; Installed from git (:vc) — the MELPA package named "claude-code" is a
+;; DIFFERENT project (yuya373's); never install that one from the archive.
+;; Uses our existing vterm as the terminal backend.
+(use-package claude-code
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
+  :bind-keymap ("C-c c" . claude-code-command-map)
+  :config
+  (setq claude-code-terminal-backend 'vterm)
+  (claude-code-mode)
+
+  ;; At the session-name prompt, plain RET picks the next free number
+  ;; (the package itself refuses an empty name).
+  (defun my/claude-name-or-number (orig dir existing &optional force-prompt)
+    (if (or existing force-prompt)
+        (let ((name (string-trim
+                     (read-string (format "Claude session name for %s (RET = auto): "
+                                          (abbreviate-file-name dir))))))
+          (cond ((string-empty-p name)
+                 (let ((n 2))
+                   (while (member (number-to-string n) existing)
+                     (setq n (1+ n)))
+                   (number-to-string n)))
+                ((member name existing)
+                 (funcall orig dir existing force-prompt))
+                (t name)))
+      "default"))
+  (advice-add 'claude-code--prompt-for-instance-name
+              :around #'my/claude-name-or-number)
+
+  ;; When a session has a real name, tell the Claude CLI about it too,
+  ;; so /resume later shows the same name. The timer gives the Claude
+  ;; TUI a few seconds to finish starting before we type into it.
+  (defun my/claude-rename-cli-session ()
+    (let ((buf (current-buffer))
+          (name (claude-code--extract-instance-name-from-buffer-name
+                 (buffer-name))))
+      (when (and name (not (equal name "default")))
+        (run-at-time 4 nil
+                     (lambda ()
+                       (when (buffer-live-p buf)
+                         (with-current-buffer buf
+                           (claude-code--term-send-string
+                            claude-code-terminal-backend
+                            (format "/rename %s" name))
+                           (sit-for 0.2)
+                           (claude-code--term-send-string
+                            claude-code-terminal-backend (kbd "RET")))))))))
+  (add-hook 'claude-code-start-hook #'my/claude-rename-cli-session))
 
 
 ;; Don't warn about magit-auto-revert-mode
