@@ -106,14 +106,14 @@
 ;; is a prebuilt binary that auto-downloads on first use (no compile step).
 ;; To try it: uncomment this line, restart Emacs, and switch the backend
 ;; setq below from 'vterm to 'ghostel.
-;; (use-package ghostel :ensure t)
+(use-package ghostel :ensure t)
 
 (use-package claude-code
   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
   :bind-keymap ("C-c c" . claude-code-command-map)
   :config
   ;; Backend: 'vterm (current) or 'ghostel (see use-package comment above).
-  (setq claude-code-terminal-backend 'vterm)
+  (setq claude-code-terminal-backend 'ghostel)
 
   ;; Window behavior — using the package defaults: the Claude window opens
   ;; below the current one and focus stays where you are. Alternatives:
