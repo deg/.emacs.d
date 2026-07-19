@@ -161,7 +161,17 @@
                            (sit-for 0.2)
                            (claude-code--term-send-string
                             claude-code-terminal-backend (kbd "RET")))))))))
-  (add-hook 'claude-code-start-hook #'my/claude-rename-cli-session))
+  (add-hook 'claude-code-start-hook #'my/claude-rename-cli-session)
+
+  ;; Ghostel replaces the buffer's keymap whenever it leaves copy/emacs/line
+  ;; mode (which engage automatically on mouse click or scroll), discarding
+  ;; the claude-code bindings — notably C-g -> send Escape to interrupt the
+  ;; agent. Re-apply them after every return to the normal input mode.
+  (defun my/claude-restore-ghostel-keymap (&rest _)
+    (when (and (eq claude-code-terminal-backend 'ghostel)
+               (claude-code--buffer-p (current-buffer)))
+      (claude-code--term-setup-keymap 'ghostel)))
+  (advice-add 'ghostel-semi-char-mode :after #'my/claude-restore-ghostel-keymap))
 
 
 ;; Don't warn about magit-auto-revert-mode
