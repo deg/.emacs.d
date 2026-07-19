@@ -100,19 +100,19 @@
 ;; DIFFERENT project (yuya373's); never install that one from the archive.
 ;; Uses our existing vterm as the terminal backend.
 
-;; ghostel — alternative terminal backend worth trying: libghostty-based
-;; (the engine behind the Ghostty terminal), typically faster than vterm
-;; and renders the Claude TUI most faithfully. On MELPA; its native module
-;; is a prebuilt binary that auto-downloads on first use (no compile step).
-;; To try it: uncomment this line, restart Emacs, and switch the backend
-;; setq below from 'vterm to 'ghostel.
+;; ghostel — terminal backend for the Claude buffers: libghostty-based (the
+;; engine behind the Ghostty terminal), faster than vterm and renders the
+;; Claude TUI most faithfully. Also a standalone terminal: M-x ghostel.
+;; Its native module is a prebuilt binary, but the download is manual:
+;; on a new machine, run M-x ghostel-download-module once (no compile step,
+;; no cmake/libtool needed, unlike vterm).
 (use-package ghostel :ensure t)
 
 (use-package claude-code
   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
   :bind-keymap ("C-c c" . claude-code-command-map)
   :config
-  ;; Backend: 'vterm (current) or 'ghostel (see use-package comment above).
+  ;; Backend: 'ghostel (current) or 'vterm (see use-package comment above).
   (setq claude-code-terminal-backend 'ghostel)
 
   ;; Window behavior — using the package defaults: the Claude window opens
