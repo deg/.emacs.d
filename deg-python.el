@@ -90,39 +90,71 @@ IPython after Emacs starts is picked up without restarting Emacs."
   :hook (python-mode . poetry-tracking-mode))
 
 ;; LSP (Language Server Protocol) provides IDE features: go-to-definition,
-;; find-references, inline type errors, completions, etc.
+;; find-references, inline type errors, completions, etc.  lsp-pyright connects
+;; lsp-mode to Microsoft's Pyright type checker / language server.
 ;;
-;; Previously lsp-mode had its own python-mode hook calling (lsp):
+;; Both packages are declared here only so they are installed and available.
+;; Neither declares a hook: startup happens in `my-python-mode-setup' below, in
+;; one place alongside the rest of the per-buffer Python setup.
 ;;
-;;   (use-package lsp-mode
-;;     :hook ((python-mode . (lambda ()
-;;                             (unless (eq major-mode 'inferior-python-mode)
-;;                               (lsp)))))
-;;     :commands lsp)
+;; Be careful reintroducing use-package deferral keywords here.  ":commands lsp"
+;; on lsp-mode plus ":after lsp-mode" on lsp-pyright is a deadlock: lsp-mode waits
+;; for someone to call `lsp', lsp-pyright waits for lsp-mode to load, and the only
+;; caller of `lsp' lives inside the lsp-pyright block that never runs.  Neither
+;; package ever loads and LSP silently never starts.
 ;;
-;; But lsp-pyright's hook (below) already calls (lsp), making this a second
-;; LSP startup per file.  Keeping lsp-mode configured as a library (so its
-;; commands and variables are available) but without the redundant python hook.
+;; lsp-pyright finds the interpreter itself, via `lsp-pyright-python-search-functions',
+;; whose first entry walks up from the current file looking for .venv — the same
+;; search `my-python-tool' does.  So it needs no interpreter setting from us.
 (use-package lsp-mode
-  :commands lsp)
-
-;; lsp-pyright connects lsp-mode to Microsoft's Pyright type checker / language
-;; server.  This is the single place that starts LSP for Python files.
-(use-package lsp-pyright
-  :after lsp-mode
-  ;; :custom runs once at package-setup time — the correct place for settings
-  ;; that apply globally rather than per-buffer.
-  ;; Previously, lsp-pyright-python-executable-cmd was set *inside* the hook
-  ;; body (the lambda below), which meant it was reset on every file open.
-  ;; Moving it here has the same effect but is cleaner.
+  :defer t
   :custom
-  (lsp-pyright-python-executable-cmd "poetry run python")
-  :hook ((python-mode . (lambda ()
-                          ;; Don't start LSP in the *Python* REPL buffer itself
-                          ;; (inferior-python-mode), only in source file buffers.
-                          (unless (eq major-mode 'inferior-python-mode)
-                            (require 'lsp-pyright)
-                            (lsp))))))
+  ;; Without this, opening a Python file in a project lsp-mode has not seen
+  ;; before pops a modal asking which directory is the project root.  With it,
+  ;; lsp-mode uses the root it detects (the git/projectile root), which is where
+  ;; a pyrightconfig.json belongs anyway.
+  (lsp-auto-guess-root t)
+  ;; lsp-mode asks the language server to watch every directory in the project
+  ;; and blocks with a yes/no prompt once there are more than
+  ;; lsp-file-watch-threshold of them (default 1000).  The repos here are far
+  ;; over that even after the default ignore list: nutshell-mvp has ~12000
+  ;; directories, ~3700 of them outside .git, .venv, node_modules and .beads.
+  ;; So this would prompt on essentially every project, and answering yes would
+  ;; register thousands of macOS file watchers.
+  ;;
+  ;; TRADEOFF: with watchers off, the language server does not learn about files
+  ;; changed outside Emacs — by a git pull, or by an agent editing the tree —
+  ;; until the workspace is restarted (M-x lsp-workspace-restart).  Diagnostics
+  ;; for buffers open in Emacs are unaffected.  To trade back, set this to t and
+  ;; raise lsp-file-watch-threshold above the project's directory count.
+  (lsp-enable-file-watchers nil)
+  ;; lsp-mode also ships a ruff language server client, which it launches as the
+  ;; bare command "ruff server" — i.e. whatever ruff is first on PATH.  Here that
+  ;; is a pyenv shim several minor versions behind what projects pin, so its
+  ;; diagnostics disagree with the project's own lint run.  Flycheck's python-ruff
+  ;; checker already runs the project's own ruff with the project's own config
+  ;; (see `my-python-setup-flycheck'), so this client is redundant as well as
+  ;; wrong.  Pyright still runs over LSP.
+  (lsp-disabled-clients '(ruff))
+  ;; Diagnostics stay with flycheck; lsp-mode is here for navigation, completion
+  ;; and hover.
+  ;;
+  ;; The default, :auto, hands diagnostics to lsp-mode: it sets flycheck-checker
+  ;; to `lsp' in managed buffers, which runs that checker and nothing else.  That
+  ;; silences ruff and mypy, which the project's own lint run does execute.
+  ;; Chaining them after `lsp' with flycheck-add-next-checker does not fix it —
+  ;; the lsp checker reports asynchronously as the server pushes diagnostics
+  ;; rather than driving flycheck's chain, so the next checker never runs.  This
+  ;; was measured, not assumed: with the chain configured, three consecutive
+  ;; checks reported lsp diagnostics only and never mypy's.
+  ;;
+  ;; So diagnostics come from flycheck, running the project's own ruff and mypy
+  ;; with the project's own config.  Pyright's findings are not shown inline; it
+  ;; still runs as a server, and `make lint' still runs it in full.
+  (lsp-diagnostics-provider :none))
+
+(use-package lsp-pyright
+  :defer t)
 
 ;; Tree-sitter for Syntax Highlighting
 (use-package tree-sitter
@@ -163,14 +195,21 @@ IPython after Emacs starts is picked up without restarting Emacs."
 ;; that governs it — so they get two separate helpers.  Deriving one from the
 ;; other would work for the projects here today, but only by coincidence.
 
+(defun my-python-venv-bin-dir ()
+  "Return the bin directory of the project's virtualenv, or nil if there is none.
+Searches upward from `default-directory' for a .venv directory."
+  (let ((venv-dir (locate-dominating-file default-directory ".venv")))
+    (when venv-dir
+      (let ((bin (expand-file-name ".venv/bin" venv-dir)))
+        (and (file-directory-p bin) bin)))))
+
 (defun my-python-tool (name)
   "Return an absolute path to the Python tool NAME, or nil if not found.
-Searches upward from `default-directory' for a .venv directory and prefers NAME
-inside it, so a project gets the tool version it pins rather than whatever
-happens to be earliest on PATH.  Falls back to `executable-find'."
-  (let* ((venv-dir (locate-dominating-file default-directory ".venv"))
-         (in-venv (and venv-dir
-                       (expand-file-name (concat ".venv/bin/" name) venv-dir))))
+Prefers NAME inside the project's virtualenv, so a project gets the tool version
+it pins rather than whatever happens to be earliest on PATH.  Falls back to
+`executable-find'."
+  (let* ((bin (my-python-venv-bin-dir))
+         (in-venv (and bin (expand-file-name name bin))))
     (if (and in-venv (file-executable-p in-venv))
         in-venv
       (executable-find name))))
@@ -267,7 +306,17 @@ touching `exec-path' or PYTHONPATH globally."
   ;; leave it running on defaults.  It needs an explicit path, which flycheck
   ;; accepts in absolute form.
   (setq-local flycheck-python-mypy-config
-              (my-python-config-file "^\\[tool\\.mypy\\]")))
+              (my-python-config-file "^\\[tool\\.mypy\\]"))
+  ;; lsp-mode puts its own `lsp' checker at the front of flycheck's list, and
+  ;; flycheck runs the first usable one it finds.  Diagnostics here come from the
+  ;; project's own tools instead (see `lsp-diagnostics-provider' above), so take
+  ;; it out of the running in Python buffers.
+  (setq-local flycheck-disabled-checkers (cons 'lsp flycheck-disabled-checkers))
+  ;; Name the first checker rather than letting flycheck pick by list order,
+  ;; which would land on mypy and stop — mypy declares no next checker, so ruff
+  ;; would never run.  python-ruff chains to python-mypy, giving the same two
+  ;; tools, in the same order, as the project's lint run.
+  (setq-local flycheck-checker 'python-ruff))
 
 
 ;;; Per-buffer Python setup
@@ -277,7 +326,22 @@ touching `exec-path' or PYTHONPATH globally."
   (my-python-setup-flycheck)
   ;; The nil t arguments mean: append rather than prepend, and make the hook
   ;; buffer-local so it only fires in Python buffers.
-  (add-hook 'before-save-hook #'ruff-format-buffer nil t))
+  (add-hook 'before-save-hook #'ruff-format-buffer nil t)
+  (require 'lsp-pyright)
+  ;; lsp-mode finds a language server with `executable-find', evaluated when it
+  ;; spawns the process rather than here — so a buffer-local exec-path does not
+  ;; reach it, and pyright-langserver resolves to a pyenv shim for a Python
+  ;; version that does not have it installed.  The server then dies at startup
+  ;; and lsp-mode prompts to restart it, repeatedly.
+  ;;
+  ;; `lsp-dependency' is the documented way to pin an absolute path: an absolute
+  ;; path is returned as-is instead of being looked up.  Registration is global,
+  ;; so it is redone here for each buffer, immediately before starting the server
+  ;; for that buffer's project.
+  (let ((server (my-python-tool "pyright-langserver")))
+    (when server
+      (lsp-dependency 'pyright (list :system server))))
+  (lsp))
 
 (add-hook 'python-mode-hook #'my-python-mode-setup)
 (add-hook 'python-ts-mode-hook #'my-python-mode-setup)
