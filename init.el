@@ -144,7 +144,6 @@
  '(elpy-project-ignored-directories
    '(".tox" "build" "dist" ".cask" ".ipynb_checkpoints" "venv"))
  '(fill-column 100)
- '(flycheck-python-ruff-maximum-line-length 100)
  '(git-commit-summary-max-length 72)
  '(grep-find-ignored-directories
    '(".bzr" ".git" ".hg" ".mypy_cache" ".ruff_cache" ".specstory" ".svn" ".venv" ".yalc" "_darcs"

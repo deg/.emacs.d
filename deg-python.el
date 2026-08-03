@@ -151,51 +151,136 @@ IPython after Emacs starts is picked up without restarting Emacs."
   ;; /tmp on Mac/Linux, %TEMP% on Windows.
   (setq-default flycheck-temp-prefix (concat temporary-file-directory "flycheck-deg")))
 
-;; Ruff formatter — replaces Black + isort with a single, faster tool.
-;; Ruff format is Black-compatible and handles import sorting too.
+;;; Project tool and config discovery
+;;
+;; Python projects here keep their tools in a virtualenv rather than on PATH, and
+;; the config governing a tool is not always in the nearest pyproject.toml.  In a
+;; workspace such as marketbuzzr/nutshell-mvp, each sub-package carries its own
+;; pyproject.toml with no [tool.ruff] or [tool.mypy] section, while the real
+;; settings live further up next to the virtualenv.
+;;
+;; These are two separate questions — where is the tool, and where is the config
+;; that governs it — so they get two separate helpers.  Deriving one from the
+;; other would work for the projects here today, but only by coincidence.
+
+(defun my-python-tool (name)
+  "Return an absolute path to the Python tool NAME, or nil if not found.
+Searches upward from `default-directory' for a .venv directory and prefers NAME
+inside it, so a project gets the tool version it pins rather than whatever
+happens to be earliest on PATH.  Falls back to `executable-find'."
+  (let* ((venv-dir (locate-dominating-file default-directory ".venv"))
+         (in-venv (and venv-dir
+                       (expand-file-name (concat ".venv/bin/" name) venv-dir))))
+    (if (and in-venv (file-executable-p in-venv))
+        in-venv
+      (executable-find name))))
+
+(defun my-python-config-file (section)
+  "Return the nearest pyproject.toml at or above `default-directory' with SECTION.
+SECTION is a regexp matched against the file's contents; callers pass the
+section header of the tool they are configuring.  Returns nil if no matching
+file is found.
+
+`locate-dominating-file' is usually handed a file name, but it also accepts a
+predicate function, called with each directory as it walks upward.  That is what
+lets this skip a pyproject.toml which exists but does not configure the tool in
+question."
+  (let ((dir (locate-dominating-file
+              default-directory
+              (lambda (dir)
+                (let ((file (expand-file-name "pyproject.toml" dir)))
+                  (and (file-readable-p file)
+                       (with-temp-buffer
+                         (insert-file-contents file)
+                         (goto-char (point-min))
+                         (re-search-forward section nil t))))))))
+    (and dir (expand-file-name "pyproject.toml" dir))))
+
+
+;;; Ruff formatter — replaces Black + isort with a single, faster tool.
+;;; Ruff format is Black-compatible and handles import sorting too.
+
+(defun my-python--first-line (file)
+  "Return the first non-blank line of FILE, or nil if it has none."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (goto-char (point-min))
+    (when (re-search-forward "^.+$" nil t)
+      (match-string 0))))
+
 (defun ruff-format-buffer ()
-  "Format the current Python buffer with ruff, preserving cursor position intelligently.
-Works in both python-mode and python-ts-mode.
+  "Format the current Python buffer with ruff, preserving cursor position.
+Works in both `python-mode' and `python-ts-mode', which are distinct major
+modes with separate hook lists.
 
-Background: Emacs 29 introduced python-ts-mode, a separate major mode that uses
-the tree-sitter parser for better syntax highlighting.  python-mode and python-ts-mode
-are entirely distinct modes with separate hook lists, so a check for just python-mode
-would silently skip formatting if you were using python-ts-mode."
+The buffer text is piped to ruff's standard input, with --stdin-filename giving
+ruff the buffer's real path.  Ruff resolves its configuration by walking up from
+the file it is formatting, so supplying the real path is what makes it find the
+project's line-length setting rather than falling back to its built-in default.
+
+On any failure the buffer is left untouched and the reason is shown in the echo
+area."
   (interactive)
-  ;; Previously only checked (eq major-mode 'python-mode), so format-on-save
-  ;; did nothing if you happened to be in python-ts-mode.  Now checks both.
-  (when (or (eq major-mode 'python-mode)
-            (eq major-mode 'python-ts-mode))
-    (let* ((temp-file (make-temp-file "ruff-format" nil ".py"))
-           (temp-buffer (generate-new-buffer " *ruff-format*"))
-           (coding-system-for-read 'utf-8)
-           (coding-system-for-write 'utf-8))
-      (write-region (point-min) (point-max) temp-file nil 'silent)
-      (if (zerop (call-process "ruff" nil nil nil "format" temp-file))
-          (progn
-            ;; Read formatted content into temp buffer
-            (with-current-buffer temp-buffer
-              (insert-file-contents temp-file))
-            ;; Use replace-buffer-contents for intelligent cursor preservation.
-            ;; This uses a diff algorithm to keep point at the semantically same location
-            ;; rather than jumping to the top of the file.
-            (replace-buffer-contents temp-buffer)
-            (kill-buffer temp-buffer)
-            (delete-file temp-file))
-        (message "Ruff format failed")
-        (kill-buffer temp-buffer)
-        (delete-file temp-file)))))
+  (when (and (memq major-mode '(python-mode python-ts-mode))
+             buffer-file-name
+             (> (buffer-size) 0))
+    (let ((ruff (my-python-tool "ruff")))
+      (if (not ruff)
+          (message "Ruff format skipped: ruff not found")
+        (let ((formatted (generate-new-buffer " *ruff-format*"))
+              (stderr-file (make-temp-file "ruff-format-stderr"))
+              (coding-system-for-read 'utf-8)
+              (coding-system-for-write 'utf-8))
+          (unwind-protect
+              ;; call-process-region feeds a buffer region to the program's
+              ;; standard input.  A (BUFFER FILE) destination routes stdout to
+              ;; BUFFER and stderr to FILE, so a failure can explain itself.
+              (if (and (zerop (call-process-region
+                               (point-min) (point-max) ruff
+                               nil (list formatted stderr-file) nil
+                               "format" "--stdin-filename" buffer-file-name "-"))
+                       (> (buffer-size formatted) 0))
+                  ;; replace-buffer-contents diffs the two buffers, keeping point
+                  ;; and markers at the semantically same place instead of
+                  ;; jumping to the top of the file.
+                  (replace-buffer-contents formatted)
+                (message "Ruff format failed: %s"
+                         (or (my-python--first-line stderr-file) "no output")))
+            (kill-buffer formatted)
+            (delete-file stderr-file)))))))
 
-;; Register format-on-save for python-mode ...
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
-;; ... and also for python-ts-mode (the Emacs 29+ tree-sitter variant).
-;; The nil t arguments mean: don't prepend (append instead), and make this
-;; hook buffer-local so it only fires in Python buffers.
-(add-hook 'python-ts-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'ruff-format-buffer nil t)))
+
+;;; Flycheck checkers
+
+(defun my-python-setup-flycheck ()
+  "Point flycheck's Python checkers at the current project's tools and config.
+These are buffer-local settings, so they fix what the editor runs without
+touching `exec-path' or PYTHONPATH globally."
+  (setq-local flycheck-python-ruff-executable (my-python-tool "ruff"))
+  (setq-local flycheck-python-mypy-executable (my-python-tool "mypy"))
+  ;; nil means "pass no --config", leaving ruff to search upward from the file
+  ;; itself.  Flycheck's default finds the nearest pyproject.toml and passes it
+  ;; explicitly; in a workspace that is the sub-package's file, which configures
+  ;; nothing and, by being passed explicitly, suppresses ruff's own search.
+  (setq-local flycheck-python-ruff-config nil)
+  ;; mypy, unlike ruff, does not search upward for a config file, so nil would
+  ;; leave it running on defaults.  It needs an explicit path, which flycheck
+  ;; accepts in absolute form.
+  (setq-local flycheck-python-mypy-config
+              (my-python-config-file "^\\[tool\\.mypy\\]")))
+
+
+;;; Per-buffer Python setup
+
+(defun my-python-mode-setup ()
+  "Buffer-local setup shared by `python-mode' and `python-ts-mode'."
+  (my-python-setup-flycheck)
+  ;; The nil t arguments mean: append rather than prepend, and make the hook
+  ;; buffer-local so it only fires in Python buffers.
+  (add-hook 'before-save-hook #'ruff-format-buffer nil t))
+
+(add-hook 'python-mode-hook #'my-python-mode-setup)
+(add-hook 'python-ts-mode-hook #'my-python-mode-setup)
 
 ;; OLD CONFIGURATION (replaced by Ruff):
 ;; (use-package blacken
@@ -244,66 +329,6 @@ would silently skip formatting if you were using python-ts-mode."
             ;; /opt/homebrew/bin from exec-path, causing tools like ruff and pyright
             ;; to become unfindable.  Re-add it here as a safety measure.
             (add-to-list 'exec-path "/opt/homebrew/bin")))
-
-;;- (defun my-pyvenv-fix-path ()
-;;-   "Ensure Homebrew stays in exec-path after virtualenv activation."
-;;-   (add-to-list 'exec-path "/opt/homebrew/bin"))
-;;-
-;;- (add-hook 'pyvenv-post-activate-hooks 'my-pyvenv-fix-path)
-
-
-
-;;; The next few functions are from older Python tooling.
-;;; Their interaction with the current Poetry-based setup is uncertain.
-
-;; Automatically Activate Virtual Environment if .venv Exists
-;;
-;; This function searches upward from the current file for a .venv directory
-;; and activates it.  Its add-hook was commented out on 10Mar25 after it was
-;; found to interfere with poetry-tracking-mode, which handles venv activation
-;; automatically for Poetry projects.  The function is kept here in case it
-;; proves useful for non-Poetry projects in the future.
-(defun my-pyvenv-activate-dir ()
-  "Search for .venv directory and activate virtualenv if found."
-  (let ((venv-dir (locate-dominating-file default-directory ".venv")))
-    (when venv-dir
-      (pyvenv-activate (concat venv-dir ".venv")))))
-
-;;; Commented out, 10Mar25.  ChatGPT
-;;; (https://chatgpt.com/g/g-p-67bf5bc6c9c0819194ca6a3b49f71267-blogscraper/c/67cea266-9890-8009-a1e3-78f5a5a6862d)
-;;; claims that it is not needed and interferes with poetry-tracking-mode
-;;;- (add-hook 'python-mode-hook 'my-pyvenv-activate-dir)
-
-;; Fix PYTHONPATH for Local Imports
-;;
-;; NOTE: These two hooks fire on pyvenv-post-activate-hooks and
-;; pyvenv-post-deactivate-hooks.  It is unclear whether poetry-tracking-mode
-;; fires those hooks when it activates a Poetry virtualenv.  If it does not,
-;; my-set-pythonpath never runs and has no effect.  Left here pending
-;; verification; if confirmed dead, these can be removed.
-(defun my-bounded-locate-dominating-file (dir bound file-name)
-  "Search upwards from DIR for FILE-NAME until reaching BOUND.
-Return the directory containing FILE-NAME or BOUND if not found."
-  (let* ((expanded-dir (expand-file-name dir))
-         (expanded-bound (expand-file-name bound))
-         (file-path (expand-file-name file-name expanded-dir)))
-    (cond ((equal expanded-dir expanded-bound) expanded-bound)
-          ((file-exists-p file-path) expanded-dir)
-          (t (my-bounded-locate-dominating-file
-              (file-name-directory
-               (directory-file-name expanded-dir))
-              expanded-bound file-name)))))
-
-(defun my-set-pythonpath ()
-  "Setup PYTHONPATH when virtualenv is activated."
-  (let ((project-root (my-bounded-locate-dominating-file
-                       default-directory
-                       (locate-dominating-file default-directory ".git") ".venv")))
-    (when project-root
-      (setenv "PYTHONPATH" (expand-file-name project-root)))))
-
-(add-hook 'pyvenv-post-activate-hooks 'my-set-pythonpath)
-(add-hook 'pyvenv-post-deactivate-hooks 'my-set-pythonpath)
 
 (provide 'deg-init-python)
 ;;; deg-python.el ends here
