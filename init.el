@@ -58,17 +58,6 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
-;; (3Nov16 - byte-compile-dest-file seems to be undefined suddenly.  So, instead of this
-;; code, for now, do a manual M-x byte-recompile-directory after editing)
-;;=;; (defun byte-compile-current-buffer ()
-;;=;;   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
-;;=;;   (interactive)
-;;=;;   (when (and (eq major-mode 'emacs-lisp-mode)
-;;=;;              (file-exists-p (byte-compile-dest-file buffer-file-name)))
-;;=;;     (byte-compile-file buffer-file-name)))
-;;=;;
-;;=;; (add-hook 'after-save-hook 'byte-compile-current-buffer)
-
 ;;; Enable completion globally
 (add-hook 'after-init-hook 'global-company-mode)
 
