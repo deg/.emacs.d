@@ -154,7 +154,22 @@ IPython after Emacs starts is picked up without restarting Emacs."
   (lsp-diagnostics-provider :none))
 
 (use-package lsp-pyright
-  :defer t)
+  :defer t
+  :custom
+  ;; One pyright server per project, each scoped to its own root.
+  ;;
+  ;; The default, t, makes a single server adopt every folder lsp-mode has ever
+  ;; recorded in ~/.emacs.d/.lsp-session-v1.  That list only grows, and had reached
+  ;; 18 roots — including projects since moved, two copies of the same one, and a
+  ;; directory inside pyenv's Python 3.12 standard library.  Pyright then indexed
+  ;; all of them at every startup, and could resolve a symbol to a stale copy of a
+  ;; project rather than the one being edited.
+  ;;
+  ;; lsp-pyright reads this when it registers its client, i.e. when the package
+  ;; loads, so it has to be set beforehand.  :custom does that correctly — it
+  ;; expands to a customize-set-variable that runs at startup, well before the
+  ;; deferred package is pulled in.
+  (lsp-pyright-multi-root nil))
 
 ;; Tree-sitter for Syntax Highlighting
 (use-package tree-sitter
