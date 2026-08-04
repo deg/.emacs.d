@@ -211,7 +211,7 @@ IPython after Emacs starts is picked up without restarting Emacs."
 ;; other would work for the projects here today, but only by coincidence.
 
 (defun my-python-venv-bin-dir ()
-  "Return the bin directory of the project's virtualenv, or nil if there is none.
+  "Return the bin directory of the project's virtualenv, or nil if none.
 Searches upward from `default-directory' for a .venv directory."
   (let ((venv-dir (locate-dominating-file default-directory ".venv")))
     (when venv-dir
@@ -230,10 +230,10 @@ it pins rather than whatever happens to be earliest on PATH.  Falls back to
       (executable-find name))))
 
 (defun my-python-config-file (section)
-  "Return the nearest pyproject.toml at or above `default-directory' with SECTION.
-SECTION is a regexp matched against the file's contents; callers pass the
-section header of the tool they are configuring.  Returns nil if no matching
-file is found.
+  "Return the nearest pyproject.toml containing SECTION, or nil if none.
+Searches at and above `default-directory'.  SECTION is a regexp matched against
+the file's contents; callers pass the section header of the tool they are
+configuring.
 
 `locate-dominating-file' is usually handed a file name, but it also accepts a
 predicate function, called with each directory as it walks upward.  That is what
