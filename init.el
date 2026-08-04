@@ -33,7 +33,6 @@
 (load "~/.emacs.d/deg-javascript")
 (load "~/.emacs.d/deg-clojure")
 (load "~/.emacs.d/display")
-(load "~/.emacs.d/irc")
 (load "~/.emacs.d/linux")
 (load "~/.emacs.d/windows")
 
