@@ -24,7 +24,7 @@ A personal Emacs configuration (~/.emacs.d) organized as modular `.el` files loa
 
 - **Package manager**: `package.el` with MELPA only (Marmalade removed as dead; MELPA-stable removed due to CIDER breakage). New packages go in the `my-packages` list in `packages.el`.
 - **Experimental packages**: `beads` is installed via `use-package :vc` (not on MELPA yet) — this is intentionally separate from the main `my-packages` list.
-- **Byte compilation**: Auto-compilation was disabled (see comment in `init.el`). To recompile after edits: `M-x byte-recompile-directory`.
+- **Byte compilation**: Not used for this config — there are deliberately no `.elc` files here, so an edited `.el` always takes effect on the next restart. Do not byte-compile these files or run `M-x byte-recompile-directory` on this directory. A `.elc` shadows its `.el` (`load-prefer-newer` is nil, and `init.el` loads modules by base name), so a stale one makes edits silently inert — which has cost real debugging time. Compiling bought nothing anyway: measured startup was 568ms compiled vs 566ms from source, because the time goes on loading packages in `elpa/`, not on ~1900 lines of config. This build has no native compilation (`native-comp-available-p` is nil).
 - **Backups**: Redirected to `~/.emacs-saves` to avoid cluttering project directories and triggering Flask auto-reload.
 - **Lock files**: Disabled (`create-lockfiles nil`) to avoid interfering with Create React App.
 
