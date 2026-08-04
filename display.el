@@ -49,28 +49,16 @@ Warning: tested on Windows Vista only."
                       "CommitMono Nerd Font Mono-13"
                     "CommitMono-13")))
 
-;; Fix line-height bouncing in vterm: Claude Code's spinners use Unicode symbols
-;; (e.g. ✶ U+2736, ⏺ U+23FA) that CommitMono/Nerd don't cover, so Emacs falls
-;; back to Arial Unicode MS or STIX Two Math, which have taller line metrics.
-;; Map all common symbol blocks to Menlo, which has consistent metrics.
+;; Fix line-height bouncing in terminal buffers: Claude Code's spinners use
+;; Unicode symbols (e.g. ✶ U+2736, ⏺ U+23FA) that CommitMono/Nerd don't cover,
+;; so Emacs falls back to Arial Unicode MS or STIX Two Math, which have taller
+;; line metrics.  Map all common symbol blocks to Menlo, whose metrics match.
 (dolist (range '((#x2300 . #x23FF)   ; Miscellaneous Technical (⏺ etc.)
                  (#x25A0 . #x25FF)   ; Geometric Shapes
                  (#x2600 . #x26FF)   ; Miscellaneous Symbols
                  (#x2700 . #x27BF)   ; Dingbats (✶ etc.)
                  (#x2800 . #x28FF))) ; Braille Patterns (used by some spinners)
   (set-fontset-font "fontset-default" range (font-spec :family "Menlo")))
-
-;; Prevent Emacs from recentering the window when vterm cursor jumps around.
-;; Scoped to vterm buffers only — default scroll behavior is preserved elsewhere.
-(add-hook 'vterm-mode-hook
-          (lambda () (setq-local scroll-conservatively 101)))
-
-;; Mark vterm windows as "dedicated" so Emacs will never reuse them to display
-;; another buffer (e.g. Magit stealing the Claude vterm window on C-c g).
-;; If you need to manually switch a dedicated window to another buffer, use
-;; C-x b — ido/switch-to-buffer overrides dedication.  (Fixes emacs-qlu.)
-(add-hook 'vterm-mode-hook
-          (lambda () (set-window-dedicated-p (selected-window) t)))
 
 ;; Colors, etc.
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d")  ;; already there by default
@@ -136,9 +124,8 @@ Warning: tested on Windows Vista only."
 (setq pop-up-windows nil) ;; but see comment in [http://www.emacswiki.org/emacs/OneWindow]
 
 ;; Let help-like buffers split the current frame instead of opening a new
-;; frame, even though pop-up-windows is nil.  Needed because vterm windows
-;; are dedicated (see vterm-mode-hook above); without this override, C-h v
-;; from inside a vterm has nowhere to go and falls back to a new frame.
+;; frame, even though pop-up-windows is nil.  Without this override, C-h v
+;; from a window that display-buffer can't reuse falls back to a new frame.
 ;; Full rationale in bead emacs-atz.
 (add-to-list 'display-buffer-alist
              '("\\*\\(Help\\|Apropos\\|[Ii]nfo\\|Backtrace\\)\\*"

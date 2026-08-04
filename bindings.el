@@ -16,12 +16,10 @@
 
 ;; New bindings
 (global-set-key (kbd "C-c TAB") 'browse-url)
-;; C-x ! used to be bound first to 'shell, then immediately rebound to 'ansi-term
-;; (the second line silently won).  Now bound to vterm, which is a proper terminal
-;; emulator — unlike ansi-term/shell, it handles ncurses apps and color prompts correctly.
-;;- (global-set-key (kbd "C-x !") 'shell)
-;;- (global-set-key (kbd "C-x !") 'ansi-term)
-(global-set-key (kbd "C-x !") 'vterm)
+;; A real terminal emulator (see the ghostel block in packages.el), so ncurses
+;; apps and color prompts work — unlike shell/ansi-term.  Starts in the current
+;; buffer's directory; M-x ghostel-project starts at the project root instead.
+(global-set-key (kbd "C-x !") 'ghostel)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Improve grep navigation

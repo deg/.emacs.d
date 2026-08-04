@@ -63,35 +63,6 @@
        :rev :newest))
 
 
-;; vterm — a proper terminal emulator inside Emacs, based on libvterm.
-;; Unlike ansi-term/shell/eshell, vterm runs a real terminal (not a comint buffer),
-;; so ncurses apps (htop, vim, etc.) and shell prompts with color/cursor magic work.
-;;
-;; System requirements (both must be installed before Emacs compiles the module):
-;;   cmake  — brew install cmake   (used to build the native module)
-;;   libtool — brew install libtool (already installed)
-;;
-;; On first use, Emacs will compile a small C module (vterm-module.so).
-;; If it fails, run: M-x vterm-module-compile
-(use-package vterm
-  :ensure t
-  :config
-  ;; Use the login shell so .zshrc / .bash_profile are sourced, giving the same
-  ;; environment (PATH, aliases, etc.) you'd get in a normal terminal window.
-  (setq vterm-shell (concat "/bin/zsh --login"))
-  ;; Keep a generous scrollback — the default (1000) is easy to exhaust.
-  (setq vterm-max-scrollback 10000))
-
-(declare-function vterm-send-key "vterm")
-(declare-function vterm-send-string "vterm")
-(with-eval-after-load 'vterm
-  (define-key vterm-mode-map (kbd "C-c C-[")
-              (lambda () (interactive)
-                (vterm-send-key "<escape>")))
-  (define-key vterm-mode-map (kbd "S-<return>")
-              (lambda () (interactive)
-                (vterm-send-string "\n"))))
-
 ;; claude-code.el — Claude Code integration (https://github.com/stevemolitor/claude-code.el).
 ;; C-c c is a prefix:
 ;;   C-c c c  start Claude for this project (first one is named "default")
@@ -100,27 +71,28 @@
 ;;   C-c c B  switch across all projects;  C-c c k kill;  C-c c m full menu
 ;; Installed from git (:vc) — the MELPA package named "claude-code" is a
 ;; DIFFERENT project (yuya373's); never install that one from the archive.
-;; Uses our existing vterm as the terminal backend.
+;; Uses ghostel as the terminal backend (see below).
 
-;; ghostel — terminal backend for the Claude buffers: libghostty-based (the
-;; engine behind the Ghostty terminal), faster than vterm and renders the
-;; Claude TUI most faithfully. Also a standalone terminal: M-x ghostel.
-;; Its native module is a prebuilt binary, but the download is manual:
-;; on a new machine, run M-x ghostel-download-module once (no compile step,
-;; no cmake/libtool needed, unlike vterm).
+;; ghostel — a real terminal emulator inside Emacs, built on libghostty (the
+;; engine behind the Ghostty terminal).  Serves two roles here: the terminal
+;; backend for the Claude buffers, which it renders most faithfully, and a
+;; standalone terminal (M-x ghostel, bound to C-x ! in bindings.el).
+;; Its native module is a prebuilt binary with no compile step, but the
+;; download is manual: on a new machine, run M-x ghostel-download-module once.
 (use-package ghostel :ensure t)
 
 (use-package claude-code
   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
   :bind-keymap ("C-c c" . claude-code-command-map)
   :config
-  ;; Backend: 'ghostel (current) or 'vterm (see use-package comment above).
+  ;; Backend: 'ghostel (see use-package block above).  The package also
+  ;; supports 'eat and 'vterm, neither of which is installed here.
   (setq claude-code-terminal-backend 'ghostel)
 
   ;; Window behavior — using the package defaults: the Claude window opens
   ;; below the current one and focus stays where you are. Alternatives:
   ;; (setq claude-code-display-window-fn #'pop-to-buffer-same-window) ; take over
-  ;;         the current window, like the old my/claude-vterm did
+  ;;         the current window instead of splitting
   ;; (setq claude-code-toggle-auto-select t) ; move focus into the Claude
   ;;         window whenever it opens
 
