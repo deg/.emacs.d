@@ -73,6 +73,18 @@
 (add-hook 'after-init-hook 'global-company-mode)
 
 
+;;; Edit server
+;;
+;; Lets emacsclient reach this Emacs — opening files from the shell with
+;; `emacsclient FILE', and letting external tools inspect or drive the running
+;; session.  The guard matters when a second Emacs starts while one is already
+;; holding the socket: server-start would otherwise warn and take the socket
+;; over, leaving emacsclient talking to whichever instance started last.
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+
 
 ;;; Emacs behavior - I suppose my basic goal is to look like Epsilon and my memories of ZMacs.
 
@@ -167,11 +179,12 @@
  '(magit-tag-arguments '("--annotate"))
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(ace-window auto-complete beads better-defaults cider company consult exec-path-from-shell flycheck
-                lsp-pyright magit poetry prettier projectile pytest rainbow-delimiters rjsx-mode
-                smartparens tree-sitter-langs undo-tree vterm))
+   '(ace-window auto-complete beads better-defaults cider claude-code company consult
+                exec-path-from-shell flycheck ghostel lsp-pyright magit poetry prettier projectile
+                pytest rainbow-delimiters rjsx-mode smartparens tree-sitter-langs undo-tree vterm))
  '(package-vc-selected-packages
-   '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp")))
+   '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el" :rev :newest)))
  '(quote (safe-local-variable-values '((css-indent-offset . 2))))
  '(rainbow-delimiters-max-face-count 4)
  '(safe-local-variable-values
