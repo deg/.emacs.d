@@ -1,3 +1,5 @@
+;;; bindings.el --- Global key bindings  -*- lexical-binding: t; -*-
+
 ;; Reasonable scrolling behavior
 (setq scroll-preserve-screen-position t)
 (global-set-key (kbd "M-<up>") 'scroll-down)

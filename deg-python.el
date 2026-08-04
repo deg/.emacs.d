@@ -1,4 +1,4 @@
-;;; deg-python.el --- Emacs 29 Configuration for Python + Poetry Development
+;;; deg-python.el --- Python and Poetry setup  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; This file sets up Python development with Poetry, LSP, and related tools.

@@ -1,3 +1,5 @@
+;;; init.el --- Personal Emacs configuration  -*- lexical-binding: t; -*-
+
 ;; To load on Mac with debugging of this init:
 ;; $ open -a /Applications/Emacs.app --args --debug-init
 

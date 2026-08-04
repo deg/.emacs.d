@@ -1,3 +1,5 @@
+;;; bindings-smartparens.el --- Smartparens setup  -*- lexical-binding: t; -*-
+
 ;;; Copied from
 ;;; https://github.com/Fuco1/smartparens/wiki/Example-configuration
 ;;; 18 November, 2014

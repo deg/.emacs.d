@@ -1,3 +1,5 @@
+;;; windows.el --- Windows-specific settings  -*- lexical-binding: t; -*-
+
 ;;; [TODO] How can I load this file only under Windows?
 ;;; Possibly like this code fragment I found:
 ;; (cond

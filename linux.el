@@ -1,3 +1,5 @@
+;;; linux.el --- Linux-specific settings  -*- lexical-binding: t; -*-
+
 ;;; [TODO] How can I load this file only under Linux?
 
 

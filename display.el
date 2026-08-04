@@ -1,3 +1,4 @@
+;;; display.el --- Fonts, theme and UI settings  -*- lexical-binding: t; -*-
 
 ;; Don't need circus-sized font. Reduce to 11pt
 ;  (set-face-attribute 'default nil :height 110)

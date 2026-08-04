@@ -1,3 +1,5 @@
+;;; packages.el --- Package installation  -*- lexical-binding: t; -*-
+
 (when (< emacs-major-version 24)
   (warn "DEG emacs environment requires Emacs 24 or later, not %s." emacs-version))
 
