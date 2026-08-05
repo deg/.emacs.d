@@ -88,14 +88,19 @@ Warning: tested on Windows Vista only."
 (setq initial-scratch-message nil)
 (menu-bar-mode -1)
 (add-hook 'window-setup-hook (lambda () (tool-bar-mode -1)))
-(when (string-equal system-type "gnu/linux")
+;; The two frame-geometry blocks below only work under a window system, so both
+;; are gated on `display-graphic-p'.  That is nil under `emacs --batch' and in a
+;; terminal Emacs, where `x-display-pixel-width' and `x-send-client-message'
+;; signal rather than return.  The guard keeps `emacs --batch -l init.el' usable
+;; as a smoke test that the whole config still loads.
+(when (and (display-graphic-p) (string-equal system-type "gnu/linux"))
   (defun x11-maximize-frame ()
     "Maximize the current frame (to full screen)"
     (interactive)
     (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
     (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
   (x11-maximize-frame))
-(when (string-equal system-type 'darwin)
+(when (and (display-graphic-p) (string-equal system-type 'darwin))
   (cond ((> (x-display-pixel-width) 2500)
          ;; Fill most of middle screen (assuming Mac is on right, per my home setup)
          (setq default-frame-alist
