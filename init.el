@@ -107,6 +107,49 @@
             (visual-line-mode 1)
             (auto-fill-mode -1)))
 
+;; Markdown linting runs markdownlint-cli2 (installed globally via npm; see
+;; ~/core-personal-files/setup-new-machine.sh), with proselint chained after it
+;; for prose style.
+;;
+;; Flycheck will not pass --config unless this hook is non-empty: it ships the
+;; three locator functions below but leaves the hook nil, so out of the box no
+;; config file is ever found and markdownlint-cli2 runs on stock rules -- which
+;; means MD013 flags every soft-wrapped paragraph.  Letting markdownlint-cli2
+;; find its own config is not an alternative: flycheck feeds it a copy of the
+;; buffer written to a temp directory under /tmp, so the tool's own search of
+;; parent directories starts in the wrong tree entirely.
+;;
+;; `flycheck-locate-config-file-ancestor-directories' looks at the real file
+;; name rather than that temp copy, so a project that drops its own
+;; .markdownlint-cli2.jsonc at its root overrides the ~/ fallback.  setq-local
+;; confines all of this to Markdown buffers, leaving the Python and JavaScript
+;; checkers to resolve their configs as they do now.
+(defvar flycheck-locate-config-file-functions)
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (setq-local flycheck-locate-config-file-functions
+                        '(flycheck-locate-config-file-ancestor-directories
+                          flycheck-locate-config-file-home))))
+
+;; Proselint checks prose style, and flycheck runs it in every text-derived
+;; mode.  That is wanted for notes and documentation but not while writing a
+;; commit message.  Keying off message-mode alone would miss magit: its
+;; `git-commit-major-mode' defaults to text-mode and git-commit-mode is only a
+;; minor mode on top, so commit buffers are text-mode buffers and would be
+;; linted.  `git-commit-setup-hook' is the one magit actually runs for them.
+;; `flycheck-disabled-checkers' is automatically buffer-local, so this affects
+;; only the buffer being set up.
+(defvar flycheck-disabled-checkers)
+(defun my-markdown-disable-proselint ()
+  "Keep proselint quiet in commit-message and mail buffers."
+  ;; `boundp' guards the case where flycheck failed to load: without it this
+  ;; would signal inside a commit buffer's setup and get in the way of the
+  ;; commit itself, which is a much worse outcome than a missing lint.
+  (when (boundp 'flycheck-disabled-checkers)
+    (add-to-list 'flycheck-disabled-checkers 'proselint)))
+(add-hook 'git-commit-setup-hook #'my-markdown-disable-proselint)
+(add-hook 'message-mode-hook #'my-markdown-disable-proselint)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
