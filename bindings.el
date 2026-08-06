@@ -1,5 +1,52 @@
 ;;; bindings.el --- Global key bindings  -*- lexical-binding: t; -*-
 
+;;; Turn C-[ into a key of its own
+;;
+;; C-[ and ESC are the same character -- both are ASCII 27 -- so from the
+;; character alone Emacs cannot tell which one you pressed.  That matters
+;; because ESC ESC ESC runs `keyboard-escape-quit', which among other things
+;; deletes all but the selected window.  Three C-[ in a row, from a finger that
+;; missed C-p, would wipe out the window layout.
+;;
+;; Under a window system the two keys do arrive differently: the physical Escape
+;; key sends the symbol `escape', while C-[ sends the raw character 27.  The
+;; block below exploits that difference.  Emacs consults `function-key-map'
+;; before `key-translation-map', so emptying the escape entry out of the earlier
+;; map and recreating it in the later one lets the raw 27 be diverted without
+;; the Escape key being caught along with it:
+;;
+;;   physical Esc -> `escape' -> key-translation-map -> ESC, as usual
+;;   C-[          -> 27       -> key-translation-map -> C-<left_bracket>
+;;
+;; C-<left_bracket> is a synthetic key that nothing generates on its own, and
+;; nothing is bound to it, so C-[ simply reports itself as undefined.
+;;
+;; That undefined report can take a moment to appear, which looks like a failure
+;; but is not.  Character 27 is also `meta-prefix-char', so a lone C-[ is
+;; ambiguous -- Emacs cannot yet tell whether a Meta sequence is starting.  It
+;; echoes "ESC" and waits; a following keystroke resolves it.  C-h k reports ESC
+;; for the same reason until a second key arrives.  Either way ESC ESC ESC is
+;; never reached, which is the whole point.
+;;
+;; None of this can work on a terminal, where both keys arrive as byte 27 with
+;; nothing to tell them apart -- there the translation would swallow the real
+;; Escape key and ESC-as-Meta-prefix along with it.  Hence the
+;; `display-graphic-p' guard.
+;; From https://superuser.com/questions/173851/linux-remap-ctrl-key
+(when (display-graphic-p)
+  (define-key key-translation-map [?\C-\[] [(control left_bracket)])
+  (define-key key-translation-map [escape] [?\e])
+  (define-key function-key-map [escape] nil)
+  (define-key function-key-map [?\e] nil)
+  ;; `local-function-key-map' is per-terminal, so it has to be cleared as each
+  ;; terminal comes up rather than once at load time.
+  (defun remove-escape-from-local-function-key-map ()
+    "Drop the escape entries from this terminal's `local-function-key-map'."
+    (define-key local-function-key-map [?\e] nil)
+    (define-key local-function-key-map [escape] nil))
+  (add-hook 'term-setup-hook 'remove-escape-from-local-function-key-map))
+
+
 ;; Reasonable scrolling behavior
 (setq scroll-preserve-screen-position t)
 (global-set-key (kbd "M-<up>") 'scroll-down)

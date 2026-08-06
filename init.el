@@ -15,8 +15,13 @@
 (load "~/.emacs.d/deg-javascript")
 (load "~/.emacs.d/deg-clojure")
 (load "~/.emacs.d/display")
-(load "~/.emacs.d/linux")
-(load "~/.emacs.d/windows")
+
+;; Each of these holds settings that only make sense on one operating system, so
+;; only the matching one is loaded.  `system-type' is a symbol Emacs sets at
+;; startup; `cond' takes the first branch whose test is non-nil.
+(cond ((eq system-type 'darwin)     (load "~/.emacs.d/macintosh"))
+      ((eq system-type 'gnu/linux)  (load "~/.emacs.d/linux"))
+      ((eq system-type 'windows-nt) (load "~/.emacs.d/windows")))
 
 (load "~/.emacs.d/bindings")
 (load "~/.emacs.d/bindings-smartparens")
