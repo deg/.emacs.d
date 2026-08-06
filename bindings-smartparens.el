@@ -47,8 +47,11 @@
 (define-key sp-keymap (kbd "C-M-<backspace>") 'sp-splice-sexp-killing-backward)
 (define-key sp-keymap (kbd "C-S-<backspace>") 'sp-splice-sexp-killing-around)
 
+;; Repeated C-] drills inward: the expression, then its insides, then its first
+;; element.  C-M-] instead walks forward from sibling to sibling.  For the
+;; backward direction give either one a negative argument -- M-- C-M-] selects
+;; the previous thing.
 (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
-(define-key sp-keymap (kbd "C-<left_bracket>") 'sp-select-previous-thing)
 (define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
 
 (define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
