@@ -159,6 +159,13 @@ Warning: tested on Windows Vista only."
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
+;; Colour each nesting level of brackets differently, in every programming
+;; mode.  The depth-1/2/3 colours and `rainbow-delimiters-max-face-count' are
+;; set in init.el's Customize block; this hook is what actually turns the mode
+;; on, so without it those settings never take effect.
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+
 ;; Improved completion/matching for buffers and files
 (ido-mode 1)
 

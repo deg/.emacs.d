@@ -1,4 +1,25 @@
-;;; Clojure and friends
+;;; Clojure and friends  -- DISABLED, NOT LOADED
+
+;; Kept for reference only.  init.el no longer loads this file, and nothing in
+;; here runs.
+;;
+;; Last real revision 05Sep18; the 13May26 commit that renamed clojure.el to
+;; deg-clojure.el changed no lines.  Disabled 07Aug26.
+;;
+;; Four of the live forms below were never Clojure-specific, and this file was
+;; the whole config's only source for them, so they were copied to real homes
+;; before the load line went away.  They are left here too, inert, so the file
+;; still reads as it did:
+;;
+;;   prog-mode-hook rainbow-delimiters-mode  ->  display.el
+;;   prog-mode-hook subword-mode             ->  init.el
+;;   C-c ; comment-region                    ->  bindings.el
+;;   <s-backspace> kill-backward-up-list     ->  bindings.el
+;;
+;; The Clojure-specific parts had rotted: `cider-jack-in' now takes an argument
+;; the call below does not pass, and `cider-jack-in-clojurescript' no longer
+;; exists in CIDER at all.  cider and clojure-mode are still in `my-packages';
+;; nothing loads them now.
 
 (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 

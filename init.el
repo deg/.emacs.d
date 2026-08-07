@@ -13,7 +13,8 @@
 (load "~/.emacs.d/packages")
 (load "~/.emacs.d/deg-python")
 (load "~/.emacs.d/deg-javascript")
-(load "~/.emacs.d/deg-clojure")
+;; deg-clojure.el is no longer loaded; see the header comment in that file.
+;; (load "~/.emacs.d/deg-clojure")
 (load "~/.emacs.d/display")
 
 ;; Each of these holds settings that only make sense on one operating system, so
@@ -94,6 +95,11 @@
   kept-old-versions 2
   version-control t)
 
+
+;; Treat the parts of a CamelCase name as separate words, so M-f, M-b and
+;; friends stop inside `getUserName' rather than skipping the whole symbol.
+;; Applies in every programming mode.
+(add-hook 'prog-mode-hook 'subword-mode)
 
 ;; Wrap prose at column 88.  Global fill-column is 100 (see custom-set-variables
 ;; below); this override applies only to text-derived modes.  markdown-mode,

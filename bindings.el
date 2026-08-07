@@ -83,6 +83,11 @@
 ;; buffer's directory; M-x ghostel-project starts at the project root instead.
 (global-set-key (kbd "C-x !") 'ghostel)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c ;") 'comment-region)
+;; Inert on this Mac: `ns-command-modifier' and `ns-alternate-modifier' are both
+;; `meta', and nothing else is mapped to super, so no key can produce s-.  Kept
+;; because it does work on Linux, where the Windows key supplies super.
+(global-set-key (kbd "<s-backspace>") 'kill-backward-up-list)
 
 ;; Improve grep navigation
 (global-set-key (kbd "M-n") 'next-error)
