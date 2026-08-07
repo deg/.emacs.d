@@ -225,6 +225,9 @@
 
 ;; Avoid spewing tmp files everywhere whenever I touch a file
 ;; See https://www.reddit.com/r/emacs/comments/tejte0/undotree_bug_undotree_files_scattering_everywhere/
+;; The `defvar' declares the name without giving it a value, so the byte
+;; compiler knows it is a real variable; undo-tree defines it for real on load.
+(defvar undo-tree-auto-save-history)
 (setq undo-tree-auto-save-history nil)
 ;; untested altermative to save centrally:
 ;;- (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))

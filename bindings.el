@@ -1,5 +1,20 @@
 ;;; bindings.el --- Global key bindings  -*- lexical-binding: t; -*-
 
+;; Declared, not defined.  A `defvar' with no value simply tells the byte
+;; compiler that these names are real variables rather than typos; the owning
+;; package still creates them and supplies their values when it loads.
+(defvar compilation-mode-map)
+(defvar magit-mode-map)
+(defvar comint-scroll-to-bottom-on-input)
+(defvar comint-scroll-to-bottom-on-output)
+(defvar comint-scroll-show-maximum-output)
+(defvar comint-completion-autolist)
+(defvar comint-input-ignoredups)
+(defvar comint-completion-addsuffix)
+(defvar comint-move-point-for-output)
+(defvar comint-prompt-read-only)
+
+
 ;;; Turn C-[ into a key of its own
 ;;
 ;; C-[ and ESC are the same character -- both are ASCII 27 -- so from the

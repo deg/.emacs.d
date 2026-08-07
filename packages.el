@@ -149,6 +149,9 @@
 
 
 ;; Don't warn about magit-auto-revert-mode
+;; The `defvar' declares the name without giving it a value, so the byte
+;; compiler knows it is a real variable; magit defines it for real on load.
+(defvar magit-last-seen-setup-instructions)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; Enable which-key mode (see https://github.com/justbur/emacs-which-key)

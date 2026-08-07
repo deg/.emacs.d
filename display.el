@@ -1,5 +1,11 @@
 ;;; display.el --- Fonts, theme and UI settings  -*- lexical-binding: t; -*-
 
+;; Declared, not defined.  A `defvar' with no value simply tells the byte
+;; compiler that these names are real variables rather than typos; recentf
+;; still creates them and supplies their values when it loads.
+(defvar recentf-max-menu-items)
+(defvar recentf-list)
+
 ;; Don't need circus-sized font. Reduce to 11pt
 ;  (set-face-attribute 'default nil :height 110)
 ;; Later:  Bring in Windows Consolas font as follows:
