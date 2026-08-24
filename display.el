@@ -216,3 +216,42 @@ Warning: tested on Windows Vista only."
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ; Or 'forward, 'reverse, 'post-forward
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
+
+;;; Magit truncates long lines: `magit-section-mode', the parent of every magit
+;;; buffer, sets `truncate-lines' to t.  Magit offers no option to change that, so
+;;; override it buffer-locally in each magit buffer -- status, diff, revision and
+;;; log alike.
+;;;
+;;; `magit-refresh-buffer-hook' runs inside each magit buffer every time magit
+;;; refreshes it.  A major-mode hook would serve just as well for buffers magit
+;;; creates from here on -- it re-runs the mode whenever it sets a buffer up, even
+;;; when reusing the single buffer it keeps per repository.  The refresh hook is
+;;; preferred because it also reaches buffers that are already open when this file
+;;; is re-evaluated: a change here takes effect on their next `g', with no need to
+;;; kill and recreate them.
+;;;
+;;; `word-wrap' breaks lines at spaces rather than mid-word.
+;;; `truncate-partial-width-windows' is a second, independent source of truncation:
+;;; at its default of 50, Emacs truncates in any window narrower than 50 columns no
+;;; matter what `truncate-lines' says.  nil switches that off in magit buffers only.
+;;;
+;;; `C-x x t' (`toggle-truncate-lines') still flips truncation by hand, until the
+;;; buffer's next refresh restores the setting below.
+;;;
+;;; `visual-wrap-prefix-mode' indents the continuation of a wrapped line to line up
+;;; under where its text began, instead of restarting at column 0.  It works out
+;;; the indent from `adaptive-fill-regexp', the same list of characters M-q treats
+;;; as a paragraph prefix.  In a log buffer that gives the "        | " graph gutter
+;;; of a commit message; in a diff it gives the leading "-" of a removed line.  The
+;;; stock list omits "+", so added lines would be the one case that wrapped back to
+;;; column 0, colliding with the +/- gutter; the value below is the stock one with
+;;; "+" added, which lines up added, removed and context lines alike.
+(defun my-magit-wrap-long-lines ()
+  "Soft-wrap long lines in the current Magit buffer, aligning continuation lines."
+  (setq-local truncate-lines nil)
+  (setq-local word-wrap t)
+  (setq-local truncate-partial-width-windows nil)
+  (setq-local adaptive-fill-regexp "[-+–!|#%;>*·•‣⁃◦ \t]*")
+  (visual-wrap-prefix-mode 1))
+(add-hook 'magit-refresh-buffer-hook #'my-magit-wrap-long-lines)
