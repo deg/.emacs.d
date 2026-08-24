@@ -53,13 +53,16 @@
   (define-key key-translation-map [escape] [?\e])
   (define-key function-key-map [escape] nil)
   (define-key function-key-map [?\e] nil)
-  ;; `local-function-key-map' is per-terminal, so it has to be cleared as each
-  ;; terminal comes up rather than once at load time.
+  ;; `local-function-key-map' is per-terminal.  Dropping its escape entries from
+  ;; a startup hook covers the terminal Emacs starts on, which on macOS is the
+  ;; only one there is: every NS frame shares terminal 1.  A terminal created
+  ;; later -- a second X display, or `emacsclient -nw' -- would keep its own
+  ;; entries.
   (defun remove-escape-from-local-function-key-map ()
     "Drop the escape entries from this terminal's `local-function-key-map'."
     (define-key local-function-key-map [?\e] nil)
     (define-key local-function-key-map [escape] nil))
-  (add-hook 'term-setup-hook 'remove-escape-from-local-function-key-map))
+  (add-hook 'emacs-startup-hook 'remove-escape-from-local-function-key-map))
 
 
 ;; Reasonable scrolling behavior
