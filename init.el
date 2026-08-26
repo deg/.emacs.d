@@ -160,17 +160,25 @@
   "Toggle between editing this Markdown buffer and viewing it formatted."
   (interactive)
   (let ((pos (point)))
-    (if my-markdown-view-return
-        ;; `buffer-read-only' is itself permanent-local, so it survives the mode
-        ;; switch: without restoring it explicitly the buffer stays read-only.
-        (let ((previous my-markdown-view-return))
-          (funcall (car previous))
-          (read-only-mode (if (cdr previous) 1 -1))
-          (setq my-markdown-view-return nil))
+    (cond
+     ;; `buffer-read-only' is itself permanent-local, so it survives the mode
+     ;; switch: without restoring it explicitly the buffer stays read-only.
+     (my-markdown-view-return
+      (let ((previous my-markdown-view-return))
+        (funcall (car previous))
+        (read-only-mode (if (cdr previous) 1 -1))
+        (setq my-markdown-view-return nil)))
+     ;; Already viewing, but nothing was saved on the way in -- the buffer was
+     ;; opened straight into the view, as `my-cheatsheet' does.  Drop to plain
+     ;; editing.
+     ((memq major-mode '(markdown-view-mode gfm-view-mode))
+      (markdown-mode)
+      (read-only-mode -1))
+     (t
       (let ((previous (cons major-mode buffer-read-only)))
         (gfm-view-mode)
         (setq my-markdown-view-return previous)
-        (my-markdown-view-quit-mode 1)))
+        (my-markdown-view-quit-mode 1))))
     (goto-char pos)))
 
 ;; Rendered preview.  `markdown-command' is pinned rather than left to
@@ -188,6 +196,34 @@
 (defvar markdown-command)
 (setq markdown-command '("pandoc" "--from=gfm" "--to=html5" "--standalone"
                          "--metadata=title:preview"))
+
+;; Personal cheat sheets: one short Markdown file per topic in cheatsheets/,
+;; opened formatted and read-only by C-c ? (see bindings.el).
+;;
+;; These are working documents, not generated reference -- the point is to
+;; delete an entry once it has become muscle memory, so git log over that
+;; directory ends up being a record of what has been learned.  Nothing
+;; regenerates them.
+;;
+;; The picker enters `gfm-view-mode' directly rather than going through
+;; `my-markdown-toggle-view', which leaves `my-markdown-view-return' nil and so
+;; leaves `q' bound to markdown-mode's own `kill-current-buffer'.  Dismissing is
+;; the right thing for a reference you just consulted; C-c C-v is the way in to
+;; editing when you want to prune a line.
+(defvar my-cheatsheet-directory
+  (expand-file-name "cheatsheets" user-emacs-directory)
+  "Directory holding the personal cheat sheets, one .md file per topic.")
+
+(defun my-cheatsheet (name)
+  "Read the cheat sheet NAME, formatted.  `q' dismisses, C-c C-v edits."
+  (interactive
+   (list (completing-read
+          "Cheat sheet: "
+          (mapcar #'file-name-base
+                  (directory-files my-cheatsheet-directory nil "\\.md\\'"))
+          nil t)))
+  (find-file (expand-file-name (concat name ".md") my-cheatsheet-directory))
+  (gfm-view-mode))
 
 ;; Markdown linting runs markdownlint-cli2 (installed globally via npm; see
 ;; ~/core-personal-files/setup-new-machine.sh), with proselint chained after it

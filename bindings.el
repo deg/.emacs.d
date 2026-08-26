@@ -143,6 +143,9 @@
 (with-eval-after-load 'markdown-mode
   (define-key markdown-mode-map (kbd "C-c C-v") 'my-markdown-toggle-view))
 
+;; C-c ? picks a personal cheat sheet (see `my-cheatsheet' in init.el).
+(global-set-key (kbd "C-c ?") 'my-cheatsheet)
+
 
 ;; run a few shells.
 ;; (shell "*clojure-shell*")
