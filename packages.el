@@ -11,8 +11,6 @@
 ;; 25Jul18 - Moved to using just stable archive, after Cider broke on me once too often.
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;25Oct21;; (package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
 (defvar my-packages '(;; Good
                       magit                ;; Nice interface to Git
                       exec-path-from-shell ;; https://github.com/purcell/exec-path-from-shell.  Fix path right for lein on mac.
@@ -52,9 +50,28 @@
                       grip-mode    ;; GitHub-identical Markdown preview (see below)
                       ;; beads           ;; https://codeberg.org/ctietze/beads.el - not yet on Melpa
                       ))
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
+;; Emacs calls `package-initialize' itself before init.el is loaded, and that
+;; call reads only the archives configured at that moment -- the two GNU ones.
+;; MELPA is added above, which happens afterwards, so its cached index sits on
+;; disk unread and every MELPA package looks unavailable to `package-install'.
+;; Nothing notices while they are all installed already; the first new one added
+;; to `my-packages' fails with "Package 'foo' is unavailable" and takes the rest
+;; of init down with it.  `package-read-all-archive-contents' re-reads the index
+;; now that MELPA is in the list, without going to the network.
+;;
+;; It costs roughly 125ms of a 570ms startup, so it runs only when something
+;; actually needs installing, which is almost never.
+(let ((missing (seq-remove #'package-installed-p my-packages))
+      (refreshed nil))
+  (when missing
+    (package-read-all-archive-contents)
+    (dolist (p missing)
+      ;; Still absent from the cached index means the cache predates the
+      ;; package, which is the one case worth a network round trip.
+      (unless (or (assq p package-archive-contents) refreshed)
+        (package-refresh-contents)
+        (setq refreshed t))
+      (package-install p))))
 
 
 ;; [TODO] Move into main list above when it works
