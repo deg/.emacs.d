@@ -8,8 +8,8 @@ Delete an entry once you have decided about it, either way.
 Already on. It knows every git repo you visit as a "project" and scopes commands
 to it. The dozen that matter:
 
-| Key         | Does                                       |
-|-------------|--------------------------------------------|
+| Key         | Does                                        |
+|-------------|---------------------------------------------|
 | `C-c p f`   | Find a file anywhere in this project        |
 | `C-c p p`   | Switch to another project                   |
 | `C-c p b`   | Switch buffer within this project           |

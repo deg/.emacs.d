@@ -6,18 +6,18 @@ Where the commands live. One line per prefix; details in the per-topic sheets.
 
 Emacs splits `C-c` in two, and almost everything follows it:
 
-| Shape             | Belongs to                                                |
-|-------------------|-----------------------------------------------------------|
-| `C-c C-`*letter*  | The **major mode** -- means something different per buffer |
-| `C-c` *letter*    | **You**, by convention. Packages that squat here are guests |
+| Shape            | Belongs to                                                  |
+|------------------|-------------------------------------------------------------|
+| `C-c C-`*letter* | The **major mode** -- means something different per buffer  |
+| `C-c` *letter*   | **You**, by convention. Packages that squat here are guests |
 
 So `C-c C-c` is "do the main thing for this kind of file", and `C-c C-s` is
 markdown styling in a `.md` buffer and a REPL send in a Python one.
 
 ## Everywhere
 
-| Prefix    | Leads to                                    | Count |
-|-----------|---------------------------------------------|-------|
+| Prefix    | Leads to                                     | Count |
+|-----------|----------------------------------------------|-------|
 | `C-c p`   | **projectile** -- project-wide everything    | 103   |
 | `C-c c`   | **claude-code**                              | 26    |
 | `C-c !`   | **flycheck** -- errors, wherever it is on    | 19    |
@@ -30,43 +30,43 @@ markdown styling in a `.md` buffer and a REPL send in a Python one.
 
 ## Per major mode
 
-| Prefix      | In Markdown          | In Python            | In a REPL / comint  |
-|-------------|----------------------|----------------------|---------------------|
-| `C-c C-c`   | Export & preview (14) | Send buffer          | Interrupt           |
-| `C-c C-s`   | Styling: bold, code, tables (29) | Send string | Search history  |
-| `C-c C-t`   | Headers (12)          | Skeletons: def, class, for (7) | --        |
-| `C-c C-x`   | Toggles: markup, images (11) | --            | Prefix              |
-| `C-c C-a`   | Links & footnotes (6) | --                   | Beginning of line   |
-| `C-c TAB`   | Insert image          | Imports: add, fix, sort (4) | --           |
-| `C-c C-z`   | --                    | Jump to the REPL     | --                  |
-| `C-c C-v`   | Formatted view        | `python-check`       | --                  |
+| Prefix    | In Markdown                      | In Python                      | In a REPL / comint |
+|-----------|----------------------------------|--------------------------------|--------------------|
+| `C-c C-c` | Export & preview (14)            | Send buffer                    | Interrupt          |
+| `C-c C-s` | Styling: bold, code, tables (29) | Send string                    | Search history     |
+| `C-c C-t` | Headers (12)                     | Skeletons: def, class, for (7) | --                 |
+| `C-c C-x` | Toggles: markup, images (11)     | --                             | Prefix             |
+| `C-c C-a` | Links & footnotes (6)            | --                             | Beginning of line  |
+| `C-c TAB` | Insert image                     | Imports: add, fix, sort (4)    | --                 |
+| `C-c C-z` | --                               | Jump to the REPL               | --                 |
+| `C-c C-v` | Formatted view                   | `python-check`                 | --                 |
 
 Elisp is the quiet one: only `C-c C-e` (eval), `C-c C-b` (byte-compile buffer),
 `C-c C-f` (byte-compile file). Everything else there is `C-M-x` and `C-x C-e`.
 
 ## Not on C-c at all
 
-| Key       | Leads to                                            |
-|-----------|-----------------------------------------------------|
-| `?`       | **magit**: the dispatch menu, inside any magit buffer |
-| `C-x`     | Files, windows, buffers -- plus your own additions below |
-| `M-n`/`M-p` | Next / previous **error** (compilation, grep, flycheck) |
-| `<f9>`/`<f10>` | Undo / redo                                         |
+| Key            | Leads to                                                 |
+|----------------|----------------------------------------------------------|
+| `?`            | **magit**: the dispatch menu, inside any magit buffer    |
+| `C-x`          | Files, windows, buffers -- plus your own additions below |
+| `M-n`/`M-p`    | Next / previous **error** (compilation, grep, flycheck)  |
+| `<f9>`/`<f10>` | Undo / redo                                              |
 
 ## Your own top-level keys
 
-| Key             | Does                                  |
-|-----------------|---------------------------------------|
-| `C-x !`         | `ghostel` -- a real terminal in Emacs  |
-| `C-x o`         | `ace-window` -- pick a window by letter |
-| `C-x u`         | `undo-tree-visualize`                  |
-| `C-x g`         | `goto-line`                            |
-| `C-x C-b`       | `ibuffer`                              |
-| `C-x C-r`       | Recent files                           |
-| `M-<up>`/`M-<down>` | Scroll the window                  |
-| `C-z`/`M-z`     | Scroll one line                        |
-| `M-=`           | Compare this window with the next      |
-| `M-SPC`         | Collapse whitespace                    |
+| Key                 | Does                                    |
+|---------------------|-----------------------------------------|
+| `C-x !`             | `ghostel` -- a real terminal in Emacs   |
+| `C-x o`             | `ace-window` -- pick a window by letter |
+| `C-x u`             | `undo-tree-visualize`                   |
+| `C-x g`             | `goto-line`                             |
+| `C-x C-b`           | `ibuffer`                               |
+| `C-x C-r`           | Recent files                            |
+| `M-<up>`/`M-<down>` | Scroll the window                       |
+| `C-z`/`M-z`         | Scroll one line                         |
+| `M-=`               | Compare this window with the next       |
+| `M-SPC`             | Collapse whitespace                     |
 
 ## Dead prefixes
 
