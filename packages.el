@@ -163,7 +163,7 @@
 ;; grip always opens an external browser here: its in-Emacs option renders
 ;; through xwidget-webkit, and this build has no xwidget support.
 (defvar grip-preview-use-webkit)
-(setq grip-preview-use-webkit nil)
+(setopt grip-preview-use-webkit nil)
 
 
 ;; Don't warn about magit-auto-revert-mode

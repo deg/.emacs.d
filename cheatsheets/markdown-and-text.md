@@ -6,7 +6,7 @@ Delete lines once you no longer need them. `C-c C-v` here toggles editing.
 
 | Key         | Does                                                        |
 |-------------|-------------------------------------------------------------|
-| `C-c C-v`   | Toggle the formatted view: markup hidden, headers scaled     |
+| `C-c C-v`   | Toggle the formatted view: headers scaled, `*` and backticks hidden |
 | `q`         | In the view: back to editing (or dismiss a cheat sheet)      |
 | `C-c C-c l` | Live preview -- renders into an eww window on every save     |
 | `C-c C-c p` | Render once, open in the external browser                    |

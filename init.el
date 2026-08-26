@@ -125,14 +125,23 @@
 ;; scaling' sizes headers by level; the active theme (deg-tsdh-light) defines no
 ;; markdown faces of its own, so nothing else is competing for those faces.
 ;;
+;; `setopt' rather than `setq': `markdown-header-scaling' carries a :set
+;; function that recomputes `markdown-header-face-1' through -6 from
+;; `markdown-header-scaling-values'.  `setq' writes the variable and never calls
+;; it, so if anything has already pulled in markdown-mode by the time this runs
+;; the faces keep their default height and the setting does nothing at all.
+;;
 ;; `markdown-hide-markup' is deliberately left off here.  Hiding markup in a
 ;; buffer you are editing means the cursor moves through characters that are not
-;; on screen, which feels broken; C-c C-x C-m turns it on when you want it, and
-;; the read-only view below turns it on for you.
+;; on screen, which feels broken; C-c C-x RET turns it on when you want it, and
+;; the read-only view below turns it on for you.  Note that it hides emphasis
+;; and code markup but not `#' or table pipes: heading delimiters are dimmed
+;; with `markdown-header-delimiter-face' instead, the way org-mode leaves its
+;; leading stars visible.
 (defvar markdown-fontify-code-blocks-natively)
 (defvar markdown-header-scaling)
-(setq markdown-fontify-code-blocks-natively t
-      markdown-header-scaling t)
+(setopt markdown-fontify-code-blocks-natively t
+        markdown-header-scaling t)
 
 ;; Reading Markdown as formatted text.  `gfm-view-mode' hides the markup, scales
 ;; headers, font-locks fenced code, and makes the buffer read-only -- close to a
@@ -194,8 +203,8 @@
 ;; C-c C-c v  render to a file and open that.
 ;; For GitHub-identical output use `grip-mode' instead (see packages.el).
 (defvar markdown-command)
-(setq markdown-command '("pandoc" "--from=gfm" "--to=html5" "--standalone"
-                         "--metadata=title:preview"))
+(setopt markdown-command '("pandoc" "--from=gfm" "--to=html5" "--standalone"
+                           "--metadata=title:preview"))
 
 ;; Personal cheat sheets: one short Markdown file per topic in cheatsheets/,
 ;; opened formatted and read-only by C-c ? (see bindings.el).
