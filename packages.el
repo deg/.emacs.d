@@ -49,6 +49,7 @@
                       better-defaults ;; https://git.sr.ht/~technomancy/better-defaults
 
                       ace-window   ;; Letter-based window picker (bound to C-x o in display.el)
+                      grip-mode    ;; GitHub-identical Markdown preview (see below)
                       ;; beads           ;; https://codeberg.org/ctietze/beads.el - not yet on Melpa
                       ))
 (dolist (p my-packages)
@@ -146,6 +147,23 @@
                (claude-code--buffer-p (current-buffer)))
       (claude-code--term-setup-keymap 'ghostel)))
   (advice-add 'ghostel-semi-char-mode :after #'my/claude-restore-ghostel-keymap))
+
+
+;; grip-mode -- render Markdown exactly the way GitHub does, by handing it to
+;; GitHub's own renderer through the `grip' binary (already installed via
+;; Homebrew).  M-x grip-mode in a Markdown buffer starts a local server and
+;; opens it; toggling the mode off shuts the server down.
+;;
+;; This is the fidelity check, not the everyday reader: it needs the network,
+;; and GitHub's API allows only 60 unauthenticated requests an hour.  Setting
+;; `grip-github-user' and `grip-github-password' (a personal access token)
+;; lifts that limit.  For local, offline reading use C-c C-c l (pandoc into
+;; eww) or C-c C-v (the formatted in-buffer view) instead.
+;;
+;; grip always opens an external browser here: its in-Emacs option renders
+;; through xwidget-webkit, and this build has no xwidget support.
+(defvar grip-preview-use-webkit)
+(setq grip-preview-use-webkit nil)
 
 
 ;; Don't warn about magit-auto-revert-mode

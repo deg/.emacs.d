@@ -118,6 +118,77 @@
             (visual-line-mode 1)
             (auto-fill-mode -1)))
 
+;; Font-lock fenced code blocks in their own language, so a ```python block
+;; inside a Markdown file is colored the way python-mode would color it.  This
+;; is not specific to GitHub Flavored Markdown -- it keys off the fence and its
+;; language tag, so it works in plain `markdown-mode' too.  `markdown-header-
+;; scaling' sizes headers by level; the active theme (deg-tsdh-light) defines no
+;; markdown faces of its own, so nothing else is competing for those faces.
+;;
+;; `markdown-hide-markup' is deliberately left off here.  Hiding markup in a
+;; buffer you are editing means the cursor moves through characters that are not
+;; on screen, which feels broken; C-c C-x C-m turns it on when you want it, and
+;; the read-only view below turns it on for you.
+(defvar markdown-fontify-code-blocks-natively)
+(defvar markdown-header-scaling)
+(setq markdown-fontify-code-blocks-natively t
+      markdown-header-scaling t)
+
+;; Reading Markdown as formatted text.  `gfm-view-mode' hides the markup, scales
+;; headers, font-locks fenced code, and makes the buffer read-only -- close to a
+;; rendered page without leaving Emacs.
+;;
+;; It is wrapped rather than invoked directly because `markdown-view-mode-map'
+;; binds `q' to `kill-current-buffer'.  That is fine for a throwaway preview and
+;; wrong for a file you are editing, so the wrapper enables a one-key minor mode
+;; whose `q' comes back here instead.  A minor-mode keymap takes precedence over
+;; the major mode's, which is what makes that override work.
+(define-minor-mode my-markdown-view-quit-mode
+  "Make `q' leave the Markdown view rather than kill the buffer."
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "q") #'my-markdown-toggle-view)
+            map))
+
+;; Switching major modes runs `kill-all-local-variables', which would discard
+;; this on the way into the view.  The `permanent-local' property is what marks
+;; a buffer-local variable as surviving that.
+(defvar-local my-markdown-view-return nil
+  "Where `my-markdown-toggle-view' came from: (MAJOR-MODE . READ-ONLY-P).")
+(put 'my-markdown-view-return 'permanent-local t)
+
+(defun my-markdown-toggle-view ()
+  "Toggle between editing this Markdown buffer and viewing it formatted."
+  (interactive)
+  (let ((pos (point)))
+    (if my-markdown-view-return
+        ;; `buffer-read-only' is itself permanent-local, so it survives the mode
+        ;; switch: without restoring it explicitly the buffer stays read-only.
+        (let ((previous my-markdown-view-return))
+          (funcall (car previous))
+          (read-only-mode (if (cdr previous) 1 -1))
+          (setq my-markdown-view-return nil))
+      (let ((previous (cons major-mode buffer-read-only)))
+        (gfm-view-mode)
+        (setq my-markdown-view-return previous)
+        (my-markdown-view-quit-mode 1)))
+    (goto-char pos)))
+
+;; Rendered preview.  `markdown-command' is pinned rather than left to
+;; markdown-mode's auto-detection, which walks ("markdown" "pandoc" ...) and
+;; stops at the first executable on PATH -- here that is ~/bin/markdown, John
+;; Gruber's 2004 Markdown.pl 1.0.1, which knows nothing of GFM tables or fenced
+;; code blocks.  pandoc reads the buffer on stdin; --standalone wraps the output
+;; in a full HTML document so eww has a <head> to work with.
+;;
+;; C-c C-c l  live preview: renders on every save into an eww window alongside.
+;;            Entirely local, no network.
+;; C-c C-c p  render once and open in the external browser.
+;; C-c C-c v  render to a file and open that.
+;; For GitHub-identical output use `grip-mode' instead (see packages.el).
+(defvar markdown-command)
+(setq markdown-command '("pandoc" "--from=gfm" "--to=html5" "--standalone"
+                         "--metadata=title:preview"))
+
 ;; Markdown linting runs markdownlint-cli2 (installed globally via npm; see
 ;; ~/core-personal-files/setup-new-machine.sh), with proselint chained after it
 ;; for prose style.

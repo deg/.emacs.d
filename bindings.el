@@ -138,6 +138,11 @@
 (with-eval-after-load 'magit
   (define-key magit-mode-map (kbd "M-.") 'magit-diff-visit-file-other-window))
 
+;; C-c C-v toggles the read-only formatted view (see `my-markdown-toggle-view'
+;; in init.el).  `q' inside the view toggles back.
+(with-eval-after-load 'markdown-mode
+  (define-key markdown-mode-map (kbd "C-c C-v") 'my-markdown-toggle-view))
+
 
 ;; run a few shells.
 ;; (shell "*clojure-shell*")
