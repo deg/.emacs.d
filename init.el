@@ -234,14 +234,15 @@
   (find-file (expand-file-name (concat name ".md") my-cheatsheet-directory))
   (gfm-view-mode))
 
-;; A startup reminder in *scratch*: how to reach the cheat sheets, plus one
-;; random row from their tables.  Drawing the tip from the sheets themselves
-;; means it shrinks as they are pruned, with no second list to keep in step.
+;; A startup reminder in *scratch*: how to reach the cheat sheets, plus three
+;; random rows from their tables -- Emacs restarts rarely, so each showing
+;; counts.  Drawing the tips from the sheets themselves means they shrink as
+;; the sheets are pruned, with no second list to keep in step.
 ;; It is computed once, here; Emacs inserts `initial-scratch-message' into
 ;; *scratch* after init finishes.  *scratch* is in lisp-interaction-mode, so
 ;; every line is a `;;' comment.
-(defun my-cheatsheet-random-tip ()
-  "Return one random cheat-sheet table row as \"(SHEET) CELL -- CELL\", or nil."
+(defun my-cheatsheet-random-tips (n)
+  "Return up to N distinct random cheat-sheet rows, each \"(SHEET) CELL -- CELL\"."
   (let (rows)
     (dolist (file (directory-files my-cheatsheet-directory t "\\.md\\'"))
       (with-temp-buffer
@@ -256,12 +257,18 @@
                                                  " | ")
                                    " -- "))
                 rows))))
-    (and rows (nth (random (length rows)) rows))))
+    (let (picked)
+      (while (and rows (< (length picked) n))
+        (let ((row (nth (random (length rows)) rows)))
+          (push row picked)
+          (setq rows (delete row rows))))
+      picked)))
 
 (setq initial-scratch-message
-      (let ((tip (ignore-errors (my-cheatsheet-random-tip))))
+      (let ((tips (ignore-errors (my-cheatsheet-random-tips 3))))
         (concat ";; C-c ?  cheat sheets        C-h C-q  quick help\n"
-                (and tip (concat ";;\n;; Tip " tip "\n"))
+                (and tips ";;\n;; Tips:\n")
+                (mapconcat (lambda (tip) (concat ";;   " tip "\n")) tips)
                 "\n")))
 
 ;; Markdown linting runs markdownlint-cli2 (installed globally via npm; see
