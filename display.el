@@ -91,7 +91,6 @@ Warning: tested on Windows Vista only."
 
 ;; Remove screen clutter
 (setq inhibit-startup-screen t)
-(setq initial-scratch-message nil)
 (menu-bar-mode -1)
 (add-hook 'window-setup-hook (lambda () (tool-bar-mode -1)))
 ;; The two frame-geometry blocks below only work under a window system, so both

@@ -234,6 +234,36 @@
   (find-file (expand-file-name (concat name ".md") my-cheatsheet-directory))
   (gfm-view-mode))
 
+;; A startup reminder in *scratch*: how to reach the cheat sheets, plus one
+;; random row from their tables.  Drawing the tip from the sheets themselves
+;; means it shrinks as they are pruned, with no second list to keep in step.
+;; It is computed once, here; Emacs inserts `initial-scratch-message' into
+;; *scratch* after init finishes.  *scratch* is in lisp-interaction-mode, so
+;; every line is a `;;' comment.
+(defun my-cheatsheet-random-tip ()
+  "Return one random cheat-sheet table row as \"(SHEET) CELL -- CELL\", or nil."
+  (let (rows)
+    (dolist (file (directory-files my-cheatsheet-directory t "\\.md\\'"))
+      (with-temp-buffer
+        (insert-file-contents file)
+        ;; Only rows whose first cell is code (a key or command) -- this skips
+        ;; header rows and the |---| separators.
+        (while (re-search-forward "^| `.*|$" nil t)
+          (push (format "(%s) %s"
+                        (file-name-base file)
+                        (mapconcat #'string-trim
+                                   (split-string (string-trim (match-string 0) "| *" " *|")
+                                                 " | ")
+                                   " -- "))
+                rows))))
+    (and rows (nth (random (length rows)) rows))))
+
+(setq initial-scratch-message
+      (let ((tip (ignore-errors (my-cheatsheet-random-tip))))
+        (concat ";; C-c ?  cheat sheets        C-h C-q  quick help\n"
+                (and tip (concat ";;\n;; Tip " tip "\n"))
+                "\n")))
+
 ;; Markdown linting runs markdownlint-cli2 (installed globally via npm; see
 ;; ~/core-personal-files/setup-new-machine.sh), with proselint chained after it
 ;; for prose style.
