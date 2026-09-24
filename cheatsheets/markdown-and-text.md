@@ -69,6 +69,9 @@ Delete lines once you no longer need them. `C-c C-v` here toggles editing.
 | `C-c C-c ^`     | Sort the rows                 |
 | `C-c C-c t`     | Transpose the table           |
 
+A row must stay on one line; GFM has no way to wrap it. Once cells turn into
+sentences, use a list instead: `` - `name`: description ``.
+
 ## Links & code
 
 | Key         | Does                                                    |
