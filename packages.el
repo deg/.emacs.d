@@ -189,6 +189,26 @@
 (defvar magit-last-seen-setup-instructions)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+;; Claude Code's memory files have their own repo, ~/claude-memories.git, whose
+;; work tree is ~/.claude/projects (set by core.worktree).  That directory belongs
+;; to Claude Code, so it deliberately holds no .git for git to find the repo by
+;; (core-personal-files bead cpf-bfd, "Move Claude Code memories into their own
+;; repo").  Magit runs each git command from the work tree, where git then reports
+;; "not a git repository".  Every git process Magit starts takes its environment
+;; from `magit-process-environment', so add GIT_DIR there whenever the command runs
+;; under that work tree; git reads the work tree itself from core.worktree.  Other
+;; repositories are untouched.
+(defconst my/claude-memories-git-dir (expand-file-name "~/claude-memories.git"))
+(defconst my/claude-memories-work-tree
+  (file-name-as-directory (expand-file-name "~/.claude/projects")))
+(defun my/claude-memories-git-dir-env (env)
+  (if (string-prefix-p my/claude-memories-work-tree (expand-file-name default-directory))
+      (cons (concat "GIT_DIR=" my/claude-memories-git-dir) env)
+    env))
+(with-eval-after-load 'magit-process
+  (advice-add 'magit-process-environment
+              :filter-return #'my/claude-memories-git-dir-env))
+
 ;; Enable which-key mode (see https://github.com/justbur/emacs-which-key)
 ;; (broken on Ubuntu 19.04 28May19?)
 ;; (which-key-mode)
